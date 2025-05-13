@@ -25,12 +25,13 @@ enum UserRole {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  username  String
-  role      UserRole
-  createdAt DateTime  @default(now())
-  posts     Post[]
-  comments  Comment[]
+  id           Int       @id @default(autoincrement())
+  username     String    @unique
+  passwordHash String
+  role         UserRole
+  createdAt    DateTime  @default(now())
+  posts        Post[]
+  comments     Comment[]
 }
 
 model Post {
