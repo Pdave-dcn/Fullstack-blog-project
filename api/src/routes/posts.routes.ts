@@ -1,6 +1,8 @@
 import express, { RequestHandler } from "express";
 import {
   createPost,
+  deletePost,
+  editPost,
   getAllPosts,
   getUniquePost,
 } from "../controllers/posts.controller";
@@ -19,6 +21,18 @@ router.post(
   "/posts",
   passport.authenticate("jwt", { session: false }),
   createPost as RequestHandler
+);
+
+router.put(
+  "/posts/:postId",
+  passport.authenticate("jwt", { session: false }),
+  editPost as RequestHandler
+);
+
+router.delete(
+  "/posts/:postId",
+  passport.authenticate("jwt", { session: false }),
+  deletePost as RequestHandler
 );
 
 export default router;
