@@ -4,6 +4,7 @@ import prisma from "../config/db";
 import jwt from "jsonwebtoken";
 import passport from "passport";
 import { User } from "../generated/prisma";
+import { handleServerError } from "../utils/error";
 
 export const signupUser = async (req: Request, res: Response) => {
   try {
@@ -40,8 +41,7 @@ export const signupUser = async (req: Request, res: Response) => {
       token,
     });
   } catch (error) {
-    console.error("Signup error:", error);
-    return res.status(500).json({ message: "Server error." });
+    handleServerError("Signup error", error, res);
   }
 };
 

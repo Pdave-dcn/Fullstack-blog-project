@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../config/db";
 import { PostStatus } from "../generated/prisma";
+import { handleServerError } from "../utils/error";
 
 export const getAllPosts = async (req: Request, res: Response) => {
   try {
@@ -16,8 +17,7 @@ export const getAllPosts = async (req: Request, res: Response) => {
 
     res.status(200).json(posts);
   } catch (error) {
-    console.error("Error fetching posts:", error);
-    return res.status(500).json({ message: "Server error" });
+    handleServerError("Error fetching posts", error, res);
   }
 };
 
@@ -35,8 +35,7 @@ export const getUniquePost = async (req: Request, res: Response) => {
 
     res.status(200).json(post);
   } catch (error) {
-    console.error("Error fetching post:", error);
-    res.status(500).json({ message: "Server error" });
+    handleServerError("Error fetching post", error, res);
   }
 };
 
@@ -60,8 +59,7 @@ export const createPost = async (req: Request, res: Response) => {
 
     res.status(201).json(post);
   } catch (error) {
-    console.error("Error fetching post:", error);
-    res.status(500).json({ message: "Server error" });
+    handleServerError("Error creating post", error, res);
   }
 };
 
@@ -98,8 +96,7 @@ export const editPost = async (req: Request, res: Response) => {
       post: updatedPost,
     });
   } catch (error) {
-    console.error("Error editing post:", error);
-    res.status(500).json({ message: "Server error" });
+    handleServerError("Error editing post", error, res);
   }
 };
 
@@ -124,7 +121,6 @@ export const deletePost = async (req: Request, res: Response) => {
 
     return res.status(200).json({ message: "Post deleted successfully" });
   } catch (error) {
-    console.error("Error deleting post:", error);
-    res.status(500).json({ message: "Server error" });
+    handleServerError("Error deleting post", error, res);
   }
 };
