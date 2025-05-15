@@ -1,17 +1,28 @@
 import { Request, Response } from "express";
 import { handleServerError } from "../utils/error";
 import prisma from "../config/db";
+import { User } from "../utils/types";
+import {
+  getValidatedPostAndCommentIds,
+  getValidatedPostId,
+} from "../utils/validateParams";
 
 export const createComment = async (req: Request, res: Response) => {
   try {
-    const user = req.user as { id: number; username: string; role: string };
+    const user = req.user as User;
 
-    const postId = Number(req.params.postId);
-    if (isNaN(postId))
-      return res.status(400).json({ message: "Invalid post ID!" });
+    const postId = getValidatedPostId(req, res);
+    if (!postId) return;
 
     const content = req.body.content;
-    if (!content) return res.status(400).json({ message: "Content required" });
+    if (!content || content.trim() === "") {
+      return res.status(400).json({ message: "Content cannot be empty!" });
+    }
+
+    const postExists = await prisma.post.findUnique({ where: { id: postId } });
+    if (!postExists) {
+      return res.status(404).json({ message: "Post not found!" });
+    }
 
     const comment = await prisma.comment.create({
       data: { content, postId, userId: user.id },
@@ -28,19 +39,17 @@ export const createComment = async (req: Request, res: Response) => {
 
 export const deleteComment = async (req: Request, res: Response) => {
   try {
-    const user = req.user as { id: number; username: string; role: string };
+    const user = req.user as User;
 
-    const postId = Number(req.params.postId);
-    if (isNaN(postId))
-      return res.status(400).json({ message: "Invalid post ID!" });
+    const ids = getValidatedPostAndCommentIds(req, res);
+    if (!ids) return;
 
-    const commentId = Number(req.params.commentId);
-    if (isNaN(commentId))
-      return res.status(400).json({ message: "Invalid comment ID!" });
+    const { postId, commentId } = ids;
 
-    const comment = await prisma.comment.findUnique({
+    const comment = await prisma.comment.findFirst({
       where: { id: commentId, postId },
     });
+
     if (!comment)
       return res
         .status(404)
@@ -63,20 +72,17 @@ export const deleteComment = async (req: Request, res: Response) => {
 
 export const editComment = async (req: Request, res: Response) => {
   try {
-    const user = req.user as { id: number; username: string; role: string };
+    const user = req.user as User;
 
     const { content } = req.body as { content: string };
     if (!content || content.trim() === "") {
       return res.status(400).json({ message: "Content cannot be empty!" });
     }
 
-    const postId = Number(req.params.postId);
-    if (isNaN(postId))
-      return res.status(400).json({ message: "Invalid post ID!" });
+    const ids = getValidatedPostAndCommentIds(req, res);
+    if (!ids) return;
 
-    const commentId = Number(req.params.commentId);
-    if (isNaN(commentId))
-      return res.status(400).json({ message: "Invalid comment ID!" });
+    const { postId, commentId } = ids;
 
     const comment = await prisma.comment.findFirst({
       where: { id: commentId, postId },
