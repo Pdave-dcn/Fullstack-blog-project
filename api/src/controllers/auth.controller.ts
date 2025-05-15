@@ -3,15 +3,18 @@ import bcrypt from "bcryptjs";
 import prisma from "../config/db";
 import jwt from "jsonwebtoken";
 import passport from "passport";
-import { User } from "../generated/prisma";
+import { User, UserRole } from "../generated/prisma";
 import { handleServerError } from "../utils/error";
 
 export const signupUser = async (req: Request, res: Response) => {
   try {
-    const { name, username, password } = req.body;
-    if (!name || !username || !password) {
+    const { name, username, password, role } = req.body;
+    if (!name || !username || !password || !role) {
       return res.status(400).json({ message: "All fields are required!" });
     }
+
+    const roleOfUser =
+      role && Object.values(UserRole).includes(role) ? role : "user";
 
     const existingUser = await prisma.user.findUnique({
       where: { username },
@@ -22,7 +25,7 @@ export const signupUser = async (req: Request, res: Response) => {
     const passwordHash = await bcrypt.hash(password, 10);
 
     const newUser = await prisma.user.create({
-      data: { name, username, passwordHash, role: "user" },
+      data: { name, username, passwordHash, role: roleOfUser },
     });
 
     const token = jwt.sign(
