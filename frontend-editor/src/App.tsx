@@ -1,11 +1,13 @@
-import { Button } from "./components/ui/button";
+import { SidebarProvider } from "./components/ui/sidebar";
+import AppSidebar from "./components/AppSideBar";
 
 const App = () => {
   return (
-    <>
-      <div className="text-2xl">Frontend Editor</div>
-      <Button>Click me</Button>
-    </>
+    <main>
+      <SidebarProvider>
+        <AppSidebar />
+      </SidebarProvider>
+    </main>
   );
 };
 
