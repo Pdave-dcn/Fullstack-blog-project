@@ -1,4 +1,12 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+import {
+  FilePlus,
+  LayoutDashboard,
+  MessageSquareMore,
+  Newspaper,
+  User,
+  ChevronUp,
+  BookText,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -9,42 +17,70 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarHeader,
+  SidebarFooter,
 } from "@/components/ui/sidebar";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const items = [
   {
-    title: "Home",
+    title: "Dashboard",
     url: "#",
-    icon: Home,
+    icon: LayoutDashboard,
   },
   {
-    title: "Inbox",
+    title: "My Articles",
     url: "#",
-    icon: Inbox,
+    icon: Newspaper,
   },
   {
-    title: "Calendar",
+    title: "New Article",
     url: "#",
-    icon: Calendar,
+    icon: FilePlus,
   },
   {
-    title: "Search",
+    title: "Comments",
     url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
+    icon: MessageSquareMore,
   },
 ];
 
 function AppSidebar() {
+  const user = {
+    name: "John Doe",
+    role: "Author",
+  };
+
+  const header = {
+    title: "The perfect blog",
+    url: "#",
+    icon: BookText,
+  };
+
   return (
-    <Sidebar>
+    <Sidebar variant="floating" collapsible="icon">
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild>
+              <a href={header.url}>
+                <header.icon />
+                <span>{header.title}</span>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
+
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
@@ -61,6 +97,36 @@ function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton>
+                  <User className="h-5 w-5" />
+                  <span>{user.name}</span>
+                  <ChevronUp className="ml-auto h-4 w-4" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                side="top"
+                className="w-[--radix-popper-anchor-width]"
+              >
+                <DropdownMenuItem>
+                  <span>Profile</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <span>Settings</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <span>Sign out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }
