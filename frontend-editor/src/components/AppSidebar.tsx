@@ -31,22 +31,22 @@ import {
 const items = [
   {
     title: "Dashboard",
-    url: "#",
+    url: "/",
     icon: LayoutDashboard,
   },
   {
-    title: "My Articles",
-    url: "#",
+    title: "Articles",
+    url: "articles",
     icon: Newspaper,
   },
   {
     title: "New Article",
-    url: "#",
+    url: "new-article",
     icon: FilePlus,
   },
   {
     title: "Comments",
-    url: "#",
+    url: "comments",
     icon: MessageSquareMore,
   },
 ];
