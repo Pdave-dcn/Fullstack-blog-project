@@ -4,7 +4,7 @@ import AppSidebar from "./components/AppSidebar";
 import Header from "./components/Header";
 
 // Pages
-import Dashboard from "./components/pages/Dashboard";
+import Dashboard from "./components/pages/Dashboard/Dashboard";
 import Comments from "./components/pages/Comments";
 import Articles from "./components/pages/Articles";
 import NewArticle from "./components/pages/NewArticle";
