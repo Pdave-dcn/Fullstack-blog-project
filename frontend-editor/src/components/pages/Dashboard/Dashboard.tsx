@@ -4,97 +4,61 @@ import { Link } from "react-router-dom";
 import { Button } from "../../ui/button";
 import StatCard from "./StatCard";
 import RecentArticle from "./RecentArticle";
-
-interface Comment {
-  id: number;
-  content: string;
-  articleTitle: string;
-  author: {
-    name: string;
-    username: string;
-  };
-  createdAt: string;
-}
-
-const stats = [
-  {
-    title: "Articles",
-    value: "34",
-    icon: <FileText size={20} className="text-blue-600" />,
-  },
-  {
-    title: "Published Articles",
-    value: "24",
-    icon: <FileCheck size={20} className="text-blue-600" />,
-  },
-  {
-    title: "Draft Articles",
-    value: "10",
-    icon: <FileX size={20} className="text-blue-600" />,
-  },
-
-  {
-    title: "Comments",
-    value: "189",
-    icon: <MessageSquare size={20} className="text-blue-600" />,
-  },
-];
-
-const recentArticles = [
-  {
-    title: "How to Build a Better Blog",
-    date: "May 12, 2025",
-    status: "published" as const,
-    views: 432,
-  },
-  {
-    title: "SEO Tips for Content Writers",
-    date: "May 10, 2025",
-    status: "published" as const,
-    views: 289,
-  },
-  {
-    title: "The Future of Content Marketing",
-    date: "May 8, 2025",
-    status: "draft" as const,
-    views: 0,
-  },
-  {
-    title: "Writing Effective Headlines",
-    date: "May 5, 2025",
-    status: "published" as const,
-    views: 567,
-  },
-];
-
-const recentComments: Comment[] = [
-  {
-    id: 1,
-    content: "This is a great article! Very informative and well written.",
-    articleTitle: "How to Build a Better Blog",
-    author: {
-      name: "John Doe",
-      username: "@johndoe",
-    },
-    createdAt: "2025-05-12T10:00:00",
-  },
-  {
-    id: 2,
-    content: "Thanks for sharing these SEO tips. They're really helpful!",
-    articleTitle: "SEO Tips for Content Writers",
-    author: {
-      name: "Jane Smith",
-      username: "@janesmith",
-    },
-    createdAt: "2025-05-10T15:30:00",
-  },
-];
+import {
+  useDashboardStats,
+  useRecentArticles,
+  useRecentComments,
+} from "@/hooks/dashboardHooks";
+import { MessageLoading } from "@/components/ui/MessageLoading";
+import { handleDate } from "@/lib/utils";
 
 const Dashboard = () => {
+  const { stats, errorStats, loadingStats } = useDashboardStats();
+  const { articles, errorArticles, loadingArticles } = useRecentArticles();
+  const { comments, errorComments, loadingComments } = useRecentComments();
+
+  const statsCategories = [
+    {
+      title: "Articles",
+      value: `${stats?.totalPosts ?? 0}`,
+      icon: <FileText size={20} className="text-blue-600" />,
+    },
+    {
+      title: "Published Articles",
+      value: `${stats?.publishedPosts ?? 0}`,
+      icon: <FileCheck size={20} className="text-blue-600" />,
+    },
+    {
+      title: "Draft Articles",
+      value: `${stats?.draftPosts ?? 0}`,
+      icon: <FileX size={20} className="text-blue-600" />,
+    },
+
+    {
+      title: "Comments",
+      value: `${stats?.totalComments ?? 0}`,
+      icon: <MessageSquare size={20} className="text-blue-600" />,
+    },
+  ];
+
+  if (loadingStats || loadingArticles || loadingComments)
+    return (
+      <div className="flex items-center justify-center h-1/2">
+        <MessageLoading />
+      </div>
+    );
+
+  if (errorStats || errorArticles || errorComments)
+    return (
+      <div className="flex items-center justify-center h-1/2">
+        <p>A network error was encountered</p>
+      </div>
+    );
+
   return (
     <div className="container mx-auto px-6 py-8 w-full">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 w-full">
-        {stats.map((stat, i) => (
+        {statsCategories.map((stat, i) => (
           <StatCard key={i} {...stat} />
         ))}
       </div>
@@ -106,7 +70,7 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-1">
-              {recentArticles.map((article, i) => (
+              {articles?.map((article, i) => (
                 <RecentArticle key={i} {...article} />
               ))}
             </div>
@@ -122,25 +86,25 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {recentComments.slice(0, 3).map((comment) => (
+              {comments?.map((comment) => (
                 <div key={comment.id} className="flex flex-col space-y-1">
                   <div className="flex items-center justify-between">
                     <div className="flex flex-col">
                       <span className="text-sm font-medium">
-                        {comment.author.name}
+                        {comment.user.name}
                       </span>
                       <span className="text-xs text-muted-foreground">
-                        {comment.author.username}
+                        {comment.user.username}
                       </span>
                     </div>
                     <span className="text-xs text-muted-foreground">
-                      {new Date(comment.createdAt).toLocaleDateString()}
+                      {handleDate(comment.createdAt)}
                     </span>
                   </div>
                   <p className="text-sm text-muted-foreground">
                     On:{" "}
                     <span className="font-medium text-foreground">
-                      {comment.articleTitle}
+                      {comment.post.title}
                     </span>
                   </p>
                   <p className="text-sm">{comment.content}</p>

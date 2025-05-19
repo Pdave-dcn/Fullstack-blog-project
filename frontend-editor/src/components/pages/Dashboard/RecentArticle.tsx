@@ -1,21 +1,21 @@
-import { Eye } from "lucide-react";
+import { handleDate } from "@/lib/utils";
 
 const RecentArticle = ({
   title,
-  date,
+  updatedAt,
   status,
-  views,
 }: {
   title: string;
-  date: string;
+  updatedAt: string;
   status: "published" | "draft";
-  views: number;
 }) => {
   return (
     <div className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
       <div>
         <h4 className="font-medium">{title}</h4>
-        <p className="text-sm text-gray-500">Updated on {date}</p>
+        <p className="text-sm text-gray-500">
+          Updated on {handleDate(updatedAt)}
+        </p>
       </div>
       <div className="flex items-center space-x-4">
         <span
@@ -27,10 +27,6 @@ const RecentArticle = ({
         >
           {status === "published" ? "Published" : "Draft"}
         </span>
-        <div className="flex items-center text-sm text-gray-500">
-          <Eye size={14} className="mr-1" />
-          {views}
-        </div>
       </div>
     </div>
   );
