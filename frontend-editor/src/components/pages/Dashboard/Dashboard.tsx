@@ -11,8 +11,10 @@ import {
 } from "@/hooks/dashboardHooks";
 import { MessageLoading } from "@/components/ui/MessageLoading";
 import { handleDate } from "@/lib/utils";
+import { useAuth } from "@/hooks/use-auth";
 
 const Dashboard = () => {
+  const { isAuthenticated, user } = useAuth();
   const { stats, errorStats, loadingStats } = useDashboardStats();
   const { articles, errorArticles, loadingArticles } = useRecentArticles();
   const { comments, errorComments, loadingComments } = useRecentComments();
@@ -33,7 +35,6 @@ const Dashboard = () => {
       value: `${stats?.draftPosts ?? 0}`,
       icon: <FileX size={20} className="text-blue-600" />,
     },
-
     {
       title: "Comments",
       value: `${stats?.totalComments ?? 0}`,
@@ -41,22 +42,34 @@ const Dashboard = () => {
     },
   ];
 
-  if (loadingStats || loadingArticles || loadingComments)
+  if (!isAuthenticated) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <p>Please log in to view the dashboard</p>
+      </div>
+    );
+  }
+
+  if (loadingStats || loadingArticles || loadingComments) {
     return (
       <div className="flex items-center justify-center h-1/2">
         <MessageLoading />
       </div>
     );
+  }
 
-  if (errorStats || errorArticles || errorComments)
+  if (errorStats || errorArticles || errorComments) {
     return (
       <div className="flex items-center justify-center h-1/2">
         <p>A network error was encountered</p>
       </div>
     );
+  }
 
   return (
     <div className="container mx-auto px-6 py-8 w-full">
+      <h1 className="text-2xl font-bold mb-6">Welcome, {user?.username}</h1>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 w-full">
         {statsCategories.map((stat, i) => (
           <StatCard key={i} {...stat} />
@@ -70,9 +83,15 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-1">
-              {articles?.map((article, i) => (
-                <RecentArticle key={i} {...article} />
-              ))}
+              {articles && articles.length > 0 ? (
+                articles.map((article, i) => (
+                  <RecentArticle key={i} {...article} />
+                ))
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  No recent articles
+                </p>
+              )}
             </div>
             <Button className="w-full mt-4" variant="outline">
               <Link to="/articles">View All Articles</Link>
@@ -86,31 +105,37 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {comments?.map((comment) => (
-                <div key={comment.id} className="flex flex-col space-y-1">
-                  <div className="flex items-center justify-between">
-                    <div className="flex flex-col">
-                      <span className="text-sm font-medium">
-                        {comment.user.name}
-                      </span>
+              {comments && comments.length > 0 ? (
+                comments.map((comment) => (
+                  <div key={comment.id} className="flex flex-col space-y-1">
+                    <div className="flex items-center justify-between">
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium">
+                          {comment.user.name}
+                        </span>
+                        <span className="text-xs text-muted-foreground">
+                          {comment.user.username}
+                        </span>
+                      </div>
                       <span className="text-xs text-muted-foreground">
-                        {comment.user.username}
+                        {handleDate(comment.createdAt)}
                       </span>
                     </div>
-                    <span className="text-xs text-muted-foreground">
-                      {handleDate(comment.createdAt)}
-                    </span>
+                    <p className="text-sm text-muted-foreground">
+                      On:{" "}
+                      <span className="font-medium text-foreground">
+                        {comment.post.title}
+                      </span>
+                    </p>
+                    <p className="text-sm">{comment.content}</p>
+                    <hr className="my-2" />
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    On:{" "}
-                    <span className="font-medium text-foreground">
-                      {comment.post.title}
-                    </span>
-                  </p>
-                  <p className="text-sm">{comment.content}</p>
-                  <hr className="my-2" />
-                </div>
-              ))}
+                ))
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  No recent comments
+                </p>
+              )}
             </div>
             <Button className="w-full mt-4" variant="outline">
               <Link to="/comments">View All Comments</Link>

@@ -28,10 +28,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { useAuth } from "@/hooks/use-auth";
+import { useNavigate } from "react-router-dom";
+
 const items = [
   {
     title: "Dashboard",
-    url: "/",
+    url: "dashboard",
     icon: LayoutDashboard,
   },
   {
@@ -52,9 +55,12 @@ const items = [
 ];
 
 function AppSidebar() {
-  const user = {
-    name: "John Doe",
-    role: "Author",
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = () => {
+    logout();
+    navigate("/");
   };
 
   const header = {
@@ -105,7 +111,7 @@ function AppSidebar() {
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
                   <User className="h-5 w-5" />
-                  <span>{user.name}</span>
+                  <span>{user?.username}</span>
                   <ChevronUp className="ml-auto h-4 w-4" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
@@ -119,7 +125,7 @@ function AppSidebar() {
                 <DropdownMenuItem>
                   <span>Settings</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleSignOut}>
                   <span>Sign out</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>

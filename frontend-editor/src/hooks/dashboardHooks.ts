@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useAuth } from "@/hooks/use-auth";
 
 interface DashboardStats {
   totalPosts: number;
@@ -28,48 +29,52 @@ interface RecentComments {
 }
 
 const API_BASE_URL = "http://localhost:3000/api/dashboard";
-const AUTH_TOKEN = "";
-
-const fetchData = async <T>(endpoint: string): Promise<T> => {
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${AUTH_TOKEN}`,
-      "Content-Type": "application/json",
-    },
-    mode: "cors",
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch ${endpoint}`);
-  }
-
-  return response.json();
-};
 
 const useDataFetching = <T>(endpoint: string) => {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const { token, isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
-    const fetchDataFromApi = async () => {
+    if (!isAuthenticated || !token) {
+      setLoading(false);
+      return;
+    }
+
+    const fetchData = async () => {
       try {
-        const result = await fetchData<T>(endpoint);
+        const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+
+        if (response.status === 401) {
+          logout();
+          return;
+        }
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch ${endpoint}`);
+        }
+
+        const result = await response.json();
         setData(result);
       } catch (error: unknown) {
         if (error instanceof Error) {
           setError(error.message);
-        } else {
-          setError("Something went wrong");
         }
       } finally {
         setLoading(false);
       }
     };
 
-    fetchDataFromApi();
-  }, [endpoint]);
+    fetchData();
+  }, [endpoint, token, isAuthenticated, logout]);
 
   return { data, error, loading };
 };

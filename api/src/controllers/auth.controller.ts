@@ -74,7 +74,7 @@ export const loginUser = async (
         { expiresIn: "1h" }
       );
 
-      res.status(501).json({
+      res.status(200).json({
         message: "Login successful",
         user: {
           id: user.id,

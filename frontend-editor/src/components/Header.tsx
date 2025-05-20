@@ -4,22 +4,26 @@ import { Link, useLocation } from "react-router-dom";
 
 const getPageTitle = (pathname: string): string => {
   switch (pathname) {
-    case '/':
-      return 'Dashboard';
-    case '/articles':
-      return 'My Articles';
-    case '/new-article':
-      return 'New Article';
-    case '/comments':
-      return 'Comments';
+    case "/":
+      return "Dashboard";
+    case "/articles":
+      return "My Articles";
+    case "/new-article":
+      return "New Article";
+    case "/comments":
+      return "Comments";
     default:
-      return 'Not Found';
+      return "Not Found";
   }
 };
 
 const Header = () => {
   const location = useLocation();
+  console.log("Location: ");
+  console.log(location);
   const title = getPageTitle(location.pathname);
+  console.log("Title: ");
+  console.log(title);
 
   return (
     <header className="sticky top-0 w-full bg-white border-b border-gray-200 py-4">

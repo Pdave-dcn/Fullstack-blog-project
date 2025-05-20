@@ -1,38 +1,64 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { SidebarProvider } from "./components/ui/sidebar";
-import AppSidebar from "./components/AppSidebar";
-import Header from "./components/Header";
+import { Toaster } from "sonner";
+import ProtectedRoute from "./components/ProtectedRoute";
 
-// Pages
+import Login from "./components/pages/Login";
 import Dashboard from "./components/pages/Dashboard/Dashboard";
 import Comments from "./components/pages/Comments";
 import Articles from "./components/pages/Articles";
 import NewArticle from "./components/pages/NewArticle";
 import NotFound from "./components/pages/NotFound";
-import { Toaster } from "sonner";
 
 const App = () => {
   return (
-    <SidebarProvider>
-      <BrowserRouter>
+    <Router>
+      <SidebarProvider>
         <Toaster position="bottom-right" />
         <div className="flex h-screen w-full overflow-hidden">
-          <AppSidebar />
           <div className="flex-1 flex flex-col min-w-0">
-            <Header />
             <div className="flex-1 overflow-auto p-4">
               <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/articles" element={<Articles />} />
-                <Route path="/comments" element={<Comments />} />
-                <Route path="/new-article" element={<NewArticle />} />
+                <Route path="/" element={<Login />} />
+                <Route
+                  path="/dashboard"
+                  element={
+                    <ProtectedRoute>
+                      <Dashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/articles"
+                  element={
+                    <ProtectedRoute>
+                      <Articles />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/comments"
+                  element={
+                    <ProtectedRoute>
+                      <Comments />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/new-article"
+                  element={
+                    <ProtectedRoute>
+                      <NewArticle />
+                    </ProtectedRoute>
+                  }
+                />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </div>
           </div>
         </div>
-      </BrowserRouter>
-    </SidebarProvider>
+      </SidebarProvider>
+    </Router>
   );
 };
 
