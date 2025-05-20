@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 
 const getPageTitle = (pathname: string): string => {
   switch (pathname) {
-    case "/":
+    case "/dashboard":
       return "Dashboard";
     case "/articles":
       return "My Articles";
