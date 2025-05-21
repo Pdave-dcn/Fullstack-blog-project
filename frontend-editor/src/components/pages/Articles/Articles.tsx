@@ -17,90 +17,35 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "sonner";
+import { useDataFetching } from "@/hooks/use-dataFetching";
+import { MessageLoading } from "../../ui/MessageLoading";
+import { handleDate } from "@/lib/utils";
 
 interface Article {
   id: number;
   title: string;
   status: "published" | "draft";
-  date: string;
-  views: number;
-  comments: number;
+  createdAt: string;
+  comments: string[];
 }
 
 const Articles = () => {
   const [filter, setFilter] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const articles: Article[] = [
-    {
-      id: 1,
-      title: "How to Build a Better Blog",
-      status: "published",
-      date: "May 12, 2025",
-      views: 432,
-      comments: 12,
-    },
-    {
-      id: 2,
-      title: "SEO Tips for Content Writers",
-      status: "published",
-      date: "May 10, 2025",
-      views: 289,
-      comments: 8,
-    },
-    {
-      id: 3,
-      title: "The Future of Content Marketing",
-      status: "draft",
-      date: "May 8, 2025",
-      views: 0,
-      comments: 0,
-    },
-    {
-      id: 4,
-      title: "Writing Effective Headlines",
-      status: "published",
-      date: "May 5, 2025",
-      views: 567,
-      comments: 24,
-    },
-    {
-      id: 5,
-      title: "Social Media Strategy for Bloggers",
-      status: "draft",
-      date: "May 3, 2025",
-      views: 0,
-      comments: 0,
-    },
-    {
-      id: 6,
-      title: "Creating Engaging Content",
-      status: "published",
-      date: "May 1, 2025",
-      views: 421,
-      comments: 18,
-    },
-    {
-      id: 7,
-      title: "Email Marketing for Bloggers",
-      status: "published",
-      date: "Apr 28, 2025",
-      views: 312,
-      comments: 7,
-    },
-    {
-      id: 8,
-      title: "Building an Audience",
-      status: "draft",
-      date: "Apr 25, 2025",
-      views: 0,
-      comments: 0,
-    },
-  ];
+  const {
+    data: articles,
+    error: articleError,
+    loading: articleLoading,
+  } = useDataFetching<Article[]>("http://localhost:3000/api", "/posts");
 
-  const filteredArticles =
-    filter === "all"
-      ? articles
-      : articles.filter((article) => article.status === filter);
+  const filteredArticles = articles?.filter((article) => {
+    const matchesFilter = filter === "all" || article.status === filter;
+    const matchesSearch = article.title
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    return matchesFilter && matchesSearch;
+  });
 
   const handleAction = (action: string, article: Article) => {
     switch (action) {
@@ -122,6 +67,22 @@ const Articles = () => {
     }
   };
 
+  if (articleLoading) {
+    return (
+      <div className="flex items-center justify-center h-1/2">
+        <MessageLoading />
+      </div>
+    );
+  }
+
+  if (articleError) {
+    return (
+      <div className="flex items-center justify-center h-1/2">
+        <p>A network error was encountered</p>
+      </div>
+    );
+  }
+
   return (
     <div title="Articles">
       <div className="mb-6 flex flex-col sm:flex-row justify-between gap-4">
@@ -133,6 +94,8 @@ const Articles = () => {
             type="text"
             placeholder="Search articles..."
             className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
 
@@ -142,7 +105,7 @@ const Articles = () => {
               <Filter size={16} className="mr-2" />
               Filter
               <span className="ml-2 px-1.5 py-0.5 text-xs rounded-full bg-blue-100 text-blue-800">
-                {filter === "all" ? articles.length : filteredArticles.length}
+                {filter === "all" ? articles?.length : filteredArticles?.length}
               </span>
             </Button>
             <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 z-10 hidden group-focus-within:block">
@@ -200,60 +163,68 @@ const Articles = () => {
               <TableHead className="w-[400px]">Title</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Date</TableHead>
-              <TableHead className="text-right">Views</TableHead>
               <TableHead className="text-right">Comments</TableHead>
               <TableHead className="w-[70px]"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredArticles.map((article) => (
-              <TableRow key={article.id}>
-                <TableCell className="font-medium">{article.title}</TableCell>
-                <TableCell>
-                  <span
-                    className={`px-2 py-1 text-xs rounded-full ${
-                      article.status === "published"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-gray-100 text-gray-800"
-                    }`}
-                  >
-                    {article.status === "published" ? "Published" : "Draft"}
-                  </span>
-                </TableCell>
-                <TableCell>{article.date}</TableCell>
-                <TableCell className="text-right">{article.views}</TableCell>
-                <TableCell className="text-right">{article.comments}</TableCell>
-                <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon">
-                        <MoreVertical size={16} />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem
-                        onClick={() => handleAction("view", article)}
-                      >
-                        <Eye className="mr-2 h-4 w-4" />
-                        <span>View</span>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => handleAction("edit", article)}
-                      >
-                        <Edit className="mr-2 h-4 w-4" />
-                        <span>Edit</span>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => handleAction("delete", article)}
-                      >
-                        <Trash2 className="mr-2 h-4 w-4" />
-                        <span>Delete</span>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+            {filteredArticles?.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={5} className="text-center py-8">
+                  No articles found{searchQuery && ` matching "${searchQuery}"`}
                 </TableCell>
               </TableRow>
-            ))}
+            ) : (
+              filteredArticles?.map((article) => (
+                <TableRow key={article.id}>
+                  <TableCell className="font-medium">{article.title}</TableCell>
+                  <TableCell>
+                    <span
+                      className={`px-2 py-1 text-xs rounded-full ${
+                        article.status === "published"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-gray-100 text-gray-800"
+                      }`}
+                    >
+                      {article.status === "published" ? "Published" : "Draft"}
+                    </span>
+                  </TableCell>
+                  <TableCell>{handleDate(article.createdAt)}</TableCell>
+                  <TableCell className="text-right">
+                    {article.comments.length}
+                  </TableCell>
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <MoreVertical size={16} />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem
+                          onClick={() => handleAction("view", article)}
+                        >
+                          <Eye className="mr-2 h-4 w-4" />
+                          <span>View</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => handleAction("edit", article)}
+                        >
+                          <Edit className="mr-2 h-4 w-4" />
+                          <span>Edit</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => handleAction("delete", article)}
+                        >
+                          <Trash2 className="mr-2 h-4 w-4" />
+                          <span>Delete</span>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </div>

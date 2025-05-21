@@ -6,7 +6,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./components/pages/Login";
 import Dashboard from "./components/pages/Dashboard/Dashboard";
 import Comments from "./components/pages/Comments";
-import Articles from "./components/pages/Articles";
+import Articles from "./components/pages/Articles/Articles";
 import NewArticle from "./components/pages/NewArticle";
 import NotFound from "./components/pages/NotFound";
 

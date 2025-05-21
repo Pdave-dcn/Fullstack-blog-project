@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { useAuth } from "@/hooks/use-auth";
+import { useDataFetching } from "./use-dataFetching";
 
 interface DashboardStats {
   totalPosts: number;
@@ -30,61 +29,12 @@ interface RecentComments {
 
 const API_BASE_URL = "http://localhost:3000/api/dashboard";
 
-const useDataFetching = <T>(endpoint: string) => {
-  const [data, setData] = useState<T | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const { token, isAuthenticated, logout } = useAuth();
-
-  useEffect(() => {
-    if (!isAuthenticated || !token) {
-      setLoading(false);
-      return;
-    }
-
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
-
-        if (response.status === 401) {
-          logout();
-          return;
-        }
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch ${endpoint}`);
-        }
-
-        const result = await response.json();
-        setData(result);
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          setError(error.message);
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [endpoint, token, isAuthenticated, logout]);
-
-  return { data, error, loading };
-};
-
 export const useDashboardStats = () => {
   const {
     data: stats,
     error: errorStats,
     loading: loadingStats,
-  } = useDataFetching<DashboardStats>("/stats");
+  } = useDataFetching<DashboardStats>(API_BASE_URL, "/stats");
   return { stats, errorStats, loadingStats };
 };
 
@@ -93,7 +43,7 @@ export const useRecentArticles = () => {
     data: articles,
     error: errorArticles,
     loading: loadingArticles,
-  } = useDataFetching<RecentArticle[]>("/recent-articles");
+  } = useDataFetching<RecentArticle[]>(API_BASE_URL, "/recent-articles");
   return { articles, errorArticles, loadingArticles };
 };
 
@@ -102,6 +52,6 @@ export const useRecentComments = () => {
     data: comments,
     error: errorComments,
     loading: loadingComments,
-  } = useDataFetching<RecentComments[]>("/recent-comments");
+  } = useDataFetching<RecentComments[]>(API_BASE_URL, "/recent-comments");
   return { comments, errorComments, loadingComments };
 };
