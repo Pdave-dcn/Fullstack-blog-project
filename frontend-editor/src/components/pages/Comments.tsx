@@ -1,20 +1,31 @@
-import { Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Trash2, MoreVertical, Eye } from "lucide-react";
 import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useDataFetching } from "@/hooks/use-dataFetching";
+import { MessageLoading } from "../ui/MessageLoading";
+import { useAuth } from "@/hooks/use-auth";
 
 interface Comment {
   id: number;
   content: string;
-  articleTitle: string;
-  articleId: number;
-  author: {
+  post: {
+    title: string;
+  };
+  user: {
     name: string;
     username: string;
   };
@@ -22,42 +33,59 @@ interface Comment {
 }
 
 const Comments = () => {
-  const [comments, setComments] = useState<Comment[]>([
-    {
-      id: 1,
-      content: "This is a great article! Very informative and well written.",
-      articleTitle: "How to Build a Better Blog",
-      articleId: 1,
-      author: {
-        name: "John Doe",
-        username: "@johndoe",
-      },
-      createdAt: "2025-05-12T10:00:00",
-    },
-    {
-      id: 2,
-      content: "Thanks for sharing these SEO tips. They're really helpful!",
-      articleTitle: "SEO Tips for Content Writers",
-      articleId: 2,
-      author: {
-        name: "Jane Smith",
-        username: "@janesmith",
-      },
-      createdAt: "2025-05-10T15:30:00",
-    },
-  ]);
+  const { token } = useAuth();
+  const {
+    data: comments,
+    error: commentError,
+    loading: commentLoading,
+    refetch,
+  } = useDataFetching<Comment[]>("http://localhost:3000/api", "/comments");
 
   const handleDeleteComment = (commentId: number) => {
     toast.warning("Delete Comment", {
       description: "Are you sure you want to delete this comment?",
       action: {
         label: "Delete",
-        onClick: () => {
-          setComments(comments.filter((comment) => comment.id !== commentId));
-          toast.success("Comment deleted successfully");
+        onClick: async () => {
+          try {
+            const res = await fetch(
+              `http://localhost:3000/api/comments/${commentId}`,
+              {
+                method: "DELETE",
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  "Content-Type": "application/json",
+                },
+                credentials: "include",
+              }
+            );
+            if (!res.ok) {
+              const errorData = await res.json();
+              console.error("Server error:", errorData.message);
+              toast.error("Failed to delete comment", {
+                description: errorData.message,
+              });
+              return;
+            }
+
+            toast.success(`Comment deleted successfully`);
+            refetch();
+          } catch (error) {
+            console.error("Network error:", error);
+            toast.error("Network error", {
+              description: "Could not connect to the server.",
+            });
+          }
         },
       },
     });
+  };
+
+  const handleViewComment = (comment: Comment) => {
+    toast.info("View Comment", {
+      description: `Viewing comment on "${comment.post.title}"`,
+    });
+    // Navigation logic here
   };
 
   const formatDate = (dateString: string) => {
@@ -70,49 +98,96 @@ const Comments = () => {
     });
   };
 
+  if (commentLoading) {
+    return (
+      <div className="flex items-center justify-center h-1/2">
+        <MessageLoading />
+      </div>
+    );
+  }
+
+  if (commentError) {
+    return (
+      <div className="flex items-center justify-center h-1/2">
+        <p>A network error was encountered</p>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto p-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {comments.map((comment) => (
-          <Card key={comment.id} className="flex flex-col">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <div className="flex flex-col">
-                <h3 className="font-semibold text-sm">{comment.author.name}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {comment.author.username}
-                </p>
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => handleDeleteComment(comment.id)}
-              >
-                <Trash2 className="h-4 w-4 text-red-500" />
-              </Button>
-            </CardHeader>
-            <CardContent className="flex-1">
-              <p className="text-sm text-muted-foreground mb-2">
-                On article:{" "}
-                <span className="font-medium text-foreground">
-                  {comment.articleTitle}
-                </span>
-              </p>
-              <p className="text-sm">{comment.content}</p>
-            </CardContent>
-            <CardFooter className="pt-2">
-              <p className="text-xs text-muted-foreground">
-                {formatDate(comment.createdAt)}
-              </p>
-            </CardFooter>
-          </Card>
-        ))}
+      <div className="bg-white rounded-lg shadow overflow-hidden">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[200px]">Author</TableHead>
+              <TableHead className="w-[250px]">Article</TableHead>
+              <TableHead>Comment</TableHead>
+              <TableHead className="w-[180px]">Date</TableHead>
+              <TableHead className="w-[70px]"></TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {comments?.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={5} className="text-center py-8">
+                  No comments found
+                </TableCell>
+              </TableRow>
+            ) : (
+              comments?.map((comment) => (
+                <TableRow key={comment.id}>
+                  <TableCell>
+                    <div className="flex flex-col">
+                      <span className="font-medium">{comment.user.name}</span>
+                      <span className="text-sm text-muted-foreground">
+                        @{comment.user.username}
+                      </span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <span className="font-medium">{comment.post.title}</span>
+                  </TableCell>
+                  <TableCell>
+                    <p className="text-gray-700 line-clamp-2">
+                      {comment.content}
+                    </p>
+                  </TableCell>
+                  <TableCell>
+                    <span className="text-sm text-muted-foreground">
+                      {formatDate(comment.createdAt)}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <MoreVertical className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem
+                          onClick={() => handleViewComment(comment)}
+                        >
+                          <Eye className="mr-2 h-4 w-4" />
+                          <span>View</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => handleDeleteComment(comment.id)}
+                          className="text-red-600"
+                        >
+                          <Trash2 className="mr-2 h-4 w-4" />
+                          <span>Delete</span>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
       </div>
-
-      {comments.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-muted-foreground">No comments found.</p>
-        </div>
-      )}
     </div>
   );
 };

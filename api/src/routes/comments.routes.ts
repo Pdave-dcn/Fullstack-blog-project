@@ -1,12 +1,26 @@
 import express, { RequestHandler } from "express";
 import passport from "passport";
 import {
+  AuthorDeleteComment,
   createComment,
   deleteComment,
   editComment,
+  AuthorGetComments,
 } from "../controllers/comments.controller";
 
 const router = express.Router();
+
+router.get(
+  "/comments",
+  passport.authenticate("jwt", { session: false }),
+  AuthorGetComments as RequestHandler
+);
+
+router.delete(
+  "/comments/:commentId",
+  passport.authenticate("jwt", { session: false }),
+  AuthorDeleteComment as RequestHandler
+);
 
 router.post(
   "/posts/:postId/comments",

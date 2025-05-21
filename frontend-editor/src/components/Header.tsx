@@ -19,11 +19,7 @@ const getPageTitle = (pathname: string): string => {
 
 const Header = () => {
   const location = useLocation();
-  console.log("Location: ");
-  console.log(location);
   const title = getPageTitle(location.pathname);
-  console.log("Title: ");
-  console.log(title);
 
   return (
     <header className="sticky top-0 w-full bg-white border-b border-gray-200 py-4">

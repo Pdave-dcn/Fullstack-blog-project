@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "./use-auth";
 
 export const useDataFetching = <T>(API_BASE_URL: string, endpoint: string) => {
@@ -7,45 +7,52 @@ export const useDataFetching = <T>(API_BASE_URL: string, endpoint: string) => {
   const [loading, setLoading] = useState(true);
   const { token, isAuthenticated, logout } = useAuth();
 
-  useEffect(() => {
+  const fetchData = useCallback(async () => {
     if (!isAuthenticated || !token) {
       setLoading(false);
       return;
     }
 
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
+    setLoading(true);
 
-        if (response.status === 401) {
-          logout();
-          return;
-        }
+    try {
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
 
-        if (!response.ok) {
-          throw new Error(`Failed to fetch ${endpoint}`);
-        }
-
-        const result = await response.json();
-        setData(result);
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          setError(error.message);
-        }
-      } finally {
-        setLoading(false);
+      if (response.status === 401) {
+        logout();
+        return;
       }
-    };
 
+      if (!response.ok) {
+        throw new Error(`Failed to fetch ${endpoint}`);
+      }
+
+      const result = await response.json();
+      setData(result);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [API_BASE_URL, endpoint, token, isAuthenticated, logout]);
+
+  useEffect(() => {
     fetchData();
-  }, [endpoint, token, isAuthenticated, logout, API_BASE_URL]);
+  }, [fetchData]);
 
-  return { data, error, loading };
+  return {
+    data,
+    error,
+    loading,
+    refetch: fetchData,
+  };
 };
