@@ -16,7 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useDataFetching } from "@/hooks/use-dataFetching";
-import { MessageLoading } from "../ui/MessageLoading";
+import { MessageLoading } from "../components/ui/MessageLoading";
 import { useAuth } from "@/hooks/use-auth";
 import { useNavigate } from "react-router-dom";
 

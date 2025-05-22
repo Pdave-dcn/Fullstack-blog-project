@@ -3,13 +3,13 @@ import { SidebarProvider } from "./components/ui/sidebar";
 import { Toaster } from "sonner";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-import Login from "./components/pages/Login";
-import Dashboard from "./components/pages/Dashboard/Dashboard";
-import Comments from "./components/pages/Comments";
-import Articles from "./components/pages/Articles/Articles";
-import NewArticle from "./components/pages/NewArticle";
-import NotFound from "./components/pages/NotFound";
-import ArticleDetails from "./components/pages/ArticleDetails";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Comments from "./pages/Comments";
+import Articles from "./pages/Articles/Articles";
+import NewArticle from "./pages/NewArticle";
+import NotFound from "./pages/NotFound";
+import ArticleDetails from "./pages/ArticleDetails";
 
 const App = () => {
   return (

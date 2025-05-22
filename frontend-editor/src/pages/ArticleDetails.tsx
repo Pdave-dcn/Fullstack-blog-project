@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { MessageSquare } from "lucide-react";
 import { useDataFetching } from "@/hooks/use-dataFetching";
-import { MessageLoading } from "../ui/MessageLoading";
+import { MessageLoading } from "../components/ui/MessageLoading";
 import { handleDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 

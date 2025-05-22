@@ -1,7 +1,7 @@
 import { MessageSquare, FileText, FileCheck, FileX } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
-import { Button } from "../../ui/button";
+import { Button } from "../../components/ui/button";
 import StatCard from "./StatCard";
 import RecentArticle from "./RecentArticle";
 import {
