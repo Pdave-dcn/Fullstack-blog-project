@@ -4,37 +4,54 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Editor } from "@tinymce/tinymce-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/use-auth";
+import { toast } from "sonner";
+import type { Editor as TinyMCEEditor } from "tinymce";
 
 const ArticleEditorForm = () => {
   const [title, setTitle] = useState("");
-  const editorRef = useRef<any>(null);
+  const editorRef = useRef<TinyMCEEditor | null>(null);
   const navigate = useNavigate();
+  const { token } = useAuth();
 
   const handleSubmit = async (status: "draft" | "published") => {
+    if (!editorRef.current) return;
     const content = editorRef.current?.getContent();
 
     if (!title.trim() || !content.trim()) {
-      alert("Title and content are required.");
+      toast.warning("Title and content are required.");
       return;
     }
 
     const articleData = { title, content, status };
 
-    const response = await fetch("/api/posts", {
+    const response = await fetch("http://localhost:3000/api/posts", {
       method: "POST",
       headers: {
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify(articleData),
     });
 
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Server error:", errorData.message);
+      toast.error("Failed to create Article", {
+        description: errorData.message,
+      });
+
+      return;
+    }
+
     if (response.ok) {
-      alert(
+      toast.success(
         `Article ${status === "published" ? "published" : "saved as draft"}!`
       );
       navigate("/articles");
     } else {
-      alert("Something went wrong.");
+      toast.error("Something went wrong.");
     }
   };
 
@@ -56,9 +73,10 @@ const ArticleEditorForm = () => {
           <Label>Content</Label>
           <div className="h-full">
             <Editor
-              apiKey="no-api-key"
-              onInit={(evt, editor) => (editorRef.current = editor)}
-              initialValue="<p>Start writing your article here...</p>"
+              apiKey={import.meta.env.VITE_TINYMCE_API_KEY}
+              onInit={(evt, editor) => {
+                editorRef.current = editor;
+              }}
               init={{
                 height: "100%",
                 min_height: 500,

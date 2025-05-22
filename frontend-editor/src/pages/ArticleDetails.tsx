@@ -102,11 +102,9 @@ const ArticleDetails = () => {
         {/* Article content */}
         <Card className="mb-8">
           <CardContent className="prose prose-blue max-w-none pt-6">
-            {article.content.split("\n\n").map((paragraph, idx) => (
-              <p key={idx} className="mb-4">
-                {paragraph}
-              </p>
-            ))}
+            <CardContent className="prose prose-blue max-w-none pt-6">
+              <div dangerouslySetInnerHTML={{ __html: article.content }} />
+            </CardContent>
           </CardContent>
         </Card>
 
