@@ -1,8 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "./ui/sidebar";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, matchPath } from "react-router-dom";
+import { useDataFetching } from "@/hooks/use-dataFetching";
 
-const getPageTitle = (pathname: string): string => {
+interface Article {
+  title: string;
+}
+
+const getPageTitle = (pathname: string, articleTitle?: string): string => {
+  const articleMatch = matchPath("/articles/:id", pathname);
+
+  if (articleMatch) {
+    return articleTitle || "Article Details";
+  }
+
   switch (pathname) {
     case "/dashboard":
       return "Dashboard";
@@ -19,7 +30,14 @@ const getPageTitle = (pathname: string): string => {
 
 const Header = () => {
   const location = useLocation();
-  const title = getPageTitle(location.pathname);
+  const articleMatch = matchPath("/articles/:id", location.pathname);
+
+  const { data: article } = useDataFetching<Article>(
+    "http://localhost:3000/api",
+    articleMatch?.params.id ? `/posts/${articleMatch.params.id}` : ""
+  );
+
+  const title = getPageTitle(location.pathname, article?.title);
 
   return (
     <header className="sticky top-0 w-full bg-white border-b border-gray-200 py-4">
