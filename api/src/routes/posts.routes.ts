@@ -15,7 +15,12 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   getAllPosts as RequestHandler
 );
-router.get("/posts/:postId", getUniquePost as RequestHandler);
+
+router.get(
+  "/posts/:postId",
+  passport.authenticate("jwt", { session: false }),
+  getUniquePost as RequestHandler
+);
 
 router.post(
   "/posts",

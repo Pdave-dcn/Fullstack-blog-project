@@ -59,11 +59,6 @@ const Articles = () => {
           description: `Deleting "${article.title}"`,
         });
         break;
-      case "view":
-        toast.info("View Article", {
-          description: `Viewing "${article.title}"`,
-        });
-        break;
     }
   };
 
@@ -201,11 +196,14 @@ const Articles = () => {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem
-                          onClick={() => handleAction("view", article)}
-                        >
-                          <Eye className="mr-2 h-4 w-4" />
-                          <span>View</span>
+                        <DropdownMenuItem asChild>
+                          <Link
+                            to={`/articles/${article.id}`}
+                            className="flex items-center cursor-pointer"
+                          >
+                            <Eye className="mr-2 h-4 w-4" />
+                            <span>View</span>
+                          </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => handleAction("edit", article)}

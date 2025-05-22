@@ -31,7 +31,9 @@ export const useDataFetching = <T>(API_BASE_URL: string, endpoint: string) => {
       }
 
       if (!response.ok) {
-        throw new Error(`Failed to fetch ${endpoint}`);
+        const errorData = await response.json();
+        console.error("Server error:", errorData.message);
+        return;
       }
 
       const result = await response.json();

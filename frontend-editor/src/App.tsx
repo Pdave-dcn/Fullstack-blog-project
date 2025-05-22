@@ -9,6 +9,7 @@ import Comments from "./components/pages/Comments";
 import Articles from "./components/pages/Articles/Articles";
 import NewArticle from "./components/pages/NewArticle";
 import NotFound from "./components/pages/NotFound";
+import ArticleDetails from "./components/pages/ArticleDetails";
 
 const App = () => {
   return (
@@ -33,6 +34,14 @@ const App = () => {
                   element={
                     <ProtectedRoute>
                       <Articles />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/articles/:id"
+                  element={
+                    <ProtectedRoute>
+                      <ArticleDetails />
                     </ProtectedRoute>
                   }
                 />

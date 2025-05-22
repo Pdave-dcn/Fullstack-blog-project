@@ -18,11 +18,13 @@ import { toast } from "sonner";
 import { useDataFetching } from "@/hooks/use-dataFetching";
 import { MessageLoading } from "../ui/MessageLoading";
 import { useAuth } from "@/hooks/use-auth";
+import { useNavigate } from "react-router-dom";
 
 interface Comment {
   id: number;
   content: string;
   post: {
+    id: number;
     title: string;
   };
   user: {
@@ -40,6 +42,7 @@ const Comments = () => {
     loading: commentLoading,
     refetch,
   } = useDataFetching<Comment[]>("http://localhost:3000/api", "/comments");
+  const navigate = useNavigate();
 
   const handleDeleteComment = (commentId: number) => {
     toast.warning("Delete Comment", {
@@ -81,11 +84,8 @@ const Comments = () => {
     });
   };
 
-  const handleViewComment = (comment: Comment) => {
-    toast.info("View Comment", {
-      description: `Viewing comment on "${comment.post.title}"`,
-    });
-    // Navigation logic here
+  const handleViewComment = (id: number) => {
+    navigate(`/articles/${id}`);
   };
 
   const formatDate = (dateString: string) => {
@@ -167,7 +167,7 @@ const Comments = () => {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem
-                          onClick={() => handleViewComment(comment)}
+                          onClick={() => handleViewComment(comment.post.id)}
                         >
                           <Eye className="mr-2 h-4 w-4" />
                           <span>View</span>

@@ -20,6 +20,7 @@ export const AuthorGetComments = async (req: Request, res: Response) => {
         content: true,
         post: {
           select: {
+            id: true,
             title: true,
           },
         },

@@ -7,6 +7,7 @@ import {
   ChevronUp,
   BookText,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import {
   Sidebar,
@@ -34,22 +35,22 @@ import { useNavigate } from "react-router-dom";
 const items = [
   {
     title: "Dashboard",
-    url: "dashboard",
+    url: "/dashboard",
     icon: LayoutDashboard,
   },
   {
     title: "Articles",
-    url: "articles",
+    url: "/articles",
     icon: Newspaper,
   },
   {
     title: "New Article",
-    url: "new-article",
+    url: "/new-article",
     icon: FilePlus,
   },
   {
     title: "Comments",
-    url: "comments",
+    url: "/comments",
     icon: MessageSquareMore,
   },
 ];
@@ -75,10 +76,10 @@ function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href={header.url}>
+              <Link to="/dashboard">
                 <header.icon />
                 <span>{header.title}</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -92,10 +93,10 @@ function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link to={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
