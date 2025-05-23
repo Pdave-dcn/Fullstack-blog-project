@@ -2,6 +2,7 @@ import { Search, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { type Article } from "./Articles";
+import { Input } from "@/components/ui/input";
 
 interface Toolbar {
   filter: string;
@@ -24,12 +25,12 @@ const Toolbar = ({
     <div className="mb-6 flex flex-col sm:flex-row justify-between gap-4">
       <div className="relative max-w-md w-full">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <Search size={18} className="text-gray-400" />
+          <Search size={18} />
         </div>
-        <input
+        <Input
           type="text"
           placeholder="Search articles..."
-          className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="pl-10 pr-4 py-2 w-full"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
@@ -37,41 +38,16 @@ const Toolbar = ({
 
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative">
-          <Button variant="outline" className="flex items-center">
+          <Button
+            variant="outline"
+            className="flex items-center pointer-events-none"
+          >
             <Filter size={16} className="mr-2" />
             Filter
-            <span className="ml-2 px-1.5 py-0.5 text-xs rounded-full bg-blue-100 text-blue-800">
+            <span className="ml-2 px-1.5 py-0.5 text-xs rounded-full bg-primary text-secondary">
               {filter === "all" ? articles?.length : filteredArticles?.length}
             </span>
           </Button>
-          <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 z-10 hidden group-focus-within:block">
-            <ul className="py-1">
-              <li>
-                <button
-                  className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={() => setFilter("all")}
-                >
-                  All
-                </button>
-              </li>
-              <li>
-                <button
-                  className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={() => setFilter("published")}
-                >
-                  Published
-                </button>
-              </li>
-              <li>
-                <button
-                  className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={() => setFilter("draft")}
-                >
-                  Drafts
-                </button>
-              </li>
-            </ul>
-          </div>
         </div>
 
         <div className="flex space-x-3">

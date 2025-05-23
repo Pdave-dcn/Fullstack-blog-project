@@ -116,9 +116,9 @@ const Comments = () => {
 
   return (
     <div className="container mx-auto p-6">
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="bg-background rounded-lg shadow overflow-hidden">
         <Table>
-          <TableHeader>
+          <TableHeader className="pointer-events-none bg-accent">
             <TableRow>
               <TableHead className="w-[200px]">Author</TableHead>
               <TableHead className="w-[250px]">Article</TableHead>
@@ -146,10 +146,12 @@ const Comments = () => {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <span className="font-medium">{comment.post.title}</span>
+                    <span className="font-medium text-muted-foreground">
+                      {comment.post.title}
+                    </span>
                   </TableCell>
                   <TableCell>
-                    <p className="text-gray-700 line-clamp-2">
+                    <p className="text-foreground line-clamp-2">
                       {comment.content}
                     </p>
                   </TableCell>

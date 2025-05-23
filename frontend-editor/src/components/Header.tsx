@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "./ui/sidebar";
 import { Link, useLocation, matchPath } from "react-router-dom";
 import { useDataFetching } from "@/hooks/use-dataFetching";
+import { ModeToggle } from "./ModeToggle";
 
 interface Article {
   title: string;
@@ -43,14 +44,15 @@ const Header = () => {
   const title = getPageTitle(location.pathname, article?.title);
 
   return (
-    <header className="sticky top-0 w-full bg-white border-b border-gray-200 py-4">
+    <header className="sticky top-0 w-full bg-background border-b border-muted-foreground py-4">
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-5">
             <SidebarTrigger />
-            <h1 className="text-2xl font-semibold text-gray-800">{title}</h1>
+            <h1 className="text-2xl font-semibold text-foreground">{title}</h1>
           </div>
           <div className="flex items-center space-x-4">
+            <ModeToggle />
             <Button variant="outline" asChild>
               <Link to="/new-article">New Article</Link>
             </Button>

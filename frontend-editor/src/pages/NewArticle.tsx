@@ -65,7 +65,7 @@ const NewArticle = () => {
             placeholder="Enter your article title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-md"
+            className=""
           />
         </div>
 
@@ -106,7 +106,7 @@ const NewArticle = () => {
                   "alignleft aligncenter alignright alignjustify | " +
                   "bullist numlist outdent indent | removeformat | help",
                 content_style:
-                  "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                  "body { font-family:Helvetica,Arial,sans-serif; font-size:14px; background-color: #F8F8F8; }",
                 resize: false,
                 autoresize_bottom_margin: 0,
               }}
@@ -114,7 +114,7 @@ const NewArticle = () => {
           </div>
         </div>
 
-        <div className="sticky bottom-0 flex justify-end space-x-4 pt-4 bg-white border-t">
+        <div className="sticky bottom-2 flex justify-end space-x-4 pt-4 bg-background border-t">
           <Button variant="outline" onClick={() => navigate(-1)}>
             Cancel
           </Button>

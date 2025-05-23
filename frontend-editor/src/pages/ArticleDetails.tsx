@@ -87,7 +87,7 @@ const ArticleDetails = () => {
             {article?.title}
           </h1>
           <div className="flex items-center justify-between mt-3">
-            <div className="flex items-center text-sm text-gray-500">
+            <div className="flex items-center text-sm text-muted-foreground">
               <span className="mx-2">•</span>
               <span>{handleDate(article.createdAt)}</span>
             </div>
@@ -109,7 +109,7 @@ const ArticleDetails = () => {
         </Card>
 
         {/* Comments section */}
-        <div className="mt-10">
+        <div className="mt-10 mb-2">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-semibold flex items-center">
               <MessageSquare className="mr-2 h-5 w-5" />
@@ -124,20 +124,20 @@ const ArticleDetails = () => {
           ) : (
             <div className="space-y-6">
               {article.comments.map((comment) => (
-                <Card key={comment.id} className="bg-gray-50">
+                <Card key={comment.id} className="bg-background">
                   <CardContent className="pt-6">
                     <div className="flex justify-between mb-2">
                       <div>
                         <h4 className="font-medium">{comment.user.name}</h4>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-muted-foreground">
                           @{comment.user.username}
                         </p>
                       </div>
-                      <span className="text-sm text-gray-500">
+                      <span className="text-sm text-muted-foreground">
                         {handleDate(comment.createdAt)}
                       </span>
                     </div>
-                    <p className="text-gray-700 mt-2">{comment.content}</p>
+                    <p className="mt-2">{comment.content}</p>
                   </CardContent>
                 </Card>
               ))}

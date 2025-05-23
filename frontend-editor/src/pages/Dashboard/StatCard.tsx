@@ -17,21 +17,8 @@ const StatCard = ({
             <p className="text-sm font-medium text-muted-foreground">{title}</p>
             <h4 className="text-2xl font-bold mt-1">{value}</h4>
           </div>
-          <div className="p-2 bg-blue-50 rounded-md">{icon}</div>
+          <div className="p-2 bg-accent rounded-md">{icon}</div>
         </div>
-        {/* <div
-          className={`mt-4 text-xs flex items-center ${
-            trend === "up"
-              ? "text-green-600"
-              : trend === "down"
-              ? "text-red-600"
-              : "text-gray-600"
-          }`}
-        >
-          {trend === "up" && "↑"}
-          {trend === "down" && "↓"}
-          {trendValue} from last month
-        </div> */}
       </CardContent>
     </Card>
   );

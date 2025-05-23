@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -65,11 +64,15 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="w-full max-w-md px-4">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-blue-600">Editor Dashboard</h1>
-          <p className="text-gray-500 mt-2">Sign in to manage your content</p>
+          <h1 className="text-3xl font-bold text-foreground">
+            Editor Dashboard
+          </h1>
+          <p className="text-muted-foreground mt-2">
+            Sign in to manage your content
+          </p>
         </div>
 
         <Card>
@@ -85,7 +88,7 @@ const Login = () => {
                 <Label htmlFor="username">Username</Label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <User size={18} className="text-gray-400" />
+                    <User size={18} />
                   </div>
                   <Input
                     id="username"
@@ -103,7 +106,7 @@ const Login = () => {
                 <Label htmlFor="password">Password</Label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Lock size={18} className="text-gray-400" />
+                    <Lock size={18} />
                   </div>
                   <Input
                     id="password"
@@ -115,14 +118,13 @@ const Login = () => {
                     required
                   />
                 </div>
+                <div>
+                  <Button type="submit" className="w-full" disabled={isLoading}>
+                    {isLoading ? "Signing in..." : "Sign In"}
+                  </Button>
+                </div>
               </div>
             </CardContent>
-
-            <CardFooter>
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Signing in..." : "Sign In"}
-              </Button>
-            </CardFooter>
           </form>
         </Card>
       </div>

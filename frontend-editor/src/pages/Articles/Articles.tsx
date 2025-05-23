@@ -118,9 +118,9 @@ const Articles = () => {
         filteredArticles={filteredArticles}
       />
 
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="bg-background rounded-lg shadow overflow-hidden">
         <Table>
-          <TableHeader>
+          <TableHeader className="pointer-events-none bg-accent">
             <TableRow>
               <TableHead className="w-[400px]">Title</TableHead>
               <TableHead>Status</TableHead>
@@ -144,8 +144,8 @@ const Articles = () => {
                     <span
                       className={`px-2 py-1 text-xs rounded-full ${
                         article.status === "published"
-                          ? "bg-green-100 text-green-800"
-                          : "bg-gray-100 text-gray-800"
+                          ? "bg-primary text-secondary"
+                          : "bg-accent text-foreground"
                       }`}
                     >
                       {article.status === "published" ? "Published" : "Draft"}

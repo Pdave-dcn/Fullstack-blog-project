@@ -14,7 +14,7 @@ import { handleDate } from "@/lib/utils";
 import { useAuth } from "@/hooks/use-auth";
 
 const Dashboard = () => {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated } = useAuth();
   const { stats, errorStats, loadingStats } = useDashboardStats();
   const { articles, errorArticles, loadingArticles } = useRecentArticles();
   const { comments, errorComments, loadingComments } = useRecentComments();
@@ -23,22 +23,22 @@ const Dashboard = () => {
     {
       title: "Articles",
       value: `${stats?.totalPosts ?? 0}`,
-      icon: <FileText size={20} className="text-blue-600" />,
+      icon: <FileText size={20} />,
     },
     {
       title: "Published Articles",
       value: `${stats?.publishedPosts ?? 0}`,
-      icon: <FileCheck size={20} className="text-blue-600" />,
+      icon: <FileCheck size={20} />,
     },
     {
       title: "Draft Articles",
       value: `${stats?.draftPosts ?? 0}`,
-      icon: <FileX size={20} className="text-blue-600" />,
+      icon: <FileX size={20} />,
     },
     {
       title: "Comments",
       value: `${stats?.totalComments ?? 0}`,
-      icon: <MessageSquare size={20} className="text-blue-600" />,
+      icon: <MessageSquare size={20} />,
     },
   ];
 
@@ -68,8 +68,6 @@ const Dashboard = () => {
 
   return (
     <div className="container mx-auto px-6 py-8 w-full">
-      <h1 className="text-2xl font-bold mb-6">Welcome, {user?.username}</h1>
-
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 w-full">
         {statsCategories.map((stat, i) => (
           <StatCard key={i} {...stat} />
