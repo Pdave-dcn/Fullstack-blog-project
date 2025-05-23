@@ -8,7 +8,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
 import type { Editor as TinyMCEEditor } from "tinymce";
 
-const ArticleEditorForm = () => {
+const NewArticle = () => {
   const [title, setTitle] = useState("");
   const editorRef = useRef<TinyMCEEditor | null>(null);
   const navigate = useNavigate();
@@ -128,4 +128,4 @@ const ArticleEditorForm = () => {
   );
 };
 
-export default ArticleEditorForm;
+export default NewArticle;

@@ -21,6 +21,7 @@ import { useDataFetching } from "@/hooks/use-dataFetching";
 import { MessageLoading } from "../../components/ui/MessageLoading";
 import { handleDate } from "@/lib/utils";
 import Toolbar from "./Toolbar";
+import { useAuth } from "@/hooks/use-auth";
 
 export interface Article {
   id: number;
@@ -33,11 +34,13 @@ export interface Article {
 const Articles = () => {
   const [filter, setFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const { token } = useAuth();
 
   const {
     data: articles,
     error: articleError,
     loading: articleLoading,
+    refetch,
   } = useDataFetching<Article[]>("http://localhost:3000/api", "/posts");
 
   const filteredArticles = articles?.filter((article) => {
@@ -48,19 +51,44 @@ const Articles = () => {
     return matchesFilter && matchesSearch;
   });
 
-  const handleAction = (action: string, article: Article) => {
-    switch (action) {
-      case "edit":
-        toast.info("Edit Article", {
-          description: `Editing "${article.title}"`,
-        });
-        break;
-      case "delete":
-        toast.warning("Delete Article", {
-          description: `Deleting "${article.title}"`,
-        });
-        break;
-    }
+  const handleDeleteArticle = (articleId: number) => {
+    toast.warning("Delete Comment", {
+      description: "Are you sure you want to delete this article?",
+      action: {
+        label: "Delete",
+        onClick: async () => {
+          try {
+            const res = await fetch(
+              `http://localhost:3000/api/posts/${articleId}`,
+              {
+                method: "DELETE",
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  "Content-Type": "application/json",
+                },
+                credentials: "include",
+              }
+            );
+            if (!res.ok) {
+              const errorData = await res.json();
+              console.error("Server error:", errorData.message);
+              toast.error("Failed to delete article", {
+                description: errorData.message,
+              });
+              return;
+            }
+
+            toast.success(`Article deleted successfully`);
+            refetch();
+          } catch (error) {
+            console.error("Network error:", error);
+            toast.error("Network error", {
+              description: "Could not connect to the server.",
+            });
+          }
+        },
+      },
+    });
   };
 
   if (articleLoading) {
@@ -144,14 +172,17 @@ const Articles = () => {
                             <span>View</span>
                           </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() => handleAction("edit", article)}
-                        >
-                          <Edit className="mr-2 h-4 w-4" />
-                          <span>Edit</span>
+                        <DropdownMenuItem asChild>
+                          <Link
+                            to={`/articles/${article.id}/edit`}
+                            className="flex items-center cursor-pointer"
+                          >
+                            <Edit className="mr-2 h-4 w-4" />
+                            <span>Edit</span>
+                          </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                          onClick={() => handleAction("delete", article)}
+                          onClick={() => handleDeleteArticle(article.id)}
                         >
                           <Trash2 className="mr-2 h-4 w-4" />
                           <span>Delete</span>

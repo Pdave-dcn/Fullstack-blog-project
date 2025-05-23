@@ -10,6 +10,7 @@ import Articles from "./pages/Articles/Articles";
 import NewArticle from "./pages/NewArticle";
 import NotFound from "./pages/NotFound";
 import ArticleDetails from "./pages/ArticleDetails";
+import ArticleEdit from "./pages/ArticleEdit";
 
 const App = () => {
   return (
@@ -42,6 +43,14 @@ const App = () => {
                   element={
                     <ProtectedRoute>
                       <ArticleDetails />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/articles/:id/edit"
+                  element={
+                    <ProtectedRoute>
+                      <ArticleEdit />
                     </ProtectedRoute>
                   }
                 />

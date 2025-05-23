@@ -9,10 +9,13 @@ interface Article {
 
 const getPageTitle = (pathname: string, articleTitle?: string): string => {
   const articleMatch = matchPath("/articles/:id", pathname);
+  const editPageMatch = matchPath("/articles/:id/edit", pathname);
 
   if (articleMatch) {
     return articleTitle || "Article Details";
   }
+
+  if (editPageMatch) return "Edit Article";
 
   switch (pathname) {
     case "/dashboard":
