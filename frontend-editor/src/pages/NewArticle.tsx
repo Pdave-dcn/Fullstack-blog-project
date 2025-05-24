@@ -25,33 +25,39 @@ const NewArticle = () => {
 
     const articleData = { title, content, status };
 
-    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/post`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(articleData),
-    });
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/post`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(articleData),
+        }
+      );
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error("Server error:", errorData.message);
-      toast.error("Failed to create Article", {
-        description: errorData.message,
-      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Server error:", errorData.message);
+        toast.error("Failed to create Article", {
+          description: errorData.message,
+        });
 
-      return;
-    }
+        return;
+      }
 
-    if (response.ok) {
       toast.success(
         `Article ${status === "published" ? "published" : "saved as draft"}!`
       );
       navigate("/articles");
-    } else {
-      toast.error("Something went wrong.");
+    } catch (error) {
+      console.error("Network error:", error);
+      toast.error("Network error", {
+        description: "Could not connect to the server.",
+      });
     }
   };
 

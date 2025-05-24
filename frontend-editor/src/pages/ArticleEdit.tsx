@@ -60,26 +60,33 @@ const ArticleEdit = () => {
 
     const articleData = { title, content };
 
-    const response = await fetch(
-      `${import.meta.env.VITE_API_BASE_URL}/posts/${id}`,
-      {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(articleData),
-      }
-    );
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/posts/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(articleData),
+        }
+      );
 
-    if (response.ok) {
-      toast.success("Article updated successfully!");
-      navigate("/articles");
-    } else {
-      const errorData = await response.json();
-      toast.error("Failed to update article", {
-        description: errorData.message,
+      if (response.ok) {
+        toast.success("Article updated successfully!");
+        navigate("/articles");
+      } else {
+        const errorData = await response.json();
+        toast.error("Failed to update article", {
+          description: errorData.message,
+        });
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+      toast.error("Network error", {
+        description: "Could not connect to the server.",
       });
     }
   };
