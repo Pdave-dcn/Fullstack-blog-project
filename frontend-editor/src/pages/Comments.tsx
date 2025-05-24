@@ -176,7 +176,6 @@ const Comments = () => {
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => handleDeleteComment(comment.id)}
-                          className="text-red-600"
                         >
                           <Trash2 className="mr-2 h-4 w-4" />
                           <span>Delete</span>

@@ -54,7 +54,7 @@ const Login = () => {
       });
       navigate("/dashboard");
     } catch (error: unknown) {
-      toast.warning("Login failed", {
+      toast.error("Login failed", {
         description:
           error instanceof Error ? error.message : "Something went wrong",
       });
