@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MoreVertical, Edit, Trash2, Eye } from "lucide-react";
+import { MoreVertical, Edit, Trash2, Eye, Send, Archive } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -94,6 +94,52 @@ const Articles = () => {
     });
   };
 
+  const handlePublishStatus = async (
+    articleId: number,
+    newStatus: "published" | "draft"
+  ) => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/posts/${articleId}`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ status: newStatus }),
+        }
+      );
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        console.error("Server error:", errorData.message);
+        toast.error(
+          `Failed to ${
+            newStatus === "published" ? "publish" : "unpublish"
+          } article`,
+          {
+            description: errorData.message,
+          }
+        );
+        return;
+      }
+
+      toast.success(
+        `Article ${
+          newStatus === "published" ? "published" : "unpublished"
+        } successfully`
+      );
+      refetch();
+    } catch (error) {
+      console.error("Network error:", error);
+      toast.error("Network error", {
+        description: "Could not connect to the server.",
+      });
+    }
+  };
+
   if (articleLoading) {
     return (
       <div className="flex items-center justify-center h-1/2">
@@ -183,6 +229,26 @@ const Articles = () => {
                             <Edit className="mr-2 h-4 w-4" />
                             <span>Edit</span>
                           </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() =>
+                            handlePublishStatus(
+                              article.id,
+                              article.status === "draft" ? "published" : "draft"
+                            )
+                          }
+                        >
+                          {article.status === "draft" ? (
+                            <>
+                              <Send className="mr-2 h-4 w-4" />
+                              <span>Publish</span>
+                            </>
+                          ) : (
+                            <>
+                              <Archive className="mr-2 h-4 w-4" />
+                              <span>Unpublish</span>
+                            </>
+                          )}
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => handleDeleteArticle(article.id)}

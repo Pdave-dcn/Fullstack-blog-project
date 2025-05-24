@@ -5,6 +5,7 @@ import {
   editPost,
   getAllPosts,
   getUniquePost,
+  updatePostStatus,
 } from "../controllers/posts.controller";
 import passport from "passport";
 
@@ -32,6 +33,12 @@ router.put(
   "/posts/:postId",
   passport.authenticate("jwt", { session: false }),
   editPost as RequestHandler
+);
+
+router.patch(
+  "/posts/:postId",
+  passport.authenticate("jwt", { session: false }),
+  updatePostStatus as RequestHandler
 );
 
 router.delete(

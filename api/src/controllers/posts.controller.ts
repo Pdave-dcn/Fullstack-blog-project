@@ -141,3 +141,39 @@ export const deletePost = async (req: Request, res: Response) => {
     handleServerError("Error deleting post", error, res);
   }
 };
+
+export const updatePostStatus = async (req: Request, res: Response) => {
+  try {
+    const user = req.user as User;
+    if (user.role !== "author") {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    const postId = getValidatedPostId(req, res);
+    if (!postId) return;
+
+    const { status } = req.body;
+    if (!Object.values(PostStatus).includes(status)) {
+      return res.status(400).json({ message: "Invalid status value" });
+    }
+
+    const isExisting = await prisma.post.findUnique({
+      where: { id: postId },
+    });
+
+    if (!isExisting) return res.status(404).json({ message: "Post not found" });
+
+    await prisma.post.update({
+      where: { id: postId },
+      data: {
+        status: status,
+      },
+    });
+
+    return res.status(200).json({
+      message: "Post status updated successfully",
+    });
+  } catch (error) {
+    handleServerError("Error updating post status", error, res);
+  }
+};

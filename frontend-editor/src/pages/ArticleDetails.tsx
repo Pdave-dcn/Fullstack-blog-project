@@ -123,7 +123,7 @@ const ArticleDetails = () => {
           <Separator className="mb-6" />
 
           {article.comments.length === 0 ? (
-            <p className="text-center text-gray-500 py-4">No comments yet</p>
+            <p className="text-center py-4">No comments yet</p>
           ) : (
             <div className="space-y-6">
               {article.comments.map((comment) => (
