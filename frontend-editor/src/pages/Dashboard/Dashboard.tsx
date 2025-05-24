@@ -1,4 +1,4 @@
-import { MessageSquare, FileText, FileCheck, FileX } from "lucide-react";
+import { MessageSquare, Archive, Send, Newspaper } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { Button } from "../../components/ui/button";
@@ -23,17 +23,17 @@ const Dashboard = () => {
     {
       title: "Articles",
       value: `${stats?.totalPosts ?? 0}`,
-      icon: <FileText size={20} />,
+      icon: <Newspaper size={20} />,
     },
     {
       title: "Published Articles",
       value: `${stats?.publishedPosts ?? 0}`,
-      icon: <FileCheck size={20} />,
+      icon: <Send size={20} />,
     },
     {
       title: "Draft Articles",
       value: `${stats?.draftPosts ?? 0}`,
-      icon: <FileX size={20} />,
+      icon: <Archive size={20} />,
     },
     {
       title: "Comments",
@@ -86,9 +86,7 @@ const Dashboard = () => {
                   <RecentArticle key={i} {...article} />
                 ))
               ) : (
-                <p className="text-sm text-muted-foreground">
-                  No recent articles
-                </p>
+                <p className="text-sm">No recent articles</p>
               )}
             </div>
             <Button className="w-full mt-4" variant="outline">
@@ -130,9 +128,7 @@ const Dashboard = () => {
                   </div>
                 ))
               ) : (
-                <p className="text-sm text-muted-foreground">
-                  No recent comments
-                </p>
+                <p className="text-sm">No recent comments</p>
               )}
             </div>
             <Button className="w-full mt-4" variant="outline">
