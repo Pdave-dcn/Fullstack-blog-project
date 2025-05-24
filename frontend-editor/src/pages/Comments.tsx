@@ -41,7 +41,10 @@ const Comments = () => {
     error: commentError,
     loading: commentLoading,
     refetch,
-  } = useDataFetching<Comment[]>("http://localhost:3000/api", "/comments");
+  } = useDataFetching<Comment[]>(
+    `${import.meta.env.VITE_API_BASE_URL}`,
+    "/comments"
+  );
   const navigate = useNavigate();
 
   const handleDeleteComment = (commentId: number) => {
@@ -52,7 +55,7 @@ const Comments = () => {
         onClick: async () => {
           try {
             const res = await fetch(
-              `http://localhost:3000/api/comments/${commentId}`,
+              `${import.meta.env.VITE_API_BASE_URL}/comments/${commentId}`,
               {
                 method: "DELETE",
                 headers: {

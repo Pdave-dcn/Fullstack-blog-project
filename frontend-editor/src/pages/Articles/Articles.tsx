@@ -41,7 +41,10 @@ const Articles = () => {
     error: articleError,
     loading: articleLoading,
     refetch,
-  } = useDataFetching<Article[]>("http://localhost:3000/api", "/posts");
+  } = useDataFetching<Article[]>(
+    `${import.meta.env.VITE_API_BASE_URL}`,
+    "/posts"
+  );
 
   const filteredArticles = articles?.filter((article) => {
     const matchesFilter = filter === "all" || article.status === filter;
@@ -59,7 +62,7 @@ const Articles = () => {
         onClick: async () => {
           try {
             const res = await fetch(
-              `http://localhost:3000/api/posts/${articleId}`,
+              `${import.meta.env.VITE_API_BASE_URL}/posts/${articleId}`,
               {
                 method: "DELETE",
                 headers: {

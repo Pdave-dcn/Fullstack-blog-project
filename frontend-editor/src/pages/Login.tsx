@@ -26,14 +26,17 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:3000/api/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-        mode: "cors",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/users/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password }),
+          mode: "cors",
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Invalid credentials");

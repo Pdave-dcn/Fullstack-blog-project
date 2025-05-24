@@ -34,7 +34,10 @@ const ArticleDetails = () => {
     data: article,
     error: articleError,
     loading: articleLoading,
-  } = useDataFetching<Article>("http://localhost:3000/api", `/posts/${id}`);
+  } = useDataFetching<Article>(
+    `${import.meta.env.VITE_API_BASE_URL}`,
+    `/posts/${id}`
+  );
 
   const handleNavigation = (path: string) => {
     navigate(`/${path}`);

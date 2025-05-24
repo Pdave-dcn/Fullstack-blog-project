@@ -57,15 +57,18 @@ const ArticleEdit = () => {
 
     const articleData = { title, content };
 
-    const response = await fetch(`http://localhost:3000/api/posts/${id}`, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(articleData),
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/posts/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(articleData),
+      }
+    );
 
     if (response.ok) {
       toast.success("Article updated successfully!");
@@ -90,10 +93,8 @@ const ArticleEdit = () => {
     return (
       <div title="Article Not Found">
         <div className="flex flex-col items-center justify-center h-full">
-          <h2 className="text-2xl font-semibold text-gray-700">
-            Article not found
-          </h2>
-          <p className="text-gray-500 mt-2">
+          <h2 className="text-2xl font-semibold">Article not found</h2>
+          <p className="mt-2">
             The article you're looking for doesn't exist or has been removed.
           </p>
           <Button
