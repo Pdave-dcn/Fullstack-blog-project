@@ -37,7 +37,7 @@ const Header = () => {
   const articleMatch = matchPath("/articles/:id", location.pathname);
 
   const { data: article } = useDataFetching<Article>(
-    "http://localhost:3000/api",
+    `${import.meta.env.VITE_API_BASE_URL}`,
     articleMatch?.params.id ? `/posts/${articleMatch.params.id}` : ""
   );
 

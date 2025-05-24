@@ -115,7 +115,7 @@ const NewArticle = () => {
         </div>
 
         <div className="sticky bottom-2 flex justify-end space-x-4 pt-4 bg-background border-t">
-          <Button variant="outline" onClick={() => navigate(-1)}>
+          <Button variant="outline" onClick={() => navigate("/dashboard")}>
             Cancel
           </Button>
           <Button variant="secondary" onClick={() => handleSubmit("draft")}>

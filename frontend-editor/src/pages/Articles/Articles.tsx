@@ -22,6 +22,7 @@ import { MessageLoading } from "../../components/ui/MessageLoading";
 import { handleDate } from "@/lib/utils";
 import Toolbar from "./Toolbar";
 import { useAuth } from "@/hooks/use-auth";
+import { useNavigate } from "react-router-dom";
 
 export interface Article {
   id: number;
@@ -35,6 +36,7 @@ const Articles = () => {
   const [filter, setFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const { token } = useAuth();
+  const navigate = useNavigate();
 
   const {
     data: articles,
@@ -187,7 +189,13 @@ const Articles = () => {
               </TableRow>
             ) : (
               filteredArticles?.map((article) => (
-                <TableRow key={article.id}>
+                <TableRow
+                  key={article.id}
+                  onClick={() => {
+                    navigate(`/articles/${article.id}`);
+                  }}
+                  className="cursor-pointer"
+                >
                   <TableCell className="font-medium">{article.title}</TableCell>
                   <TableCell>
                     <span
