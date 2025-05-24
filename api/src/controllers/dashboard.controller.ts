@@ -58,7 +58,7 @@ export const getRecentComments = async (req: Request, res: Response) => {
 
     const recentComments = await prisma.comment.findMany({
       orderBy: { createdAt: "desc" },
-      take: 3,
+      take: 2,
       select: {
         id: true,
         content: true,

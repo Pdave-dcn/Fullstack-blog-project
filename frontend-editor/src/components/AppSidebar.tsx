@@ -5,7 +5,7 @@ import {
   Newspaper,
   User,
   ChevronUp,
-  BookText,
+  Feather,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -65,9 +65,9 @@ function AppSidebar() {
   };
 
   const header = {
-    title: "The perfect blog",
+    title: "The Editorium",
     url: "#",
-    icon: BookText,
+    icon: Feather,
   };
 
   return (
@@ -78,7 +78,7 @@ function AppSidebar() {
             <SidebarMenuButton asChild>
               <Link to="/dashboard">
                 <header.icon />
-                <span>{header.title}</span>
+                <span className="font-medium">{header.title}</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
