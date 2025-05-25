@@ -5,7 +5,11 @@ import { Badge } from "@/components/ui/badge";
 import { MessageSquare, Send } from "lucide-react";
 import { useDataFetching } from "@/hooks/use-dataFetching";
 import { MessageLoading } from "../../components/ui/MessageLoading";
-import { handleDate } from "@/lib/utils";
+import {
+  handleApiResponseError,
+  handleDate,
+  handleNetworkError,
+} from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
@@ -85,21 +89,13 @@ const ArticleDetails = () => {
               }
             );
             if (!res.ok) {
-              const errorData = await res.json();
-              console.error("Server error:", errorData.message);
-              toast.error("Failed to delete comment", {
-                description: errorData.message,
-              });
-              return;
+              handleApiResponseError(res, "Failed to delete comment");
             }
 
             toast.success(`Comment deleted successfully`);
             refetch();
           } catch (error) {
-            console.error("Network error:", error);
-            toast.error("Network error", {
-              description: "Could not connect to the server.",
-            });
+            handleNetworkError(error);
           }
         },
       },
@@ -129,22 +125,14 @@ const ArticleDetails = () => {
       );
 
       if (!res.ok) {
-        const errorData = await res.json();
-        console.error("Server error:", errorData.message);
-        toast.error("Failed to create reply", {
-          description: errorData.message,
-        });
-        return;
+        handleApiResponseError(res, "Failed to create reply");
       }
 
       setReplyContent("");
       setReplyingTo(null);
       refetch();
     } catch (error) {
-      console.error("Error posting reply:", error);
-      toast.error("Network error", {
-        description: "Failed to post reply",
-      });
+      handleNetworkError(error);
     }
   };
 
@@ -165,21 +153,13 @@ const ArticleDetails = () => {
       );
 
       if (!res.ok) {
-        const errorData = await res.json();
-        console.error("Server error:", errorData.message);
-        toast.error("Failed to create comment", {
-          description: errorData.message,
-        });
-        return;
+        handleApiResponseError(res, "Failed to create comment");
       }
 
       setMainComment("");
       refetch();
     } catch (error) {
-      console.error("Error posting comment:", error);
-      toast.error("Network error", {
-        description: "Failed to post comment",
-      });
+      handleNetworkError(error);
     }
   };
 

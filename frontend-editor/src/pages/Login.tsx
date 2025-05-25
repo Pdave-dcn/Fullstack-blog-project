@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Lock, User } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
+import { handleApiResponseError } from "@/lib/utils";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -39,7 +40,7 @@ const Login = () => {
       );
 
       if (!response.ok) {
-        throw new Error("Invalid credentials");
+        handleApiResponseError(response, "Invalid credentials");
       }
 
       const { token, user } = await response.json();

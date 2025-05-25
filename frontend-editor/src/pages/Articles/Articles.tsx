@@ -19,7 +19,11 @@ import {
 import { toast } from "sonner";
 import { useDataFetching } from "@/hooks/use-dataFetching";
 import { MessageLoading } from "../../components/ui/MessageLoading";
-import { handleDate } from "@/lib/utils";
+import {
+  handleApiResponseError,
+  handleDate,
+  handleNetworkError,
+} from "@/lib/utils";
 import Toolbar from "./Toolbar";
 import { useAuth } from "@/hooks/use-auth";
 import { useNavigate } from "react-router-dom";
@@ -75,21 +79,13 @@ const Articles = () => {
               }
             );
             if (!res.ok) {
-              const errorData = await res.json();
-              console.error("Server error:", errorData.message);
-              toast.error("Failed to delete article", {
-                description: errorData.message,
-              });
-              return;
+              handleApiResponseError(res, "Failed to delete article");
             }
 
             toast.success(`Article deleted successfully`);
             refetch();
           } catch (error) {
-            console.error("Network error:", error);
-            toast.error("Network error", {
-              description: "Could not connect to the server.",
-            });
+            handleNetworkError(error);
           }
         },
       },
@@ -115,17 +111,12 @@ const Articles = () => {
       );
 
       if (!res.ok) {
-        const errorData = await res.json();
-        console.error("Server error:", errorData.message);
-        toast.error(
+        handleApiResponseError(
+          res,
           `Failed to ${
             newStatus === "published" ? "publish" : "unpublish"
-          } article`,
-          {
-            description: errorData.message,
-          }
+          } article`
         );
-        return;
       }
 
       toast.success(
@@ -135,10 +126,7 @@ const Articles = () => {
       );
       refetch();
     } catch (error) {
-      console.error("Network error:", error);
-      toast.error("Network error", {
-        description: "Could not connect to the server.",
-      });
+      handleNetworkError(error);
     }
   };
 

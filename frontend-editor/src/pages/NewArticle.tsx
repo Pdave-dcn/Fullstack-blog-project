@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
 import type { Editor as TinyMCEEditor } from "tinymce";
+import { handleApiResponseError, handleNetworkError } from "@/lib/utils";
 
 const NewArticle = () => {
   const [title, setTitle] = useState("");
@@ -40,13 +41,7 @@ const NewArticle = () => {
       );
 
       if (!response.ok) {
-        const errorData = await response.json();
-        console.error("Server error:", errorData.message);
-        toast.error("Failed to create Article", {
-          description: errorData.message,
-        });
-
-        return;
+        handleApiResponseError(response, "Failed to create reply");
       }
 
       toast.success(
@@ -54,10 +49,7 @@ const NewArticle = () => {
       );
       navigate("/articles");
     } catch (error) {
-      console.error("Network error:", error);
-      toast.error("Network error", {
-        description: "Could not connect to the server.",
-      });
+      handleNetworkError(error);
     }
   };
 

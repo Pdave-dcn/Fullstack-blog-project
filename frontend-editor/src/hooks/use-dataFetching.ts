@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "./use-auth";
+import { handleApiResponseError } from "@/lib/utils";
 
 export const useDataFetching = <T>(API_BASE_URL: string, endpoint: string) => {
   const [data, setData] = useState<T | null>(null);
@@ -31,9 +32,7 @@ export const useDataFetching = <T>(API_BASE_URL: string, endpoint: string) => {
       }
 
       if (!response.ok) {
-        const errorData = await response.json();
-        console.error("Server error:", errorData.message);
-        return;
+        handleApiResponseError(response, "Failed to fetch data");
       }
 
       const result = await response.json();

@@ -19,6 +19,7 @@ import { useDataFetching } from "@/hooks/use-dataFetching";
 import { MessageLoading } from "../components/ui/MessageLoading";
 import { useAuth } from "@/hooks/use-auth";
 import { useNavigate } from "react-router-dom";
+import { handleApiResponseError, handleNetworkError } from "@/lib/utils";
 
 interface Comment {
   id: number;
@@ -66,21 +67,13 @@ const Comments = () => {
               }
             );
             if (!res.ok) {
-              const errorData = await res.json();
-              console.error("Server error:", errorData.message);
-              toast.error("Failed to delete comment", {
-                description: errorData.message,
-              });
-              return;
+              handleApiResponseError(res, "Failed to delete comment");
             }
 
             toast.success(`Comment deleted successfully`);
             refetch();
           } catch (error) {
-            console.error("Network error:", error);
-            toast.error("Network error", {
-              description: "Could not connect to the server.",
-            });
+            handleNetworkError(error);
           }
         },
       },

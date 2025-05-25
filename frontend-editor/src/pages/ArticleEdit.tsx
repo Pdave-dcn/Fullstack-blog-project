@@ -9,6 +9,7 @@ import { useAuth } from "@/hooks/use-auth";
 import type { Editor as TinyMCEEditor } from "tinymce";
 import { useDataFetching } from "@/hooks/use-dataFetching";
 import { MessageLoading } from "@/components/ui/MessageLoading";
+import { handleApiResponseError, handleNetworkError } from "@/lib/utils";
 
 interface Article {
   id: number;
@@ -74,20 +75,14 @@ const ArticleEdit = () => {
         }
       );
 
-      if (response.ok) {
-        toast.success("Article updated successfully!");
-        navigate("/articles");
-      } else {
-        const errorData = await response.json();
-        toast.error("Failed to update article", {
-          description: errorData.message,
-        });
+      if (!response.ok) {
+        handleApiResponseError(response, "Failed to update article");
       }
+
+      toast.success("Article updated successfully!");
+      navigate("/articles");
     } catch (error) {
-      console.error("Network error:", error);
-      toast.error("Network error", {
-        description: "Could not connect to the server.",
-      });
+      handleNetworkError(error);
     }
   };
 
