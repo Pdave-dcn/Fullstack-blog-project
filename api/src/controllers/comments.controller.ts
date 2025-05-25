@@ -74,7 +74,7 @@ export const createComment = async (req: Request, res: Response) => {
     const postId = getValidatedPostId(req, res);
     if (!postId) return;
 
-    const content = req.body.content;
+    const { content, parentId } = req.body;
     if (!content || content.trim() === "") {
       return res.status(400).json({ message: "Content cannot be empty!" });
     }
@@ -84,8 +84,24 @@ export const createComment = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Post not found!" });
     }
 
+    if (parentId) {
+      const parentComment = await prisma.comment.findUnique({
+        where: { id: parentId },
+      });
+
+      if (!parentComment)
+        return res.status(404).json({
+          error: "Parent comment not found",
+        });
+
+      if (parentComment.postId !== postId)
+        return res.status(400).json({
+          error: "Parent comment does not belong to this post",
+        });
+    }
+
     const comment = await prisma.comment.create({
-      data: { content, postId, userId: user.id },
+      data: { content, postId, userId: user.id, parentId: parentId || null },
     });
 
     res.status(201).json({

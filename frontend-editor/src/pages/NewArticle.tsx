@@ -27,7 +27,7 @@ const NewArticle = () => {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/post`,
+        `${import.meta.env.VITE_API_BASE_URL}/posts`,
         {
           method: "POST",
           headers: {
