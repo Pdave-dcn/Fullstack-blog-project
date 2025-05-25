@@ -9,7 +9,7 @@ import Comments from "./pages/Comments";
 import Articles from "./pages/Articles/Articles";
 import NewArticle from "./pages/NewArticle";
 import NotFound from "./pages/NotFound";
-import ArticleDetails from "./pages/ArticleDetails";
+import ArticleDetails from "./pages/ArticleDetails/ArticleDetails";
 import ArticleEdit from "./pages/ArticleEdit";
 
 const App = () => {
