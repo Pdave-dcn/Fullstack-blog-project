@@ -46,6 +46,9 @@ interface Article {
   status: "published" | "draft";
   createdAt: string;
   comments: Comment[];
+  _count: {
+    comments: number;
+  };
 }
 
 const ArticleDetails = () => {
@@ -236,7 +239,7 @@ const ArticleDetails = () => {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-semibold flex items-center">
               <MessageSquare className="mr-2 h-5 w-5" />
-              Comments ({article.comments.length})
+              Comments ({article._count.comments})
             </h2>
           </div>
 

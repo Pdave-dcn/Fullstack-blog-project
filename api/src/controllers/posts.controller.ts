@@ -34,7 +34,7 @@ export const getUniquePost = async (req: Request, res: Response) => {
       include: {
         comments: {
           where: {
-            parentId: null, // Only get top-level comments
+            parentId: null,
           },
           select: {
             id: true,
@@ -47,19 +47,17 @@ export const getUniquePost = async (req: Request, res: Response) => {
               },
             },
             replies: {
-              // Get ALL replies (both direct and nested)
               select: {
                 id: true,
                 content: true,
                 createdAt: true,
-                parentId: true, // Important: to identify what this is replying to
+                parentId: true,
                 user: {
                   select: {
                     name: true,
                     username: true,
                   },
                 },
-                // Include parent info to show "replying to @username"
                 parent: {
                   select: {
                     id: true,
@@ -84,6 +82,11 @@ export const getUniquePost = async (req: Request, res: Response) => {
           },
           orderBy: {
             createdAt: "desc",
+          },
+        },
+        _count: {
+          select: {
+            comments: true,
           },
         },
       },
