@@ -146,8 +146,8 @@ const Comments = () => {
                       {comment.post.title}
                     </span>
                   </TableCell>
-                  <TableCell>
-                    <p className="text-foreground line-clamp-2">
+                  <TableCell className="max-w-[300px]">
+                    <p className="text-foreground line-clamp-2 overflow-hidden break-words">
                       {comment.content}
                     </p>
                   </TableCell>

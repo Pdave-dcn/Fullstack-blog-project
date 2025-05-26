@@ -14,6 +14,7 @@ export const AuthorGetComments = async (req: Request, res: Response) => {
       return res.status(403).json({ message: "Access denied" });
 
     const comments = await prisma.comment.findMany({
+      where: { parentId: null },
       orderBy: { createdAt: "desc" },
       select: {
         id: true,
