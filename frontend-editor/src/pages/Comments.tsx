@@ -20,6 +20,7 @@ import { MessageLoading } from "../components/ui/MessageLoading";
 import { useAuth } from "@/hooks/use-auth";
 import { useNavigate } from "react-router-dom";
 import { handleApiResponseError, handleNetworkError } from "@/lib/utils";
+import { useState } from "react";
 
 interface Comment {
   id: number;
@@ -35,17 +36,34 @@ interface Comment {
   createdAt: string;
 }
 
+interface ResponseData {
+  data: Comment[];
+  pagination: {
+    totalItems: number;
+    currentPage: number;
+    pageSize: number;
+    totalPages: number;
+  };
+}
+
 const Comments = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   const { token } = useAuth();
   const {
-    data: comments,
-    error: commentError,
-    loading: commentLoading,
+    data: responseData,
+    error,
+    loading,
     refetch,
-  } = useDataFetching<Comment[]>(
+  } = useDataFetching<ResponseData>(
     `${import.meta.env.VITE_API_BASE_URL}`,
-    "/comments"
+    `/comments?page=${currentPage}&pageSize=${itemsPerPage}`
   );
+
+  const comments = responseData?.data || [];
+  const pagination = responseData?.pagination;
+
   const navigate = useNavigate();
 
   const handleDeleteComment = (commentId: number) => {
@@ -94,7 +112,7 @@ const Comments = () => {
     });
   };
 
-  if (commentLoading) {
+  if (loading) {
     return (
       <div className="flex items-center justify-center h-1/2">
         <MessageLoading />
@@ -102,7 +120,7 @@ const Comments = () => {
     );
   }
 
-  if (commentError) {
+  if (error) {
     return (
       <div className="flex items-center justify-center h-1/2">
         <p>A network error was encountered</p>
@@ -184,6 +202,30 @@ const Comments = () => {
             )}
           </TableBody>
         </Table>
+
+        {pagination && (
+          <div className="flex justify-between items-center mt-4">
+            <Button
+              onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+              disabled={pagination.currentPage <= 1}
+            >
+              Previous
+            </Button>
+            <span>
+              Page {pagination.currentPage} of {pagination.totalPages}
+            </span>
+            <Button
+              onClick={() =>
+                setCurrentPage((prev) =>
+                  Math.min(pagination.totalPages, prev + 1)
+                )
+              }
+              disabled={pagination.currentPage >= pagination.totalPages}
+            >
+              Next
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
