@@ -1,5 +1,18 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Articles from "./pages/Articles";
+import ArticleDetails from "./pages/ArticleDetails";
+
 const App = () => {
-  return <div className="text-2xl">Frontend Reader</div>;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/articles" element={<Articles />} />
+        <Route path="/article/:id" element={<ArticleDetails />} />
+      </Routes>
+    </BrowserRouter>
+  );
 };
 
 export default App;
