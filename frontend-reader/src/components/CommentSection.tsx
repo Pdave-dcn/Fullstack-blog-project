@@ -5,11 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { MessageSquare, Lock, User } from "lucide-react";
 import AuthModal from "./AuthModal";
-
-interface User {
-  name: string;
-  email: string;
-}
+import { useAuth } from "@/hooks/use-auth";
 
 interface Comment {
   id: string;
@@ -18,8 +14,6 @@ interface Comment {
   publishedAt: string;
   postId: string;
 }
-
-const user: User = { name: "John Doe", email: "jdoe@gmail.com" };
 
 const comments: Comment[] = [
   {
@@ -51,10 +45,15 @@ const comments: Comment[] = [
 const CommentSection = () => {
   const [commentText, setCommentText] = useState("");
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const isLoading = false;
+  const { user, isLoading } = useAuth();
+  const [isPending, setIsPending] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Lots of stuff here ✨✨✨✨
+
+    setIsPending(true);
   };
 
   const formatDate = (dateString: string) => {
@@ -63,6 +62,11 @@ const CommentSection = () => {
       month: "long",
       day: "numeric",
     });
+  };
+
+  const getInitials = (name: string | undefined) => {
+    if (!name) return "U";
+    return name.charAt(0).toUpperCase();
   };
 
   return (
@@ -82,13 +86,13 @@ const CommentSection = () => {
                 <Avatar className="ring-2 ring-blue-100">
                   {/* <AvatarImage src={user.avatar} alt={user.name} /> */}
                   <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white">
-                    {user.name.charAt(0).toUpperCase()}
+                    {getInitials(user.name)}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1 space-y-3">
                   <p className="text-sm font-medium text-gray-700">
                     Commenting as{" "}
-                    <span className="text-blue-600">{user.name}</span>
+                    <span className="text-blue-600">{user.username}</span>
                   </p>
                   <Textarea
                     placeholder="Share your thoughts on this article..."
@@ -103,10 +107,10 @@ const CommentSection = () => {
               <div className="flex justify-end">
                 <Button
                   type="submit"
-                  // disabled={addCommentMutation.isPending || !commentText.trim()}
+                  disabled={isPending || !commentText.trim()}
                   className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium px-6 py-2 rounded-lg transition-all duration-200 transform hover:scale-[1.02] disabled:scale-100"
                 >
-                  {/* {addCommentMutation.isPending ? "Posting..." : "Post Comment"} */}
+                  {isPending ? "Posting..." : "Post Comment"}
                 </Button>
               </div>
             </form>

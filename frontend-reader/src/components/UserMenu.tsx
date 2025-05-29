@@ -1,4 +1,3 @@
-//import { useAuth } from '@/contexts/AuthContext';
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -9,16 +8,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { User, LogOut, Settings } from "lucide-react";
-
-interface User {
-  name: string;
-  email: string;
-}
+import { useAuth } from "@/hooks/use-auth";
 
 const UserMenu = () => {
-  const user: User = { name: "John Doe", email: "jdoe@gmail.com" };
+  const { user, logout } = useAuth();
 
-  if (!user) return null;
+  if (!user) {
+    return null;
+  }
+
+  const getInitials = (name: string | undefined) => {
+    if (!name) return "U";
+    return name.charAt(0).toUpperCase();
+  };
 
   return (
     <DropdownMenu>
@@ -27,7 +29,7 @@ const UserMenu = () => {
           <Avatar className="h-10 w-10 ring-2 ring-blue-100 hover:ring-blue-200 transition-all">
             {/* <AvatarImage src={user.avatar} alt={user.name} /> */}
             <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white">
-              {user.name.charAt(0).toUpperCase()}
+              {getInitials(user.name)}
             </AvatarFallback>
           </Avatar>
         </Button>
@@ -38,9 +40,9 @@ const UserMenu = () => {
       >
         <div className="flex items-center justify-start gap-2 p-2">
           <div className="flex flex-col space-y-1 leading-none">
-            <p className="font-medium text-gray-900">{user.name}</p>
+            <p className="font-medium text-gray-900">{user?.name}</p>
             <p className="w-[200px] truncate text-sm text-gray-600">
-              {user.email}
+              {user?.username}
             </p>
           </div>
         </div>
@@ -56,7 +58,7 @@ const UserMenu = () => {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="cursor-pointer hover:bg-red-50 text-red-600"
-          //onClick={logout}
+          onClick={logout}
         >
           <LogOut className="mr-2 h-4 w-4" />
           Sign out

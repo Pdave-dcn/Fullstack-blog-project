@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -10,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff, User, Mail, Lock } from "lucide-react";
+import { handleApiResponseError } from "@/lib/utils";
+import { useAuth } from "@/hooks/use-auth";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -17,17 +20,11 @@ interface AuthModalProps {
   defaultMode?: "login" | "signup";
 }
 
-const useAuth = () => {
-  const login = (email: string, password: string) => {
-    console.log(email, password);
-  };
-  const signup = (email: string, password: string, username: string) => {
-    console.log(email, password, username);
-  };
-  const isLoading = true;
-
-  return { login, signup, isLoading };
-};
+interface FormData {
+  name?: string;
+  username: string;
+  password: string;
+}
 
 const AuthModal = ({
   isOpen,
@@ -35,35 +32,71 @@ const AuthModal = ({
   defaultMode = "login",
 }: AuthModalProps) => {
   const [mode, setMode] = useState<"login" | "signup">(defaultMode);
-  const [formData, setFormData] = useState({
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState<FormData>({
     name: "",
-    email: "",
+    username: "",
     password: "",
   });
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-
-  const { login, signup, isLoading } = useAuth();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setIsLoading(true);
 
     try {
-      if (mode === "login") {
-        await login(formData.email, formData.password);
-      } else {
-        await signup(formData.name, formData.email, formData.password);
+      const endpoint = `${import.meta.env.VITE_API_BASE_URL}/users/${
+        mode === "signup" ? "signup" : "login"
+      }`;
+
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          mode === "signup"
+            ? {
+                name: formData.name,
+                username: formData.username,
+                password: formData.password,
+              }
+            : {
+                username: formData.username,
+                password: formData.password,
+              }
+        ),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        handleApiResponseError(response, "Authentication failed");
       }
+
+      login(data.token, data.user);
+
+      toast.success(
+        `Welcome ${mode === "login" ? "back" : ""}, ${data.user.username}`
+      );
       onClose();
-      setFormData({ name: "", email: "", password: "" });
-    } catch (err) {
-      console.error("Authentication failed:", err);
+    } catch (error) {
+      console.error("Auth error:", error);
+      toast.error("Authentication failed", {
+        description:
+          error instanceof Error ? error.message : "Please try again",
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+  const handleInputChange = (field: keyof FormData, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
   return (
@@ -109,10 +142,10 @@ const AuthModal = ({
 
           <div className="space-y-2">
             <Label
-              htmlFor="email"
+              htmlFor="username"
               className="text-sm font-medium text-gray-700"
             >
-              Email
+              Username
             </Label>
             <div className="relative">
               <Mail
@@ -120,11 +153,11 @@ const AuthModal = ({
                 size={18}
               />
               <Input
-                id="email"
-                type="email"
-                placeholder="Enter your email"
-                value={formData.email}
-                onChange={(e) => handleInputChange("email", e.target.value)}
+                id="username"
+                type="text"
+                placeholder="Enter your username"
+                value={formData.username}
+                onChange={(e) => handleInputChange("username", e.target.value)}
                 className="pl-10 bg-white/50 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                 required
               />
@@ -162,11 +195,11 @@ const AuthModal = ({
             </div>
           </div>
 
-          {error && (
+          {/* {error && (
             <div className="text-red-500 text-sm text-center bg-red-50 py-2 rounded-md">
               {error}
             </div>
-          )}
+          )} */}
 
           <Button
             type="submit"

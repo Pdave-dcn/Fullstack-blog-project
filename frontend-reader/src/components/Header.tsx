@@ -4,17 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Menu, Home, BookOpen, User } from "lucide-react";
 import AuthModal from "./AuthModal";
 import UserMenu from "./UserMenu";
-
-interface User {
-  name: string;
-  email: string;
-}
+import { useAuth } from "@/hooks/use-auth";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const location = useLocation();
-  const user: User = { name: "John Doe", email: "jdoe@gmail.com" };
+  const { user, isAuthenticated } = useAuth();
+
+  console.log("Auth State:", { user, isAuthenticated });
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -139,7 +137,7 @@ const Header = () => {
                     <p className="text-sm font-medium text-gray-900">
                       {user.name}
                     </p>
-                    <p className="text-xs text-gray-600">{user.email}</p>
+                    <p className="text-xs text-gray-600">@{user.username}</p>
                   </div>
                 ) : (
                   <Button
