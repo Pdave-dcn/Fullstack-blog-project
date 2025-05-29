@@ -49,12 +49,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (!token) return;
 
     const checkTokenValidity = () => {
-      console.log("Checking token validity for:", token);
       const isValid = isTokenValid(token);
-      console.log("Token is valid:", isValid);
 
       if (!isValid) {
-        console.log("Token invalid, logging out...");
         logout();
       }
     };

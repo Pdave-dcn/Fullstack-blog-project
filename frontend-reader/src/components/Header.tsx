@@ -10,9 +10,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const location = useLocation();
-  const { user, isAuthenticated } = useAuth();
-
-  console.log("Auth State:", { user, isAuthenticated });
+  const { user } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
 
