@@ -1,72 +1,59 @@
-import { useState } from "react";
+// components/CommentSection.tsx
+import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { MessageSquare, Lock, User } from "lucide-react";
+import { MessageSquare, Lock } from "lucide-react";
 import AuthModal from "./AuthModal";
 import { useAuth } from "@/hooks/use-auth";
+import { useComments } from "@/hooks/use-comments";
+import { useCommentForm } from "@/hooks/use-commentForms";
+import { CommentForm } from "./CommentForm";
+import { Comment } from "./Comment";
 
-interface Comment {
-  id: string;
-  author: string;
-  content: string;
-  publishedAt: string;
-  postId: string;
+const UI_TEXT = {
+  JOIN_DISCUSSION: "Join the Discussion",
+  SIGN_IN_TO_COMMENT: "Sign In to Comment",
+  SIGN_IN_MESSAGE:
+    "Create an account or sign in to share your thoughts and engage with the community.",
+  NO_COMMENTS: "No comments yet. Be the first to share your thoughts!",
+};
+
+interface CommentSectionParams {
+  comments: Comment[];
+  _count: number;
+  blogPostId: string;
 }
 
-const comments: Comment[] = [
-  {
-    id: "1",
-    author: "John Doe",
-    content:
-      "Great article! I've been using these techniques in my projects and they've made a huge difference in performance.",
-    publishedAt: "2024-01-16",
-    postId: "1",
-  },
-  {
-    id: "2",
-    author: "Jane Smith",
-    content:
-      "Thanks for the comprehensive guide. The section on AI integration was particularly insightful.",
-    publishedAt: "2024-01-16",
-    postId: "1",
-  },
-  {
-    id: "3",
-    author: "Alex Johnson",
-    content:
-      "React.memo has been a game-changer for my apps. Thanks for explaining it so clearly!",
-    publishedAt: "2024-01-13",
-    postId: "2",
-  },
-];
-
-const CommentSection = () => {
-  const [commentText, setCommentText] = useState("");
+const CommentSection: React.FC<CommentSectionParams> = ({
+  comments,
+  _count,
+  blogPostId,
+}) => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const { user, isLoading } = useAuth();
-  const [isPending, setIsPending] = useState(false);
+  const [replyingTo, setReplyingTo] = useState<number | null>(null);
+  const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const { user, isLoading, token } = useAuth();
+  const { createComment, deleteComment, editComment } = useComments(
+    blogPostId,
+    token
+  );
+  const commentForm = useCommentForm();
 
-    // Lots of stuff here ✨✨✨✨
-
-    setIsPending(true);
+  const handleCommentSubmit = async () => {
+    await commentForm.handleSubmit((content) => createComment(content));
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
+  const handleReplySubmit = async (parentId: number, content: string) => {
+    return await createComment(content, parentId);
   };
 
-  const getInitials = (name: string | undefined) => {
-    if (!name) return "U";
-    return name.charAt(0).toUpperCase();
+  const handleEditSubmit = async (commentId: number, content: string) => {
+    return await editComment(commentId, content);
+  };
+
+  const handleDeleteComment = async (commentId: number) => {
+    await deleteComment(commentId);
   };
 
   return (
@@ -76,44 +63,17 @@ const CommentSection = () => {
         <CardHeader>
           <CardTitle className="flex items-center space-x-2 text-xl">
             <MessageSquare className="text-blue-600" size={24} />
-            <span>Join the Discussion</span>
+            <span>{UI_TEXT.JOIN_DISCUSSION}</span>
           </CardTitle>
         </CardHeader>
         <CardContent>
           {user ? (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="flex items-start space-x-4">
-                <Avatar className="ring-2 ring-blue-100">
-                  {/* <AvatarImage src={user.avatar} alt={user.name} /> */}
-                  <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white">
-                    {getInitials(user.name)}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex-1 space-y-3">
-                  <p className="text-sm font-medium text-gray-700">
-                    Commenting as{" "}
-                    <span className="text-blue-600">{user.username}</span>
-                  </p>
-                  <Textarea
-                    placeholder="Share your thoughts on this article..."
-                    value={commentText}
-                    onChange={(e) => setCommentText(e.target.value)}
-                    rows={4}
-                    className="bg-white/80 border-blue-200 focus:border-blue-400 focus:ring-blue-400 resize-none"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="flex justify-end">
-                <Button
-                  type="submit"
-                  disabled={isPending || !commentText.trim()}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium px-6 py-2 rounded-lg transition-all duration-200 transform hover:scale-[1.02] disabled:scale-100"
-                >
-                  {isPending ? "Posting..." : "Post Comment"}
-                </Button>
-              </div>
-            </form>
+            <CommentForm
+              content={commentForm.content}
+              onContentChange={commentForm.setContent}
+              onSubmit={handleCommentSubmit}
+              isSubmitting={commentForm.isSubmitting}
+            />
           ) : (
             <div className="text-center py-8 space-y-4">
               <div className="flex justify-center">
@@ -125,15 +85,12 @@ const CommentSection = () => {
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   Sign in to join the conversation
                 </h3>
-                <p className="text-gray-600 mb-6">
-                  Create an account or sign in to share your thoughts and engage
-                  with the community.
-                </p>
+                <p className="text-gray-600 mb-6">{UI_TEXT.SIGN_IN_MESSAGE}</p>
                 <Button
                   onClick={() => setIsAuthModalOpen(true)}
                   className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium px-8 py-2 rounded-lg transition-all duration-200 transform hover:scale-[1.02]"
                 >
-                  Sign In to Comment
+                  {UI_TEXT.SIGN_IN_TO_COMMENT}
                 </Button>
               </div>
             </div>
@@ -145,7 +102,7 @@ const CommentSection = () => {
       <div className="space-y-6">
         <h3 className="text-2xl font-bold text-gray-900 flex items-center space-x-2">
           <MessageSquare className="text-blue-600" size={28} />
-          <span>Comments ({comments.length})</span>
+          <span>Comments ({_count})</span>
         </h3>
 
         {isLoading ? (
@@ -174,40 +131,24 @@ const CommentSection = () => {
                 </div>
               </div>
               <p className="text-gray-500 text-lg font-medium">
-                No comments yet. Be the first to share your thoughts!
+                {UI_TEXT.NO_COMMENTS}
               </p>
             </CardContent>
           </Card>
         ) : (
           <div className="space-y-4">
             {comments.map((comment) => (
-              <Card
-                key={comment.id}
-                className="bg-white hover:shadow-md transition-shadow duration-200 border border-gray-100"
-              >
-                <CardContent className="pt-6">
-                  <div className="flex items-start space-x-4">
-                    <Avatar className="ring-2 ring-gray-100">
-                      <AvatarFallback className="bg-gradient-to-br from-gray-500 to-gray-600 text-white">
-                        <User size={18} />
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-3">
-                        <h4 className="font-semibold text-gray-900">
-                          {comment.author}
-                        </h4>
-                        <span className="text-sm text-gray-500">
-                          {formatDate(comment.publishedAt)}
-                        </span>
-                      </div>
-                      <p className="text-gray-700 leading-relaxed">
-                        {comment.content}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <Comment
+                key={comment.user.username}
+                comment={comment}
+                onEdit={handleEditSubmit}
+                onDelete={handleDeleteComment}
+                onReply={handleReplySubmit}
+                replyingTo={replyingTo}
+                editingCommentId={editingCommentId}
+                onSetReplyingTo={setReplyingTo}
+                onSetEditingCommentId={setEditingCommentId}
+              />
             ))}
           </div>
         )}

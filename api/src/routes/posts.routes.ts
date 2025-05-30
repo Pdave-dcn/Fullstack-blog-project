@@ -20,11 +20,7 @@ router.get(
 
 router.get("/posts/recent", getRecentArticles as RequestHandler);
 
-router.get(
-  "/posts/:postId",
-  passport.authenticate("jwt", { session: false }),
-  getUniquePost as RequestHandler
-);
+router.get("/posts/:postId", getUniquePost as RequestHandler);
 
 router.post(
   "/posts",
