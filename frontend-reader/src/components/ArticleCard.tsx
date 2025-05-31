@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import estimateReadTime from "@/utils/estimatedReadTime";
 
 interface BlogPost {
   id: string;
@@ -47,12 +48,6 @@ const ArticleCard = ({ post }: ArticleCardProps) => {
     const truncated = plainText.substring(0, maxLength);
     const lastSpace = truncated.lastIndexOf(" ");
     return truncated.substring(0, lastSpace) + "...";
-  };
-
-  const estimateReadTime = (content: string) => {
-    const wordsPerMinute = 200;
-    const words = content.split(/\s+/).length;
-    return Math.ceil(words / wordsPerMinute);
   };
 
   return (

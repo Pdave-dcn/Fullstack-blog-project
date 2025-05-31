@@ -5,6 +5,7 @@ import CommentSection from "@/components/CommentSection";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useState, useEffect } from "react";
+import estimateReadTime from "@/utils/estimatedReadTime";
 
 export interface Comment {
   id: number;
@@ -69,12 +70,6 @@ const ArticleDetails = () => {
 
     getPosts();
   }, [id]);
-
-  const estimateReadTime = (content: string) => {
-    const wordsPerMinute = 200;
-    const words = content.split(/\s+/).length;
-    return Math.ceil(words / wordsPerMinute);
-  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
