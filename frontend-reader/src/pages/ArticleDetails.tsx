@@ -4,8 +4,8 @@ import Footer from "@/components/Footer";
 import CommentSection from "@/components/CommentSection";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { useState, useEffect } from "react";
 import estimateReadTime from "@/utils/estimatedReadTime";
+import { useDataFetching } from "@/hooks/use-dataFetching";
 
 export interface Comment {
   id: number;
@@ -41,35 +41,13 @@ interface BlogPost {
 }
 
 const ArticleDetails = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [post, setPost] = useState<BlogPost | null>(null);
   const { id } = useParams<{ id: string }>();
-
-  useEffect(() => {
-    async function getPosts() {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/posts/${id}`
-        );
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          setError(errorData);
-          console.error(errorData);
-          return;
-        }
-        const result = await response.json();
-        setPost(result);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    getPosts();
-  }, [id]);
+  const {
+    data: post,
+    error,
+    loading,
+    refetch,
+  } = useDataFetching<BlogPost>(`/posts/${id}`);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -79,7 +57,7 @@ const ArticleDetails = () => {
     });
   };
 
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
@@ -172,6 +150,7 @@ const ArticleDetails = () => {
                 comments={post.comments}
                 _count={post._count.comments}
                 blogPostId={post.id}
+                reFetch={refetch}
               />
             </div>
           </div>

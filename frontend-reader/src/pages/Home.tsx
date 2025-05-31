@@ -4,7 +4,8 @@ import Footer from "@/components/Footer";
 import ArticleCard from "@/components/ArticleCard";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BookOpen, Users, TrendingUp, Coffee } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useDataFetching } from "@/hooks/use-dataFetching";
+import { AlertCircle } from "lucide-react";
 
 interface BlogPost {
   id: string;
@@ -13,27 +14,65 @@ interface BlogPost {
   createdAt: string;
 }
 
-const Index = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [recentPosts, setRecentPosts] = useState<BlogPost[] | null>(null);
+const Home = () => {
+  const {
+    data: recentPosts,
+    error,
+    loading,
+  } = useDataFetching<BlogPost[]>("/posts/recent");
 
-  useEffect(() => {
-    async function getPosts() {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/posts/recent`
-        );
-        const recentPostsResult = await response.json();
-        setRecentPosts(recentPostsResult);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="animate-pulse">
+              <div className="bg-white rounded-lg shadow-md p-6 space-y-3">
+                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                <div className="h-16 bg-gray-200 rounded"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
     }
 
-    getPosts();
-  }, []);
+    if (error) {
+      return (
+        <div className="mx-auto max-w-2xl p-4 bg-red-50 border border-red-200 rounded-lg">
+          <div className="flex items-center space-x-2 text-red-800">
+            <AlertCircle className="h-5 w-5" />
+            <div>
+              <h3 className="font-semibold">Error</h3>
+              <p className="text-sm">
+                Failed to load articles. Please try again later.
+              </p>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (!recentPosts || recentPosts.length === 0) {
+      return (
+        <div className="mx-auto max-w-2xl p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <div className="text-blue-800">
+            <h3 className="font-semibold">No Articles Found</h3>
+            <p className="text-sm">Check back later for new content.</p>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {recentPosts.map((post) => (
+          <ArticleCard key={post.id} post={post} />
+        ))}
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -164,25 +203,7 @@ const Index = () => {
               </Link>
             </div>
 
-            {isLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="animate-pulse">
-                    <div className="bg-white rounded-lg shadow-md p-6 space-y-3">
-                      <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                      <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-                      <div className="h-16 bg-gray-200 rounded"></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {recentPosts?.map((post) => (
-                  <ArticleCard key={post.id} post={post} />
-                ))}
-              </div>
-            )}
+            {renderContent()}
 
             <div className="text-center mt-12 sm:hidden">
               <Link to="/articles">
@@ -201,4 +222,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Home;

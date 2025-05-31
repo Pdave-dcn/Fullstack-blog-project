@@ -22,12 +22,14 @@ interface CommentSectionParams {
   comments: Comment[];
   _count: number;
   blogPostId: string;
+  reFetch: () => void;
 }
 
 const CommentSection: React.FC<CommentSectionParams> = ({
   comments,
   _count,
   blogPostId,
+  reFetch,
 }) => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [replyingTo, setReplyingTo] = useState<number | null>(null);
@@ -42,18 +44,50 @@ const CommentSection: React.FC<CommentSectionParams> = ({
 
   const handleCommentSubmit = async () => {
     await commentForm.handleSubmit((content) => createComment(content));
+    reFetch();
   };
 
-  const handleReplySubmit = async (parentId: number, content: string) => {
-    return await createComment(content, parentId);
+  const handleReplySubmit = async (
+    parentId: number,
+    content: string
+  ): Promise<boolean> => {
+    try {
+      const success = await createComment(content, parentId);
+      if (success) {
+        reFetch();
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Failed to create reply:", error);
+      return false;
+    }
   };
 
-  const handleEditSubmit = async (commentId: number, content: string) => {
-    return await editComment(commentId, content);
+  const handleEditSubmit = async (
+    commentId: number,
+    content: string
+  ): Promise<boolean> => {
+    try {
+      const success = await editComment(commentId, content);
+      if (success) {
+        reFetch();
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Failed to edit comment:", error);
+      return false;
+    }
   };
 
-  const handleDeleteComment = async (commentId: number) => {
-    await deleteComment(commentId);
+  const handleDeleteComment = async (commentId: number): Promise<void> => {
+    try {
+      await deleteComment(commentId);
+      reFetch();
+    } catch (error) {
+      console.error("Failed to delete comment:", error);
+    }
   };
 
   return (
