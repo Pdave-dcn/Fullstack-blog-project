@@ -24,6 +24,20 @@ export const getAllPosts = async (req: Request, res: Response) => {
   }
 };
 
+export const getPosts = async (_req: Request, res: Response) => {
+  try {
+    const posts = await prisma.post.findMany({
+      where: { status: "published" },
+      orderBy: { createdAt: "desc" },
+      include: { comments: true },
+    });
+
+    res.status(200).json(posts);
+  } catch (error) {
+    handleServerError("Error fetching posts", error, res);
+  }
+};
+
 export const getUniquePost = async (req: Request, res: Response) => {
   try {
     const postId = getValidatedPostId(req, res);

@@ -4,6 +4,7 @@ import {
   deletePost,
   editPost,
   getAllPosts,
+  getPosts,
   getRecentArticles,
   getUniquePost,
   updatePostStatus,
@@ -17,6 +18,8 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   getAllPosts as RequestHandler
 );
+
+router.get("/posts/published", getPosts as RequestHandler);
 
 router.get("/posts/recent", getRecentArticles as RequestHandler);
 
