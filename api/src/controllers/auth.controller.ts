@@ -9,8 +9,11 @@ import { handleServerError } from "../utils/error";
 export const signupUser = async (req: Request, res: Response) => {
   try {
     const { name, username, password, role } = req.body;
-    if (!name || !username || !password || !role) {
-      return res.status(400).json({ message: "All fields are required!" });
+
+    if (!name || !username || !password) {
+      return res
+        .status(400)
+        .json({ message: "Name, username, and password are required!" });
     }
 
     const roleOfUser =
