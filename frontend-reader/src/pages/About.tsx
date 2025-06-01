@@ -18,7 +18,7 @@ const About = () => {
         <section className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-20">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              About BlogReader
+              About TextNode
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               A personal blog project sharing thoughts, insights, and

@@ -83,7 +83,7 @@ const Home = () => {
         <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white py-20">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-              Welcome to BlogReader
+              Welcome to TextNode
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto">
               Discover insightful articles, expert opinions, and the latest

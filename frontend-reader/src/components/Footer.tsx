@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="relative bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 text-white overflow-hidden">
       {/* Background Effects */}
@@ -29,7 +31,7 @@ const Footer = () => {
             <div className="flex items-center space-x-2 mb-6">
               <BookOpen className="text-blue-400" size={28} />
               <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                BlogReader
+                TextNode
               </h3>
             </div>
             <p className="text-gray-300 leading-relaxed mb-6">
@@ -178,7 +180,7 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <div className="flex items-center space-x-2 text-gray-300">
-            <span>&copy; 2024 BlogReader. All rights reserved.</span>
+            <span>&copy; {currentYear} TextNode. All rights reserved.</span>
           </div>
           <div className="flex items-center space-x-1 text-gray-300">
             <span>Made with</span>
