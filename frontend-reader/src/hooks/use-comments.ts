@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { handleApiResponseError } from "@/lib/utils";
+import { handleApiResponseError } from "@/utils/handleApiResponseError";
 
 const API_ENDPOINTS = {
   COMMENTS: (blogPostId: string) =>

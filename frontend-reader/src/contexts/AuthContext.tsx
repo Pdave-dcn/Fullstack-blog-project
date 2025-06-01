@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AuthContext } from "@/hooks/use-auth";
-import { isTokenValid } from "@/lib/utils";
+import { isTokenValid } from "@/utils/isTokenValid";
 
 interface User {
   id: number;

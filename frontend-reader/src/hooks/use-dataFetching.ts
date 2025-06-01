@@ -1,4 +1,4 @@
-import { handleApiResponseError } from "@/lib/utils";
+import { handleApiResponseError } from "@/utils/handleApiResponseError";
 import { useState, useEffect, useCallback } from "react";
 
 export const useDataFetching = <T>(endpoint: string) => {

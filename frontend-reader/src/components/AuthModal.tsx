@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff, User, Mail, Lock } from "lucide-react";
-import { handleApiResponseError } from "@/lib/utils";
+import { handleApiResponseError } from "@/utils/handleApiResponseError";
 import { useAuth } from "@/hooks/use-auth";
 
 interface AuthModalProps {
