@@ -6,13 +6,19 @@ import {
   Send,
   Heart,
   Github,
-  Twitter,
+  Instagram,
   Linkedin,
   BookOpen,
 } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+
+  const socialLinks = {
+    instagram: "https://www.threads.com/@pdv_stack",
+    github: "https://github.com/Pdave-dcn",
+    linkedin: "https://www.linkedin.com/in/davidp919",
+  };
 
   return (
     <footer className="relative bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 text-white overflow-hidden">
@@ -39,27 +45,30 @@ const Footer = () => {
               thought-provoking content, and engaging community discussions.
             </p>
             <div className="flex space-x-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-10 w-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110"
+              <a
+                href={socialLinks.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="h-10 w-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110 flex items-center justify-center"
               >
-                <Twitter size={18} />
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-10 w-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110"
+                <Instagram size={18} />
+              </a>
+              <a
+                href={socialLinks.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="h-10 w-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110 flex items-center justify-center"
               >
                 <Github size={18} />
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-10 w-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110"
+              </a>
+              <a
+                href={socialLinks.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="h-10 w-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110 flex items-center justify-center"
               >
                 <Linkedin size={18} />
-              </Button>
+              </a>
             </div>
           </div>
 
@@ -91,17 +100,8 @@ const Footer = () => {
                   className="text-gray-300 hover:text-blue-400 transition-colors duration-200 flex items-center group"
                 >
                   <span className="w-2 h-2 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>
-                  About Us
+                  About
                 </Link>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:text-blue-400 transition-colors duration-200 flex items-center group"
-                >
-                  <span className="w-2 h-2 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>
-                  Categories
-                </a>
               </li>
             </ul>
           </div>
@@ -110,42 +110,10 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold mb-6 text-white">Topics</h4>
             <ul className="space-y-3">
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:text-purple-400 transition-colors duration-200 flex items-center group"
-                >
-                  <span className="w-2 h-2 bg-purple-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>
-                  Technology
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:text-purple-400 transition-colors duration-200 flex items-center group"
-                >
-                  <span className="w-2 h-2 bg-purple-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>
-                  Design
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:text-purple-400 transition-colors duration-200 flex items-center group"
-                >
-                  <span className="w-2 h-2 bg-purple-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>
-                  Business
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:text-purple-400 transition-colors duration-200 flex items-center group"
-                >
-                  <span className="w-2 h-2 bg-purple-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>
-                  Lifestyle
-                </a>
-              </li>
+              <li className="text-gray-300">🚀 Development & Tech</li>
+              <li className="text-gray-300">💡 Problem Solving</li>
+              <li className="text-gray-300">📚 Learning & Growth</li>
+              <li className="text-gray-300">🔧 Tools & Workflows</li>
             </ul>
           </div>
 
@@ -155,7 +123,7 @@ const Footer = () => {
               Stay Updated
             </h4>
             <p className="text-gray-300 text-sm mb-4">
-              Subscribe to our newsletter for the latest articles and insights.
+              Subscribe to my newsletter for the latest articles and insights.
             </p>
             <div className="space-y-3">
               <div className="relative">
@@ -186,26 +154,6 @@ const Footer = () => {
             <span>Made with</span>
             <Heart className="text-red-500 fill-current" size={16} />
             <span>for readers everywhere</span>
-          </div>
-          <div className="flex space-x-6 text-sm">
-            <a
-              href="#"
-              className="text-gray-300 hover:text-white transition-colors duration-200"
-            >
-              Privacy Policy
-            </a>
-            <a
-              href="#"
-              className="text-gray-300 hover:text-white transition-colors duration-200"
-            >
-              Terms of Service
-            </a>
-            <a
-              href="#"
-              className="text-gray-300 hover:text-white transition-colors duration-200"
-            >
-              Contact
-            </a>
           </div>
         </div>
       </div>

@@ -204,22 +204,17 @@ const About = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <a
-                href="mailto:hello@blogreader.com"
+                href="https://www.threads.com/@pdv_stack"
                 className="text-blue-100 hover:text-white transition-colors"
+                target="_blank"
               >
-                📧 hello@blogreader.com
+                🐦 @pdv_stack
               </a>
               <span className="hidden sm:inline text-blue-300">|</span>
               <a
-                href="#"
+                href="https://www.linkedin.com/in/davidp919"
                 className="text-blue-100 hover:text-white transition-colors"
-              >
-                🐦 @blogreader
-              </a>
-              <span className="hidden sm:inline text-blue-300">|</span>
-              <a
-                href="#"
-                className="text-blue-100 hover:text-white transition-colors"
+                target="_blank"
               >
                 💼 LinkedIn
               </a>
