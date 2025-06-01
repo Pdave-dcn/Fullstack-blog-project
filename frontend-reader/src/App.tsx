@@ -3,6 +3,8 @@ import Home from "./pages/Home";
 import Articles from "./pages/Articles";
 import ArticleDetails from "./pages/ArticleDetails";
 import { Toaster } from "sonner";
+import NotFound from "./pages/NotFound";
+import About from "./pages/About";
 
 const App = () => {
   return (
@@ -12,6 +14,8 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/articles" element={<Articles />} />
         <Route path="/article/:id" element={<ArticleDetails />} />
+        <Route path="/about" element={<About />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
