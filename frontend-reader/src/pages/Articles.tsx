@@ -97,8 +97,7 @@ const Articles = () => {
                 All Articles
               </h1>
               <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-                Explore our complete collection of articles across various
-                topics
+                Explore a complete collection of articles across various topics
               </p>
             </div>
           </div>

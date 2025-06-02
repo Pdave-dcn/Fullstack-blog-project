@@ -32,7 +32,12 @@ export const signupUser = async (req: Request, res: Response) => {
     });
 
     const token = jwt.sign(
-      { id: newUser.id, username: newUser.username, role: newUser.role },
+      {
+        id: newUser.id,
+        name: newUser.name,
+        username: newUser.username,
+        role: newUser.role,
+      },
       process.env.JWT_SECRET as string,
       { expiresIn: "3d" }
     );
@@ -41,6 +46,7 @@ export const signupUser = async (req: Request, res: Response) => {
       message: "User created Successfully",
       user: {
         id: newUser.id,
+        name: newUser.name,
         username: newUser.username,
         role: newUser.role,
       },
@@ -81,6 +87,7 @@ export const loginUser = async (
         message: "Login successful",
         user: {
           id: user.id,
+          name: user.name,
           username: user.username,
           role: user.role,
         },

@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Send } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
+import { AvatarImage } from "@radix-ui/react-avatar";
 
 const UI_TEXT = {
   PLACEHOLDER_COMMENT: "Share your thoughts on this article...",
@@ -34,22 +35,34 @@ export const CommentForm: React.FC<CommentFormProps> = ({
   isSubmitting = false,
   showCancel = false,
 }) => {
-  const { user } = useAuth();
+  const {
+    user,
+    generateAvatarColor,
+    generateAvatarUrl,
+    getInitials,
+    getUserIdentifier,
+  } = useAuth();
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit();
   };
 
-  const getInitials = (name: string | undefined) => {
-    if (!name) return "U";
-    return name.charAt(0).toUpperCase();
-  };
+  if (!user) return null;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="flex items-start space-x-4">
         <Avatar className="ring-2 ring-blue-100">
-          <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white">
+          <AvatarImage
+            src={generateAvatarUrl(user)}
+            alt={user?.name || "User avatar"}
+            className="object-cover"
+          />
+          <AvatarFallback
+            className={`bg-gradient-to-br ${generateAvatarColor(
+              getUserIdentifier(user)
+            )} text-white font-semibold`}
+          >
             {getInitials(user?.name)}
           </AvatarFallback>
         </Avatar>

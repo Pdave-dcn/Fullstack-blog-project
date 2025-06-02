@@ -14,6 +14,10 @@ interface AuthContextType {
   logout: () => void;
   isAuthenticated: boolean;
   isLoading: boolean;
+  getInitials: (name: string) => string;
+  generateAvatarColor: (identifier: string) => string;
+  generateAvatarUrl: (identifier: User) => string;
+  getUserIdentifier: (identifier: User) => string;
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);

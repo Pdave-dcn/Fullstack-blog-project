@@ -4,12 +4,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { User } from "lucide-react";
 import { CommentActions } from "./CommentActions";
 import { CommentForm } from "./CommentForm";
 import { useCommentForm } from "@/hooks/use-commentForms";
 import { useAuth } from "@/hooks/use-auth";
-
+import { AvatarImage } from "@radix-ui/react-avatar";
 export interface Comment {
   id: number;
   content: string;
@@ -55,7 +54,14 @@ export const Comment: React.FC<CommentProps> = ({
   onSetReplyingTo,
   onSetEditingCommentId,
 }) => {
-  const { user } = useAuth();
+  const {
+    user,
+    getInitials,
+    getUserIdentifier,
+    generateAvatarColor,
+    generateAvatarUrl,
+  } = useAuth();
+
   const replyForm = useCommentForm();
   const editForm = useCommentForm();
 
@@ -119,10 +125,28 @@ export const Comment: React.FC<CommentProps> = ({
         <CardContent className="pt-6">
           <div className="flex items-start space-x-4">
             <Avatar className="ring-2 ring-gray-100">
-              <AvatarFallback className="bg-gradient-to-br from-gray-500 to-gray-600 text-white">
-                <User size={18} />
-              </AvatarFallback>
+              {comment.user.username === user?.username ? (
+                <>
+                  <AvatarImage
+                    src={generateAvatarUrl(user)}
+                    alt={user.name || "User avatar"}
+                    className="object-cover"
+                  />
+                  <AvatarFallback
+                    className={`bg-gradient-to-br ${generateAvatarColor(
+                      getUserIdentifier(user)
+                    )} text-white font-semibold`}
+                  >
+                    {getInitials(user.name)}
+                  </AvatarFallback>
+                </>
+              ) : (
+                <AvatarFallback className="bg-blue-500 text-white font-semibold">
+                  {getInitials(comment.user.name)}
+                </AvatarFallback>
+              )}
             </Avatar>
+
             <div className="flex-1">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex gap-3 items-center">
