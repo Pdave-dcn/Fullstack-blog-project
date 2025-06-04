@@ -9,7 +9,7 @@ export const useDataFetching = <T>(API_BASE_URL: string, endpoint: string) => {
   const { token, isAuthenticated, logout } = useAuth();
 
   const fetchData = useCallback(async () => {
-    if (!isAuthenticated || !token) {
+    if (!isAuthenticated || !token || !endpoint?.trim()) {
       setLoading(false);
       return;
     }
