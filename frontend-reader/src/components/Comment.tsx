@@ -94,16 +94,20 @@ export const Comment: React.FC<CommentProps> = ({
 
   return (
     <div
-      className={isReply ? "ml-8 border-l-2 border-l-accent-foreground" : ""}
+      className={
+        isReply
+          ? "ml-4 sm:ml-6 md:ml-8 border-l-2 border-l-accent-foreground pl-2 sm:pl-4"
+          : ""
+      }
     >
       <Card
         className={`${
           isReply ? "bg-background" : "bg-white hover:shadow-md"
-        } transition-shadow duration-200 border border-gray-100`}
+        } transition-shadow duration-200 border border-gray-100 w-full`}
       >
-        <CardContent className="pt-6">
-          <div className="flex items-start space-x-4">
-            <Avatar className="ring-2 ring-gray-100">
+        <CardContent className="pt-4 sm:pt-6 px-3 sm:px-4 md:px-6">
+          <div className="flex items-start space-x-2 sm:space-x-3 md:space-x-4">
+            <Avatar className="ring-2 ring-gray-100 shrink-0 w-8 h-8 sm:w-10 sm:h-10">
               {comment.user.username === user?.username ? (
                 <>
                   <AvatarImage
@@ -114,38 +118,40 @@ export const Comment: React.FC<CommentProps> = ({
                   <AvatarFallback
                     className={`bg-gradient-to-br ${generateAvatarColor(
                       getUserIdentifier(user)
-                    )} text-white font-semibold`}
+                    )} text-white font-semibold text-xs sm:text-sm`}
                   >
                     {getInitials(user.name)}
                   </AvatarFallback>
                 </>
               ) : (
-                <AvatarFallback className="bg-blue-500 text-white font-semibold">
+                <AvatarFallback className="bg-blue-500 text-white font-semibold text-xs sm:text-sm">
                   {getInitials(comment.user.name)}
                 </AvatarFallback>
               )}
             </Avatar>
 
-            <div className="flex-1">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex gap-3 items-center">
-                  <h4 className="font-semibold text-gray-900">
+            <div className="flex-1 min-w-0">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 sm:mb-3 space-y-2 sm:space-y-0">
+                <div className="flex flex-col sm:flex-row sm:gap-3 sm:items-center space-y-1 sm:space-y-0">
+                  <h4 className="font-semibold text-gray-900 text-sm sm:text-base truncate">
                     {comment.user.username}
                   </h4>
-                  <span className="text-sm text-gray-500">
+                  <span className="text-xs sm:text-sm text-gray-500 shrink-0">
                     {formatDate(comment.createdAt)}
                   </span>
                 </div>
-                <CommentActions
-                  comment={comment}
-                  onEdit={handleEditClick}
-                  onDelete={onDelete}
-                  onReply={handleReplyClick}
-                />
+                <div className="shrink-0">
+                  <CommentActions
+                    comment={comment}
+                    onEdit={handleEditClick}
+                    onDelete={onDelete}
+                    onReply={handleReplyClick}
+                  />
+                </div>
               </div>
 
               {comment.parent && comment.parentId !== comment.id && isReply && (
-                <p className="text-sm text-primary mb-2">
+                <p className="text-xs sm:text-sm text-primary mb-2 truncate">
                   Reply to @{comment.parent.user.username}
                 </p>
               )}
@@ -155,16 +161,17 @@ export const Comment: React.FC<CommentProps> = ({
                   <Textarea
                     value={editForm.content}
                     onChange={(e) => editForm.setContent(e.target.value)}
-                    className="bg-white/80 border-blue-200 focus:border-blue-400 focus:ring-blue-400"
+                    className="bg-white/80 border-blue-200 focus:border-blue-400 focus:ring-blue-400 min-h-[80px] sm:min-h-[100px] text-sm sm:text-base"
                     rows={3}
                   />
-                  <div className="flex gap-2">
+                  <div className="flex flex-col sm:flex-row gap-2">
                     <Button
                       size="sm"
                       onClick={handleEditSubmit}
                       disabled={
                         editForm.isSubmitting || !editForm.content.trim()
                       }
+                      className="w-full sm:w-auto text-xs sm:text-sm"
                     >
                       Save Changes
                     </Button>
@@ -173,20 +180,23 @@ export const Comment: React.FC<CommentProps> = ({
                       size="sm"
                       onClick={handleCancelEdit}
                       disabled={editForm.isSubmitting}
+                      className="w-full sm:w-auto text-xs sm:text-sm"
                     >
                       Cancel
                     </Button>
                   </div>
                 </div>
               ) : (
-                <p className="text-gray-700 leading-relaxed">
-                  {comment.content}
-                </p>
+                <div className="prose prose-sm sm:prose-base max-w-none">
+                  <p className="text-gray-700 leading-relaxed text-sm sm:text-base break-words">
+                    {comment.content}
+                  </p>
+                </div>
               )}
 
               {replyingTo === comment.id && user && (
-                <div className="mt-4 p-4 bg-muted rounded-lg">
-                  <h5 className="text-sm font-medium mb-2">
+                <div className="mt-3 sm:mt-4 p-3 sm:p-4 bg-muted rounded-lg">
+                  <h5 className="text-xs sm:text-sm font-medium mb-2 truncate">
                     Replying to {comment.user.username}
                   </h5>
                   <CommentForm
@@ -203,7 +213,7 @@ export const Comment: React.FC<CommentProps> = ({
               )}
 
               {comment.replies && comment.replies.length > 0 && (
-                <div className="mt-4 space-y-4">
+                <div className="mt-3 sm:mt-4 space-y-3 sm:space-y-4">
                   {comment.replies.map((reply) => (
                     <Comment
                       key={reply.id}

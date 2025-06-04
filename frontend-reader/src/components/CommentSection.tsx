@@ -42,7 +42,6 @@ const CommentSection: React.FC<CommentSectionParams> = ({
   );
   const commentForm = useCommentForm();
 
-  // Organize flat comments into a structured format for display
   const organizedComments = useMemo(() => {
     const commentMap = new Map<
       number,
@@ -136,16 +135,16 @@ const CommentSection: React.FC<CommentSectionParams> = ({
   };
 
   return (
-    <div className="space-y-8">
+    <div className="w-full max-w-none space-y-6 md:space-y-8">
       {/* Comment Form Section */}
       <Card className="bg-gradient-to-br from-white to-blue-50/30 border border-blue-100 shadow-lg">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2 text-xl">
-            <MessageSquare className="text-blue-600" size={24} />
-            <span>{UI_TEXT.JOIN_DISCUSSION}</span>
+        <CardHeader className="px-4 sm:px-6">
+          <CardTitle className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 text-lg sm:text-xl">
+            <MessageSquare className="text-blue-600 shrink-0" size={24} />
+            <span className="break-words">{UI_TEXT.JOIN_DISCUSSION}</span>
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-4 sm:px-6">
           {user ? (
             <CommentForm
               content={commentForm.content}
@@ -154,22 +153,26 @@ const CommentSection: React.FC<CommentSectionParams> = ({
               isSubmitting={commentForm.isSubmitting}
             />
           ) : (
-            <div className="text-center py-8 space-y-4">
+            <div className="text-center py-6 sm:py-8 space-y-4">
               <div className="flex justify-center">
-                <div className="bg-blue-100 p-4 rounded-full">
-                  <Lock className="text-blue-600" size={32} />
+                <div className="bg-blue-100 p-3 sm:p-4 rounded-full">
+                  <Lock className="text-blue-600" size={28} />
                 </div>
               </div>
-              <div>
+              <div className="px-4">
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   Sign in to join the conversation
                 </h3>
-                <p className="text-gray-600 mb-6">{UI_TEXT.SIGN_IN_MESSAGE}</p>
+                <p className="text-gray-600 mb-6 text-sm sm:text-base max-w-md mx-auto">
+                  {UI_TEXT.SIGN_IN_MESSAGE}
+                </p>
                 <Button
                   onClick={() => setIsAuthModalOpen(true)}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium px-8 py-2 rounded-lg transition-all duration-200 transform hover:scale-[1.02]"
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium px-6 sm:px-8 py-2 rounded-lg transition-all duration-200 transform hover:scale-[1.02] w-full sm:w-auto"
                 >
-                  {UI_TEXT.SIGN_IN_TO_COMMENT}
+                  <span className="text-sm sm:text-base">
+                    {UI_TEXT.SIGN_IN_TO_COMMENT}
+                  </span>
                 </Button>
               </div>
             </div>
@@ -178,24 +181,24 @@ const CommentSection: React.FC<CommentSectionParams> = ({
       </Card>
 
       {/* Comments List */}
-      <div className="space-y-6">
-        <h3 className="text-2xl font-bold text-gray-900 flex items-center space-x-2">
-          <MessageSquare className="text-blue-600" size={28} />
-          <span>Comments ({_count})</span>
+      <div className="space-y-4 sm:space-y-6">
+        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 px-1">
+          <MessageSquare className="text-blue-600 shrink-0" size={28} />
+          <span className="break-words">Comments ({_count})</span>
         </h3>
 
         {isLoading ? (
           <div className="space-y-4">
             {[1, 2, 3].map((i) => (
               <Card key={i} className="bg-white shadow-sm">
-                <CardContent className="pt-6">
+                <CardContent className="pt-4 sm:pt-6 px-4 sm:px-6">
                   <div className="animate-pulse space-y-3">
                     <div className="flex items-center space-x-3">
-                      <div className="h-10 w-10 bg-gray-200 rounded-full"></div>
-                      <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+                      <div className="h-8 w-8 sm:h-10 sm:w-10 bg-gray-200 rounded-full shrink-0"></div>
+                      <div className="h-4 bg-gray-200 rounded w-1/4 min-w-[60px]"></div>
                     </div>
-                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-full sm:w-3/4"></div>
+                    <div className="h-4 bg-gray-200 rounded w-3/4 sm:w-1/2"></div>
                   </div>
                 </CardContent>
               </Card>
@@ -203,19 +206,19 @@ const CommentSection: React.FC<CommentSectionParams> = ({
           </div>
         ) : organizedComments.length === 0 ? (
           <Card className="bg-gradient-to-br from-gray-50 to-gray-100 border-gray-200">
-            <CardContent className="pt-8 pb-8 text-center">
+            <CardContent className="pt-6 pb-6 sm:pt-8 sm:pb-8 text-center px-4 sm:px-6">
               <div className="flex justify-center mb-4">
-                <div className="bg-gray-200 p-4 rounded-full">
-                  <MessageSquare className="text-gray-500" size={32} />
+                <div className="bg-gray-200 p-3 sm:p-4 rounded-full">
+                  <MessageSquare className="text-gray-500" size={28} />
                 </div>
               </div>
-              <p className="text-gray-500 text-lg font-medium">
+              <p className="text-gray-500 text-base sm:text-lg font-medium px-4">
                 {UI_TEXT.NO_COMMENTS}
               </p>
             </CardContent>
           </Card>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {organizedComments.map((comment) => (
               <Comment
                 key={comment.id}
