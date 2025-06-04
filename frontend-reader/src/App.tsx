@@ -5,19 +5,23 @@ import ArticleDetails from "./pages/ArticleDetails";
 import { Toaster } from "sonner";
 import NotFound from "./pages/NotFound";
 import About from "./pages/About";
+import ScrollToTop from "./components/ScrollToTop";
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Toaster position="bottom-right" richColors />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/articles" element={<Articles />} />
-        <Route path="/article/:id" element={<ArticleDetails />} />
-        <Route path="/about" element={<About />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+    <>
+      <BrowserRouter>
+        <ScrollToTop />
+        <Toaster position="bottom-right" richColors />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/articles" element={<Articles />} />
+          <Route path="/article/:id" element={<ArticleDetails />} />
+          <Route path="/about" element={<About />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 };
 
