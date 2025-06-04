@@ -1,5 +1,4 @@
-// components/CommentSection.tsx
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MessageSquare, Lock } from "lucide-react";
@@ -9,6 +8,7 @@ import { useComments } from "@/hooks/use-comments";
 import { useCommentForm } from "@/hooks/use-commentForms";
 import { CommentForm } from "./CommentForm";
 import { Comment } from "./Comment";
+import type { BlogComment } from "@/types/comment";
 
 const UI_TEXT = {
   JOIN_DISCUSSION: "Join the Discussion",
@@ -19,7 +19,7 @@ const UI_TEXT = {
 };
 
 interface CommentSectionParams {
-  comments: Comment[];
+  comments: BlogComment[];
   _count: number;
   blogPostId: string;
   reFetch: () => void;
@@ -42,6 +42,50 @@ const CommentSection: React.FC<CommentSectionParams> = ({
   );
   const commentForm = useCommentForm();
 
+  // Organize flat comments into a structured format for display
+  const organizedComments = useMemo(() => {
+    const commentMap = new Map<
+      number,
+      BlogComment & { replies: BlogComment[] }
+    >();
+    const topLevelComments: (BlogComment & { replies: BlogComment[] })[] = [];
+
+    // First pass: create a map of all comments with empty replies arrays
+    comments.forEach((comment) => {
+      commentMap.set(comment.id, { ...comment, replies: [] });
+    });
+
+    // Second pass: organize comments into parent-child relationships
+    comments.forEach((comment) => {
+      const commentWithReplies = commentMap.get(comment.id)!;
+
+      if (comment.parentId && commentMap.has(comment.parentId)) {
+        // This is a reply, add it to its parent's replies
+        const parent = commentMap.get(comment.parentId)!;
+        parent.replies.push(commentWithReplies);
+      } else {
+        // This is a top-level comment
+        topLevelComments.push(commentWithReplies);
+      }
+    });
+
+    // Sort replies by creation date (ascending - oldest first)
+    commentMap.forEach((comment) => {
+      comment.replies.sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      );
+    });
+
+    // Sort top-level comments by creation date (descending - newest first)
+    topLevelComments.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+
+    return topLevelComments;
+  }, [comments]);
+
   const handleCommentSubmit = async () => {
     await commentForm.handleSubmit((content) => createComment(content));
     reFetch();
@@ -54,7 +98,8 @@ const CommentSection: React.FC<CommentSectionParams> = ({
     try {
       const success = await createComment(content, parentId);
       if (success) {
-        reFetch();
+        await reFetch();
+        setReplyingTo(null);
         return true;
       }
       return false;
@@ -156,7 +201,7 @@ const CommentSection: React.FC<CommentSectionParams> = ({
               </Card>
             ))}
           </div>
-        ) : comments.length === 0 ? (
+        ) : organizedComments.length === 0 ? (
           <Card className="bg-gradient-to-br from-gray-50 to-gray-100 border-gray-200">
             <CardContent className="pt-8 pb-8 text-center">
               <div className="flex justify-center mb-4">
@@ -171,9 +216,9 @@ const CommentSection: React.FC<CommentSectionParams> = ({
           </Card>
         ) : (
           <div className="space-y-4">
-            {comments.map((comment) => (
+            {organizedComments.map((comment) => (
               <Comment
-                key={comment.user.username}
+                key={comment.id}
                 comment={comment}
                 onEdit={handleEditSubmit}
                 onDelete={handleDeleteComment}

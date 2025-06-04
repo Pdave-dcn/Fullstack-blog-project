@@ -43,59 +43,44 @@ export const getUniquePost = async (req: Request, res: Response) => {
     const postId = getValidatedPostId(req, res);
     if (!postId) return;
 
+    const commentSelect = {
+      id: true,
+      content: true,
+      createdAt: true,
+      parentId: true,
+      user: {
+        select: {
+          id: true,
+          name: true,
+          username: true,
+        },
+      },
+      parent: {
+        select: {
+          id: true,
+          user: {
+            select: {
+              id: true,
+              username: true,
+              name: true,
+            },
+          },
+        },
+      },
+      _count: {
+        select: {
+          replies: true,
+        },
+      },
+    };
+
     const post = await prisma.post.findUnique({
       where: { id: postId },
       include: {
         comments: {
-          where: {
-            parentId: null,
-          },
-          select: {
-            id: true,
-            content: true,
-            createdAt: true,
-            user: {
-              select: {
-                name: true,
-                username: true,
-              },
-            },
-            replies: {
-              select: {
-                id: true,
-                content: true,
-                createdAt: true,
-                parentId: true,
-                user: {
-                  select: {
-                    name: true,
-                    username: true,
-                  },
-                },
-                parent: {
-                  select: {
-                    id: true,
-                    user: {
-                      select: {
-                        username: true,
-                        name: true,
-                      },
-                    },
-                  },
-                },
-              },
-              orderBy: {
-                createdAt: "asc",
-              },
-            },
-            _count: {
-              select: {
-                replies: true,
-              },
-            },
-          },
+          select: commentSelect,
           orderBy: {
-            createdAt: "desc",
+            createdAt: "asc",
           },
         },
         _count: {

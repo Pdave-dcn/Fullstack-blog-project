@@ -1,33 +1,11 @@
-// components/CommentActions.tsx
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Reply, Trash2, Pencil } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
-
-export interface Comment {
-  id: number;
-  content: string;
-  createdAt: string;
-  parentId?: number;
-  user: {
-    name: string;
-    username: string;
-  };
-  parent?: {
-    id: number;
-    user: {
-      username: string;
-      name: string;
-    };
-  };
-  replies?: Comment[];
-  _count?: {
-    replies: number;
-  };
-}
+import type { BlogComment } from "@/types/comment";
 
 interface CommentActionsProps {
-  comment: Comment;
+  comment: BlogComment;
   onEdit: (commentId: number) => void;
   onDelete: (commentId: number) => void;
   onReply: (commentId: number) => void;
@@ -39,17 +17,27 @@ export const CommentActions: React.FC<CommentActionsProps> = ({
   onEdit,
   onDelete,
   onReply,
-  showReply = true,
 }) => {
   const { user } = useAuth();
   const isOwner = user && comment.user.username === user?.username;
-  const canReply =
-    user && comment.user.username !== user?.username && showReply;
+  const canReply = !!user;
 
-  if (!isOwner && !canReply) return null;
+  if (!user) return null;
 
   return (
     <div className="flex gap-3 items-center">
+      {canReply && (
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => onReply(comment.id)}
+          className="h-8 w-8 p-0 hover:text-primary"
+          title="Reply"
+        >
+          <Reply className="h-4 w-4" />
+        </Button>
+      )}
+
       {isOwner && (
         <>
           <Button
@@ -71,17 +59,6 @@ export const CommentActions: React.FC<CommentActionsProps> = ({
             <Trash2 className="h-4 w-4" />
           </Button>
         </>
-      )}
-      {canReply && (
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => onReply(comment.id)}
-          className="h-8 w-8 p-0 hover:text-primary"
-          title="Reply"
-        >
-          <Reply className="h-4 w-4" />
-        </Button>
       )}
     </div>
   );

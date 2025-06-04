@@ -1,4 +1,3 @@
-// components/Comment.tsx
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -9,30 +8,10 @@ import { CommentForm } from "./CommentForm";
 import { useCommentForm } from "@/hooks/use-commentForms";
 import { useAuth } from "@/hooks/use-auth";
 import { AvatarImage } from "@radix-ui/react-avatar";
-export interface Comment {
-  id: number;
-  content: string;
-  createdAt: string;
-  parentId?: number;
-  user: {
-    name: string;
-    username: string;
-  };
-  parent?: {
-    id: number;
-    user: {
-      username: string;
-      name: string;
-    };
-  };
-  replies?: Comment[];
-  _count?: {
-    replies: number;
-  };
-}
+import { type BlogComment } from "../types/comment";
 
 interface CommentProps {
-  comment: Comment;
+  comment: BlogComment;
   onEdit: (commentId: number, content: string) => Promise<boolean>;
   onDelete: (commentId: number) => Promise<void>;
   onReply: (parentId: number, content: string) => Promise<boolean>;
@@ -162,13 +141,12 @@ export const Comment: React.FC<CommentProps> = ({
                   onEdit={handleEditClick}
                   onDelete={onDelete}
                   onReply={handleReplyClick}
-                  showReply={!isReply}
                 />
               </div>
 
               {comment.parent && comment.parentId !== comment.id && isReply && (
                 <p className="text-sm text-primary mb-2">
-                  Replying to @{comment.parent.user.username}
+                  Reply to @{comment.parent.user.username}
                 </p>
               )}
 
@@ -209,7 +187,7 @@ export const Comment: React.FC<CommentProps> = ({
               {replyingTo === comment.id && user && (
                 <div className="mt-4 p-4 bg-muted rounded-lg">
                   <h5 className="text-sm font-medium mb-2">
-                    Reply to {comment.user.username}
+                    Replying to {comment.user.username}
                   </h5>
                   <CommentForm
                     content={replyForm.content}

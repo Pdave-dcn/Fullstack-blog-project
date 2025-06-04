@@ -6,35 +6,14 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import estimateReadTime from "@/utils/estimatedReadTime";
 import { useDataFetching } from "@/hooks/use-dataFetching";
-
-export interface Comment {
-  id: number;
-  content: string;
-  createdAt: string;
-  parentId?: number;
-  user: {
-    name: string;
-    username: string;
-  };
-  parent?: {
-    id: number;
-    user: {
-      username: string;
-      name: string;
-    };
-  };
-  replies?: Comment[];
-  _count?: {
-    replies: number;
-  };
-}
+import { type BlogComment } from "@/types/comment";
 
 interface BlogPost {
   id: string;
   title: string;
   content: string;
   createdAt: string;
-  comments: Comment[];
+  comments: BlogComment[];
   _count: {
     comments: number;
   };

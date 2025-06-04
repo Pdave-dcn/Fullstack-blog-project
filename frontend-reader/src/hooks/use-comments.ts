@@ -25,7 +25,10 @@ export const useComments = (blogPostId: string, token: string | null) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ content, parentId }),
+        body: JSON.stringify({
+          content,
+          parentId: parentId || null,
+        }),
       });
 
       if (!res.ok) {
