@@ -16,6 +16,7 @@ import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
 import CommentCard from "./CommentCard";
+import { useMemo } from "react";
 
 export interface Comment {
   id: number;
@@ -166,6 +167,42 @@ const ArticleDetails = () => {
     }
   };
 
+  // Organizes flat comment array into hierarchical structure with nested replies
+  // Top-level comments sorted newest first, replies sorted oldest first
+  const organizedComments = useMemo(() => {
+    const commentMap = new Map<number, Comment & { replies: Comment[] }>();
+    const topLevelComments: (Comment & { replies: Comment[] })[] = [];
+
+    article?.comments.forEach((comment) => {
+      commentMap.set(comment.id, { ...comment, replies: [] });
+    });
+
+    article?.comments.forEach((comment) => {
+      const commentWithReplies = commentMap.get(comment.id)!;
+
+      if (comment.parentId && commentMap.has(comment.parentId)) {
+        const parent = commentMap.get(comment.parentId)!;
+        parent.replies.push(commentWithReplies);
+      } else {
+        topLevelComments.push(commentWithReplies);
+      }
+    });
+
+    commentMap.forEach((comment) => {
+      comment.replies.sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      );
+    });
+
+    topLevelComments.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+
+    return topLevelComments;
+  }, [article?.comments]);
+
   if (articleLoading) {
     return (
       <div className="flex items-center justify-center h-1/2">
@@ -265,11 +302,11 @@ const ArticleDetails = () => {
             </Button>
           </div>
 
-          {article.comments.length === 0 ? (
+          {organizedComments.length === 0 ? (
             <p className="text-center py-4">No comments yet</p>
           ) : (
             <div className="space-y-6">
-              {article.comments.map((comment) => (
+              {organizedComments.map((comment) => (
                 <CommentCard
                   key={comment.user.username}
                   comment={comment}

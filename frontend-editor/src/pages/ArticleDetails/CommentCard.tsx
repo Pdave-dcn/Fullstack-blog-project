@@ -46,19 +46,17 @@ const CommentCard = ({
             {handleDate(comment.createdAt)}
           </span>
           <div className="flex gap-1">
-            {!isReply && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() =>
-                  setReplyingTo(replyingTo === comment.id ? null : comment.id)
-                }
-                className="h-8 w-8 p-0"
-                title="Reply to comment"
-              >
-                <Reply className="h-4 w-4" />
-              </Button>
-            )}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() =>
+                setReplyingTo(replyingTo === comment.id ? null : comment.id)
+              }
+              className="h-8 w-8 p-0"
+              title="Reply to comment"
+            >
+              <Reply className="h-4 w-4" />
+            </Button>
             <Button
               variant="ghost"
               size="sm"
@@ -80,7 +78,7 @@ const CommentCard = ({
 
       <p className="mt-2">{comment.content}</p>
 
-      {replyingTo === comment.id && !isReply && (
+      {replyingTo === comment.id && (
         <div className="mt-4 p-4 bg-muted rounded-lg">
           <h5 className="text-sm font-medium mb-2">
             Reply to {comment.user.name}
@@ -117,45 +115,16 @@ const CommentCard = ({
       {comment.replies && comment.replies.length > 0 && (
         <div className="mt-4 space-y-4">
           {comment.replies.map((reply) => (
-            <div
-              key={reply.id}
-              className="ml-8 border-l-2 border-l-accent-foreground"
-            >
-              <Card className="bg-background">
-                <CardContent className="pt-6">
-                  <div className="flex justify-between mb-2">
-                    <div>
-                      <h4 className="font-medium">{reply.user.name}</h4>
-                      <p className="text-xs text-muted-foreground">
-                        @{reply.user.username}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm text-muted-foreground">
-                        {handleDate(reply.createdAt)}
-                      </span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDeleteComment(reply.id)}
-                        className="h-8 w-8 p-0 hover:text-primary"
-                        title="Delete reply"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-
-                  {reply.parent && reply.parentId !== comment.id && (
-                    <p className="text-sm text-primary mb-2">
-                      Replying to @{reply.parent.user.username}
-                    </p>
-                  )}
-
-                  <p className="mt-2">{reply.content}</p>
-                </CardContent>
-              </Card>
-            </div>
+            <CommentCard
+              comment={reply}
+              isReply={!isReply}
+              replyingTo={replyingTo}
+              setReplyingTo={setReplyingTo}
+              handleDeleteComment={handleDeleteComment}
+              replyContent={replyContent}
+              setReplyContent={setReplyContent}
+              handleReplySubmit={handleReplySubmit}
+            />
           ))}
         </div>
       )}
