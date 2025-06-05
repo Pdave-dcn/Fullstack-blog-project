@@ -5,6 +5,7 @@ import { Menu, Home, BookOpen, User } from "lucide-react";
 import AuthModal from "./AuthModal";
 import UserMenu from "./UserMenu";
 import { useAuth } from "@/hooks/use-auth";
+import { motion } from "motion/react";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -18,12 +19,17 @@ const Header = () => {
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-lg">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link
-            to="/"
-            className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hover:from-blue-700 hover:to-purple-700 transition-all duration-300"
+          <motion.div
+            whileHover={{ scale: 1.1, rotate: 5 }}
+            whileTap={{ scale: 0.9 }}
           >
-            TextNode
-          </Link>
+            <Link
+              to="/"
+              className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hover:from-blue-700 hover:to-purple-700 transition-all duration-300"
+            >
+              TextNode
+            </Link>
+          </motion.div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-2">
