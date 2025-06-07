@@ -1,6 +1,8 @@
+import dotenv from "dotenv";
+dotenv.config();
 import cors from "cors";
 
-const allowedOrigins = ["http://localhost:5173", "http://localhost:5174"];
+const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(",") || [];
 
 export const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
