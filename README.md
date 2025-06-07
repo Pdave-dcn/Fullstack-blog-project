@@ -23,6 +23,15 @@ Coming soon!
 
 ---
 
+## Screenshots
+
+![Editor Dashboard](./screenshots/frontend-editor-dashboard.jpeg)
+![Editor Articles Page](./screenshots/frontend-editor-articles-page.jpeg)
+![Reader Home Page](./screenshots/frontend-reader-home.jpeg)
+![Reader Articles Page](./screenshots/frontend-reader-articles-page.jpeg)
+
+---
+
 ## 📁 Project Structure
 
 ```
