@@ -14,6 +14,8 @@ import {
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
+  const basePath = import.meta.env.BASE_URL;
+
   const socialLinks = {
     instagram: "https://www.threads.com/@pdv_stack",
     github: "https://github.com/Pdave-dcn",
@@ -78,7 +80,7 @@ const Footer = () => {
             <ul className="space-y-3">
               <li>
                 <Link
-                  to="/"
+                  to={`${basePath}`}
                   className="text-gray-300 hover:text-blue-400 transition-colors duration-200 flex items-center group"
                 >
                   <span className="w-2 h-2 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>
@@ -87,7 +89,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/articles"
+                  to={`${basePath}/articles`}
                   className="text-gray-300 hover:text-blue-400 transition-colors duration-200 flex items-center group"
                 >
                   <span className="w-2 h-2 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>
@@ -96,7 +98,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/about"
+                  to={`${basePath}/about`}
                   className="text-gray-300 hover:text-blue-400 transition-colors duration-200 flex items-center group"
                 >
                   <span className="w-2 h-2 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>

@@ -13,6 +13,8 @@ const Header = () => {
   const location = useLocation();
   const { user } = useAuth();
 
+  const basePath = import.meta.env.BASE_URL;
+
   const isActive = (path: string) => location.pathname === path;
 
   return (
@@ -24,7 +26,7 @@ const Header = () => {
             whileTap={{ scale: 0.9 }}
           >
             <Link
-              to="/"
+              to={`${basePath}`}
               className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hover:from-blue-700 hover:to-purple-700 transition-all duration-300"
             >
               TextNode
@@ -34,9 +36,9 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-2">
             <Link
-              to="/"
+              to={`${basePath}`}
               className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 ${
-                isActive("/")
+                isActive(`${basePath}`)
                   ? "text-blue-600 bg-blue-50 shadow-sm"
                   : "text-gray-600 hover:text-blue-600 hover:bg-blue-50/50"
               }`}
@@ -45,9 +47,9 @@ const Header = () => {
               <span className="font-medium">Home</span>
             </Link>
             <Link
-              to="/articles"
+              to={`${basePath}/articles`}
               className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 ${
-                isActive("/articles")
+                isActive(`${basePath}/articles`)
                   ? "text-blue-600 bg-blue-50 shadow-sm"
                   : "text-gray-600 hover:text-blue-600 hover:bg-blue-50/50"
               }`}
@@ -56,9 +58,9 @@ const Header = () => {
               <span className="font-medium">Articles</span>
             </Link>
             <Link
-              to="/about"
+              to={`${basePath}/about`}
               className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 ${
-                isActive("/about")
+                isActive(`${basePath}/about`)
                   ? "text-blue-600 bg-blue-50 shadow-sm"
                   : "text-gray-600 hover:text-blue-600 hover:bg-blue-50/50"
               }`}
@@ -98,9 +100,9 @@ const Header = () => {
           <nav className="md:hidden py-4 border-t border-gray-200/50 bg-white/95 backdrop-blur-xl">
             <div className="flex flex-col space-y-2">
               <Link
-                to="/"
+                to={`${basePath}`}
                 className={`flex items-center space-x-2 px-3 py-3 rounded-lg transition-all duration-200 ${
-                  isActive("/")
+                  isActive(`${basePath}`)
                     ? "text-blue-600 bg-blue-50"
                     : "text-gray-600 hover:text-blue-600 hover:bg-blue-50/50"
                 }`}
@@ -110,9 +112,9 @@ const Header = () => {
                 <span className="font-medium">Home</span>
               </Link>
               <Link
-                to="/articles"
+                to={`${basePath}/articles`}
                 className={`flex items-center space-x-2 px-3 py-3 rounded-lg transition-all duration-200 ${
-                  isActive("/articles")
+                  isActive(`${basePath}/articles`)
                     ? "text-blue-600 bg-blue-50"
                     : "text-gray-600 hover:text-blue-600 hover:bg-blue-50/50"
                 }`}
@@ -122,9 +124,9 @@ const Header = () => {
                 <span className="font-medium">Articles</span>
               </Link>
               <Link
-                to="/about"
+                to={`${basePath}/about`}
                 className={`flex items-center space-x-2 px-3 py-3 rounded-lg transition-all duration-200 ${
-                  isActive("/about")
+                  isActive(`${basePath}/about`)
                     ? "text-blue-600 bg-blue-50"
                     : "text-gray-600 hover:text-blue-600 hover:bg-blue-50/50"
                 }`}

@@ -22,6 +22,8 @@ const Home = () => {
     loading,
   } = useDataFetching<BlogPost[]>("/posts/recent");
 
+  const basePath = import.meta.env.BASE_URL;
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -416,7 +418,7 @@ const Home = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Link to="/articles">
+                <Link to={`${basePath}/articles`}>
                   <Button
                     variant="outline"
                     className="hidden sm:flex border-gray-200  text-gray-900  hover:bg-gray-100"
