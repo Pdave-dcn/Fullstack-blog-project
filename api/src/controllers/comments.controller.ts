@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { handleServerError } from "../utils/error";
-import prisma from "../config/db";
-import { User } from "../utils/types";
+import { handleServerError } from "../utils/error.js";
+import prisma from "../config/db.js";
+import { User } from "../utils/types.js";
 import {
   getValidatedPostAndCommentIds,
   getValidatedPostId,
-} from "../utils/validateParams";
+} from "../utils/validateParams.js";
 
 export const AuthorGetComments = async (req: Request, res: Response) => {
   try {

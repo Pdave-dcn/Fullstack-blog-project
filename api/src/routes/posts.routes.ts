@@ -8,7 +8,7 @@ import {
   getRecentArticles,
   getUniquePost,
   updatePostStatus,
-} from "../controllers/posts.controller";
+} from "../controllers/posts.controller.js";
 import passport from "passport";
 
 const router = express.Router();

@@ -1,7 +1,7 @@
-import prisma from "../config/db";
+import prisma from "../config/db.js";
 import { Request, Response } from "express";
-import { handleServerError } from "../utils/error";
-import { User } from "../utils/types";
+import { handleServerError } from "../utils/error.js";
+import { User } from "../utils/types.js";
 
 export const getDashboardStats = async (req: Request, res: Response) => {
   try {

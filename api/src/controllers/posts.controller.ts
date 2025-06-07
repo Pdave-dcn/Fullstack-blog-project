@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import prisma from "../config/db";
+import prisma from "../config/db.js";
 import { PostStatus } from "../generated/prisma";
-import { handleServerError } from "../utils/error";
-import { PostInput, User } from "../utils/types";
-import { getValidatedPostId } from "../utils/validateParams";
+import { handleServerError } from "../utils/error.js";
+import { PostInput, User } from "../utils/types.js";
+import { getValidatedPostId } from "../utils/validateParams.js";
 
 export const getAllPosts = async (req: Request, res: Response) => {
   try {

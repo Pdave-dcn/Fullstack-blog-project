@@ -4,7 +4,7 @@ import {
   getDashboardStats,
   getRecentArticles,
   getRecentComments,
-} from "../controllers/dashboard.controller";
+} from "../controllers/dashboard.controller.js";
 
 const router = express.Router();
 

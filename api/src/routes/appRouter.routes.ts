@@ -1,8 +1,8 @@
 import express from "express";
-import authRoutes from "./auth.routes";
-import postsRoutes from "./posts.routes";
-import commentsRoutes from "./comments.routes";
-import dashboardRoutes from "./dashboard.routes";
+import authRoutes from "./auth.routes.js";
+import postsRoutes from "./posts.routes.js";
+import commentsRoutes from "./comments.routes.js";
+import dashboardRoutes from "./dashboard.routes.js";
 
 const router = express.Router();
 

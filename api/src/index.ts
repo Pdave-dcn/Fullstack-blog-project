@@ -2,10 +2,10 @@ import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import passport from "passport";
-import router from "./routes/appRouter.routes";
-import initializePassport from "./config/passport";
+import router from "./routes/appRouter.routes.js";
+import initializePassport from "./config/passport.js";
 import cors from "cors";
-import { corsOptions } from "./config/cors";
+import { corsOptions } from "./config/cors.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
