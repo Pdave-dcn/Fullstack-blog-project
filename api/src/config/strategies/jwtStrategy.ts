@@ -1,5 +1,5 @@
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
-import prisma from "../db";
+import prisma from "../db.js";
 
 const jwtSecret = process.env.JWT_SECRET;
 if (!jwtSecret) {
