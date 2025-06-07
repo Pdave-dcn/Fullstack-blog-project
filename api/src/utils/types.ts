@@ -1,4 +1,4 @@
-import { PostStatus } from "../generated/prisma";
+import { PostStatus } from "@prisma/client";
 
 export type User = { id: number; username: string; role: string };
 

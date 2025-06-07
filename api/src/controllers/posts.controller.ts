@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "../config/db.js";
-import { PostStatus } from "../generated/prisma";
+import { PostStatus } from "@prisma/client";
 import { handleServerError } from "../utils/error.js";
 import { PostInput, User } from "../utils/types.js";
 import { getValidatedPostId } from "../utils/validateParams.js";

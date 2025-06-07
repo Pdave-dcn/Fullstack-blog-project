@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import prisma from "../config/db.js";
 import jwt from "jsonwebtoken";
 import passport from "passport";
-import { User, UserRole } from "../generated/prisma";
+import { User, UserRole } from "@prisma/client";
 import { handleServerError } from "../utils/error.js";
 
 export const signupUser = async (req: Request, res: Response) => {
