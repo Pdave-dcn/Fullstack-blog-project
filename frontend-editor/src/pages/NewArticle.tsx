@@ -72,7 +72,7 @@ const NewArticle = () => {
           <div className="h-full">
             <Editor
               apiKey={import.meta.env.VITE_TINYMCE_API_KEY}
-              onInit={(evt, editor) => {
+              onInit={(_evt, editor) => {
                 editorRef.current = editor;
               }}
               init={{

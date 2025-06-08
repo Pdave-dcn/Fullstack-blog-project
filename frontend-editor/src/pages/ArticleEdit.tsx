@@ -139,7 +139,7 @@ const ArticleEdit = () => {
           <Label>Content</Label>
           <Editor
             apiKey={import.meta.env.VITE_TINYMCE_API_KEY}
-            onInit={(evt, editor) => {
+            onInit={(_evt, editor) => {
               editorRef.current = editor;
               if (article) {
                 editor.setContent(article.content);
