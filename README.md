@@ -19,7 +19,15 @@ A full-stack blog platform featuring a modern React/TypeScript frontend (with se
 
 ## 🚀 Live Demo
 
-Coming soon!
+### Frontend Reader
+
+- <https://textnode-reader.netlify.app/>
+
+### Frontend Editor
+
+- Username: "Author"
+- Password: 123456
+- <https://textnode-editor.netlify.app/>
 
 ---
 

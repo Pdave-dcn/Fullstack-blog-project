@@ -51,7 +51,7 @@ const ArticleCard = ({ post }: ArticleCardProps) => {
   };
 
   return (
-    <Link to={`/article/${post.id}`} className="block group">
+    <Link to={`/articles/${post.id}`} className="block group">
       <Card className="h-full hover:shadow-lg transition-all duration-300 transform group-hover:-translate-y-1 border border-gray-200">
         <CardHeader className="p-6">
           <div className="flex items-center justify-between text-sm text-gray-500 mb-3">
