@@ -1,7 +1,7 @@
-import { Article } from "../../domains/articles/Article";
-import { ArticleRepository } from "../../domains/articles/ArticleRepository";
-import { UnauthorizedAuthorError } from "../../domains/articles/errors/UnauthorizedAuthorError";
-import { CreateArticleCommand } from "./CreateArticleCommand";
+import { Article } from "@/domains/articles/Article.js";
+import { ArticleRepository } from "@/domains/articles/ArticleRepository.js";
+import { UnauthorizedAuthorError } from "@/domains/articles/errors/UnauthorizedAuthorError.js";
+import { CreateArticleCommand } from "./CreateArticleCommand.js";
 import { randomUUID } from "crypto";
 
 export class CreateArticleUseCase {

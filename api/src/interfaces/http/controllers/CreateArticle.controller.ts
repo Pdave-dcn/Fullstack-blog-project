@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { CreateArticleUseCase } from "../../../application/articles/CreateArticleUseCase";
-import { PrismaArticleRepository } from "../../../infrastructure/db/prisma/PrismaArticleRepository";
-import { ArticleStatus } from "../../../domains/articles/ArticleStatus";
+import { CreateArticleUseCase } from "@/application/articles/CreateArticleUseCase.js";
+import { PrismaArticleRepository } from "@/infrastructure/db/prisma/PrismaArticleRepository.js";
+import { createArticleSchema } from "../validators/createArticle.schema.js";
 
 const articleRepository = new PrismaArticleRepository();
 const createArticleUseCase = new CreateArticleUseCase(articleRepository);
@@ -14,18 +14,14 @@ export const createArticleController = async (
   try {
     const user = req.user as any;
 
-    const status = req.body.status;
-
-    if (!Object.values(ArticleStatus).includes(status)) {
-      return res.status(400).json({ message: "Invalid article status" });
-    }
+    const body = createArticleSchema.parse(req.body);
 
     const article = await createArticleUseCase.execute({
       authorId: user.id,
       authorRole: user.role,
-      title: req.body.title,
-      content: req.body.content,
-      status: status as ArticleStatus,
+      title: body.title,
+      content: body.content,
+      status: body.status,
     });
 
     res.status(201).json(article);

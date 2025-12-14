@@ -1,4 +1,4 @@
-import { ArticleStatus } from "./ArticleStatus";
+import { ArticleStatus } from "./ArticleStatus.js";
 
 export class Article {
   constructor(

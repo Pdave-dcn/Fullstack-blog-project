@@ -1,6 +1,6 @@
-import prisma from "../../../config/db";
-import { ArticleRepository } from "../../../domains/articles/ArticleRepository";
-import { Article } from "../../../domains/articles/Article";
+import prisma from "@/config/db";
+import { ArticleRepository } from "@/domains/articles/ArticleRepository";
+import { Article } from "@/domains/articles/Article";
 
 export class PrismaArticleRepository implements ArticleRepository {
   async save(article: Article): Promise<void> {
