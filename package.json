@@ -1,9 +1,19 @@
 {
-  "name": "blog-project",
+  "name": "textnode",
   "private": true,
   "workspaces": [
     "api",
     "frontend-reader",
     "frontend-editor"
-  ]
+  ],
+  "scripts": {
+    "start:frontend:reader": "npm --workspace frontend-reader run dev",
+    "start:frontend:editor": "npm --workspace frontend-editor run dev",
+    "start:backend": "npm --workspace api run dev",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend:reader\" \"npm run start:frontend:editor\"",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
 }

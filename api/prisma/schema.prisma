@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,48 +8,60 @@ datasource db {
 }
 
 enum PostStatus {
-  draft
-  published
+  DRAFT
+  PUBLISHED
 }
 
-enum UserRole {
-  user
-  author
+enum Role {
+  READER
+  AUTHOR
 }
 
 model User {
-  id           Int       @id @default(autoincrement())
+  id           String @id @default(uuid())
   name         String
-  username     String    @unique
-  passwordHash String
-  role         UserRole
-  createdAt    DateTime  @default(now())
-  posts        Post[]
-  comments     Comment[]
+  username     String @unique
+  passwordHash String @map("password_hash")
+  role         Role
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  posts    Post[]
+  comments Comment[]
+
+  @@map("users")
 }
 
 model Post {
-  id        Int        @id @default(autoincrement())
-  title     String
-  content   String
-  status    PostStatus
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  userId    Int
-  user      User       @relation(fields: [userId], references: [id])
-  comments  Comment[]
+  id      String     @id @default(uuid())
+  title   String
+  content String
+  status  PostStatus
+  userId  String     @map("user_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user     User      @relation(fields: [userId], references: [id])
+  comments Comment[]
+
+  @@map("posts")
 }
 
 model Comment {
-  id        Int       @id @default(autoincrement())
-  content   String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  parentId  Int?
-  userId    Int
-  postId    Int
-  user      User      @relation(fields: [userId], references: [id])
-  post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
-  parent    Comment?  @relation("commentReplies", fields: [parentId], references: [id], onDelete: Cascade)
-  replies   Comment[] @relation("commentReplies")
+  id       Int    @id @default(autoincrement())
+  content  String
+  parentId Int?   @map("parent_id")
+  userId   String @map("user_id")
+  postId   String @map("post_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user    User      @relation(fields: [userId], references: [id])
+  post    Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  parent  Comment?  @relation("commentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies Comment[] @relation("commentReplies")
+
+  @@map("comments")
 }
