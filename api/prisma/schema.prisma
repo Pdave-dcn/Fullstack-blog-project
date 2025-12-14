@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum PostStatus {
+enum ArticleStatus {
   DRAFT
   PUBLISHED
 }
@@ -26,41 +26,41 @@ model User {
 
   createdAt DateTime @default(now()) @map("created_at")
 
-  posts    Post[]
+  posts    Article[]
   comments Comment[]
 
   @@map("users")
 }
 
-model Post {
-  id      String     @id @default(uuid())
-  title   String
-  content String
-  status  PostStatus
-  userId  String     @map("user_id")
+model Article {
+  id       String        @id @default(uuid())
+  title    String
+  content  String
+  status   ArticleStatus
+  authorId String        @map("author_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  user     User      @relation(fields: [userId], references: [id])
+  author   User      @relation(fields: [authorId], references: [id])
   comments Comment[]
 
-  @@map("posts")
+  @@map("articles")
 }
 
 model Comment {
-  id       Int    @id @default(autoincrement())
-  content  String
-  parentId Int?   @map("parent_id")
-  userId   String @map("user_id")
-  postId   String @map("post_id")
+  id        String  @id @default(uuid())
+  content   String
+  parentId  String? @map("parent_id")
+  userId    String  @map("user_id")
+  articleId String  @map("post_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   user    User      @relation(fields: [userId], references: [id])
-  post    Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
-  parent  Comment?  @relation("commentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  article Article   @relation(fields: [articleId], references: [id])
+  parent  Comment?  @relation("commentReplies", fields: [parentId], references: [id])
   replies Comment[] @relation("commentReplies")
 
   @@map("comments")

@@ -6,6 +6,7 @@ import router from "./routes/appRouter.routes.js";
 import initializePassport from "./config/passport.js";
 import cors from "cors";
 import { corsOptions } from "./config/cors.js";
+import { errorMiddleware } from "./interfaces/http/middlewares/errorMiddleware.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -20,6 +21,8 @@ initializePassport(passport);
 
 app.use("/", router);
 
+app.use(errorMiddleware);
+
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on PORT ${PORT}`);
 });
