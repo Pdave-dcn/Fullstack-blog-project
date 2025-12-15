@@ -5,39 +5,6 @@ import { handleServerError } from "../utils/error.js";
 import { User } from "../utils/types.js";
 import { getValidatedPostId } from "../utils/validateParams.js";
 
-export const getAllPosts = async (req: Request, res: Response) => {
-  try {
-    const user = req.user as User;
-
-    const whereClause =
-      user.role === "author" ? undefined : { status: PostStatus.published };
-
-    const posts = await prisma.post.findMany({
-      where: whereClause,
-      orderBy: { createdAt: "desc" },
-      include: { comments: true },
-    });
-
-    res.status(200).json(posts);
-  } catch (error) {
-    handleServerError("Error fetching posts", error, res);
-  }
-};
-
-export const getPosts = async (_req: Request, res: Response) => {
-  try {
-    const posts = await prisma.post.findMany({
-      where: { status: "published" },
-      orderBy: { createdAt: "desc" },
-      include: { comments: true },
-    });
-
-    res.status(200).json(posts);
-  } catch (error) {
-    handleServerError("Error fetching posts", error, res);
-  }
-};
-
 export const getUniquePost = async (req: Request, res: Response) => {
   try {
     const postId = getValidatedPostId(req, res);

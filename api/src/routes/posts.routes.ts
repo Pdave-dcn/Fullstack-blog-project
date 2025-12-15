@@ -1,7 +1,5 @@
 import express, { RequestHandler } from "express";
 import {
-  getAllPosts,
-  getPosts,
   getRecentArticles,
   getUniquePost,
   updatePostStatus,
@@ -10,16 +8,20 @@ import passport from "passport";
 import { editArticleController } from "@/interfaces/http/controllers/articles/EditArticle.controller.js";
 import { createArticleController } from "@/interfaces/http/controllers/articles/CreateArticle.controller.js";
 import { deleteArticleController } from "@/interfaces/http/controllers/articles/DeleteArticle.controller.js";
+import {
+  listArticlesController,
+  listPublicArticlesController,
+} from "@/interfaces/http/controllers/articles/ListArticles.controller.js";
 
 const router = express.Router();
 
 router.get(
   "/posts",
   passport.authenticate("jwt", { session: false }),
-  getAllPosts as RequestHandler
+  listArticlesController
 );
 
-router.get("/posts/published", getPosts as RequestHandler);
+router.get("/posts/published", listPublicArticlesController);
 
 router.get("/posts/recent", getRecentArticles as RequestHandler);
 

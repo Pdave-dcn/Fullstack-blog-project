@@ -1,7 +1,19 @@
 import prisma from "@/config/db.js";
 import { Article } from "@/domains/articles/Article";
-import { ArticleStatus as DomainArticleStatus } from "@/domains/articles/ArticleStatus";
+import {
+  ArticleStatus,
+  ArticleStatus as DomainArticleStatus,
+} from "@/domains/articles/ArticleStatus";
 import { ArticleRepository } from "@/domains/articles/ArticleRepository.js";
+
+type PrismaArticleRow = {
+  id: string;
+  title: string;
+  content: string;
+  status: string;
+  authorId: string;
+  createdAt: Date;
+};
 
 function mapPrismaStatusToDomain(status: string): DomainArticleStatus {
   switch (status) {
@@ -14,31 +26,35 @@ function mapPrismaStatusToDomain(status: string): DomainArticleStatus {
   }
 }
 
+export function mapPrismaArticleToDomain(row: PrismaArticleRow): Article {
+  return new Article(
+    row.id,
+    row.title,
+    row.content,
+    mapPrismaStatusToDomain(row.status),
+    row.authorId,
+    row.createdAt
+  );
+}
+
 export class PrismaArticleRepository implements ArticleRepository {
   async findById(id: string): Promise<Article | null> {
-    const data = await prisma.article.findUnique({
+    const row = await prisma.article.findUnique({
       where: { id },
-      select: {
-        id: true,
-        authorId: true,
-        title: true,
-        content: true,
-        status: true,
-        createdAt: true,
-      },
     });
 
-    if (!data) return null;
+    if (!row) return null;
 
-    // map plain object to domain entity
-    return new Article(
-      data.id,
-      data.title,
-      data.content,
-      mapPrismaStatusToDomain(data.status),
-      data.authorId,
-      data.createdAt
-    );
+    return mapPrismaArticleToDomain(row);
+  }
+
+  async findByStatuses(statuses: ArticleStatus[]): Promise<Article[]> {
+    const rows = await prisma.article.findMany({
+      where: { status: { in: statuses } },
+      orderBy: { createdAt: "desc" },
+    });
+
+    return rows.map(mapPrismaArticleToDomain);
   }
 
   async update(article: Article): Promise<void> {
