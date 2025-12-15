@@ -1,5 +1,7 @@
 import { Article } from "./Article.js";
 
 export interface ArticleRepository {
-  save(article: Article): Promise<void>;
+  findById(id: string): Promise<Article | null>;
+  create(article: Article): Promise<void>;
+  update(article: Article): Promise<void>;
 }

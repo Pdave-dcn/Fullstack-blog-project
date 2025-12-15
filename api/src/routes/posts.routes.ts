@@ -1,8 +1,6 @@
 import express, { RequestHandler } from "express";
 import {
-  createPost,
   deletePost,
-  editPost,
   getAllPosts,
   getPosts,
   getRecentArticles,
@@ -10,6 +8,8 @@ import {
   updatePostStatus,
 } from "../controllers/posts.controller.js";
 import passport from "passport";
+import { editArticleController } from "@/interfaces/http/controllers/EditArticle.controller.js";
+import { createArticleController } from "@/interfaces/http/controllers/CreateArticle.controller.js";
 
 const router = express.Router();
 
@@ -28,13 +28,13 @@ router.get("/posts/:postId", getUniquePost as RequestHandler);
 router.post(
   "/posts",
   passport.authenticate("jwt", { session: false }),
-  createPost as RequestHandler
+  createArticleController
 );
 
 router.put(
   "/posts/:postId",
   passport.authenticate("jwt", { session: false }),
-  editPost as RequestHandler
+  editArticleController
 );
 
 router.patch(

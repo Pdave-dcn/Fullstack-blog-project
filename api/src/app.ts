@@ -7,7 +7,7 @@ import initializePassport from "@/config/passport.js";
 import cors from "cors";
 import { corsOptions } from "@/config/cors.js";
 import { errorMiddleware } from "@/interfaces/http/middlewares/error.middleware.js";
-import { httpLogger } from "@/interfaces/http/middlewares/httpLogger.js";
+import { httpLogger } from "@/interfaces/http/middlewares/httpLogger.middleware.js";
 
 const app = express();
 

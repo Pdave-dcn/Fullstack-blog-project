@@ -26,4 +26,18 @@ export class Article {
       new Date()
     );
   }
+
+  update(props: { title?: string; content?: string; status?: ArticleStatus }) {
+    if (props.title !== undefined) {
+      this.title = props.title;
+    }
+
+    if (props.content !== undefined) {
+      this.content = props.content;
+    }
+
+    if (props.status !== undefined) {
+      this.status = props.status;
+    }
+  }
 }

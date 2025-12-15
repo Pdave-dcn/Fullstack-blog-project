@@ -1,6 +1,6 @@
 import { Article } from "@/domains/articles/Article.js";
 import { ArticleRepository } from "@/domains/articles/ArticleRepository.js";
-import { UnauthorizedAuthorError } from "@/domains/articles/errors/UnauthorizedAuthorError.js";
+import { UnauthorizedAuthorError } from "@/domains/articles/ArticleErrors.js";
 import { CreateArticleCommand } from "./CreateArticleCommand.js";
 import { randomUUID } from "crypto";
 
@@ -23,7 +23,7 @@ export class CreateArticleUseCase {
     });
 
     // 3. Persist
-    await this.articleRepository.save(article);
+    await this.articleRepository.create(article);
 
     return article;
   }
