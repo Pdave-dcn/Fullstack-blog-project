@@ -7,9 +7,9 @@ import {
   updatePostStatus,
 } from "../controllers/posts.controller.js";
 import passport from "passport";
-import { editArticleController } from "@/interfaces/http/controllers/EditArticle.controller.js";
-import { createArticleController } from "@/interfaces/http/controllers/CreateArticle.controller.js";
-import { deleteArticleController } from "@/interfaces/http/controllers/DeleteArticle.controller.js";
+import { editArticleController } from "@/interfaces/http/controllers/articles/EditArticle.controller.js";
+import { createArticleController } from "@/interfaces/http/controllers/articles/CreateArticle.controller.js";
+import { deleteArticleController } from "@/interfaces/http/controllers/articles/DeleteArticle.controller.js";
 
 const router = express.Router();
 

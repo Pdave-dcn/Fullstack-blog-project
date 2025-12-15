@@ -1,11 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { CreateArticleUseCase } from "@/application/articles/CreateArticleUseCase.js";
-import { PrismaArticleRepository } from "@/infrastructure/db/prisma/PrismaArticleRepository.js";
-import { createArticleSchema } from "../validators/createArticle.schema.js";
-import { AuthenticatedRequest } from "../types/AuthRequest.js";
-
-const articleRepository = new PrismaArticleRepository();
-const createArticleUseCase = new CreateArticleUseCase(articleRepository);
+import { createArticleSchema } from "../../validators/createArticle.schema.js";
+import { AuthenticatedRequest } from "../../types/AuthRequest.js";
+import { container } from "@/infrastructure/di/container.js";
 
 export const createArticleController = async (
   req: Request,
@@ -18,7 +14,7 @@ export const createArticleController = async (
 
     const body = createArticleSchema.parse(authReq.body);
 
-    const article = await createArticleUseCase.execute({
+    const article = await container.createArticleUseCase.execute({
       authorId: user.id,
       authorRole: user.role,
       title: body.title,
