@@ -17,3 +17,9 @@ export class ForbiddenArticleEditError extends DomainError {
     super("You cannot edit someone else's article.");
   }
 }
+
+export class ForbiddenArticleDeleteError extends DomainError {
+  constructor() {
+    super("You cannot delete someone else's article.");
+  }
+}

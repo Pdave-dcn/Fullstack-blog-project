@@ -99,29 +99,6 @@ export const getUniquePost = async (req: Request, res: Response) => {
   }
 };
 
-export const deletePost = async (req: Request, res: Response) => {
-  try {
-    const postId = getValidatedPostId(req, res);
-    if (!postId) return;
-
-    const user = req.user as User;
-    if (user.role !== "author") {
-      return res.status(403).json({ message: "Access denied" });
-    }
-
-    const post = await prisma.post.findUnique({ where: { id: postId } });
-    if (!post) {
-      return res.status(404).json({ message: "Post not found" });
-    }
-
-    await prisma.post.delete({ where: { id: postId } });
-
-    return res.status(200).json({ message: "Post deleted successfully" });
-  } catch (error) {
-    handleServerError("Error deleting post", error, res);
-  }
-};
-
 export const updatePostStatus = async (req: Request, res: Response) => {
   try {
     const user = req.user as User;

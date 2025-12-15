@@ -65,4 +65,8 @@ export class PrismaArticleRepository implements ArticleRepository {
       },
     });
   }
+
+  async deleteById(articleId: string): Promise<void> {
+    await prisma.article.delete({ where: { id: articleId } });
+  }
 }

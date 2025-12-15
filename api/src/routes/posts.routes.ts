@@ -1,6 +1,5 @@
 import express, { RequestHandler } from "express";
 import {
-  deletePost,
   getAllPosts,
   getPosts,
   getRecentArticles,
@@ -10,6 +9,7 @@ import {
 import passport from "passport";
 import { editArticleController } from "@/interfaces/http/controllers/EditArticle.controller.js";
 import { createArticleController } from "@/interfaces/http/controllers/CreateArticle.controller.js";
+import { deleteArticleController } from "@/interfaces/http/controllers/DeleteArticle.controller.js";
 
 const router = express.Router();
 
@@ -46,7 +46,7 @@ router.patch(
 router.delete(
   "/posts/:postId",
   passport.authenticate("jwt", { session: false }),
-  deletePost as RequestHandler
+  deleteArticleController
 );
 
 export default router;
