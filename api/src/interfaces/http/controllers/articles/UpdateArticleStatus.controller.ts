@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { AuthenticatedRequest } from "../../types/AuthRequest";
-import { UpdateArticleStatusSchema } from "../../validators/editArticle.schema";
+import { UpdateArticleStatusSchema } from "../../validators/articles/editArticle.schema";
 import { container } from "@/infrastructure/di/container";
 
 export const updateArticleStatusController = async (

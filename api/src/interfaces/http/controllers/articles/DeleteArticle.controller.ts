@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { AuthenticatedRequest } from "../../types/AuthRequest.js";
-import { DeleteArticleSchema } from "../../validators/deleteArticle.schema.js";
+import { DeleteArticleSchema } from "../../validators/articles/deleteArticle.schema.js";
 import { container } from "@/infrastructure/di/container.js";
 
 export const deleteArticleController = async (

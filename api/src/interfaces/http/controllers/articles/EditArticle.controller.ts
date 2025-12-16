@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { EditArticleSchema } from "../../validators/editArticle.schema.js";
+import { EditArticleSchema } from "../../validators/articles/editArticle.schema.js";
 import { EditArticleCommand } from "@/application/articles/edit/EditArticleCommand.js";
 import { AuthenticatedRequest } from "../../types/AuthRequest.js";
 import { container } from "@/infrastructure/di/container.js";

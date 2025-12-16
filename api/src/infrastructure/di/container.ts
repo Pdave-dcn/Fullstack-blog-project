@@ -1,33 +1,30 @@
 import { CreateArticleUseCase } from "@/application/articles/create/CreateArticleUseCase.js";
 import { DeleteArticleUseCase } from "@/application/articles/delete/DeleteArticleUseCase.js";
-import { EditArticleUseCase } from "@/application/articles/edit/EditArticleUseCase";
+import { EditArticleUseCase } from "@/application/articles/edit/EditArticleUseCase.js";
 import { ArticleRepository } from "@/domains/articles/ArticleRepository.js";
-import { PrismaArticleRepository } from "../db/prisma/PrismaArticleRepository";
-import { ListArticlesUseCase } from "@/application/articles/list/ListArticlesUseCase";
-import { UpdateArticleStatusUseCase } from "@/application/articles/update/UpdateArticleStatusUseCase";
-import { GetArticleByIdUseCase } from "@/application/articles/querySingle/GetArticleByIdUseCase";
-import { GetRecentArticlesUseCase } from "@/application/articles/list/GetRecentArticlesUseCase";
+import { PrismaArticleRepository } from "../db/prisma/PrismaArticleRepository.js";
+import { ListArticlesUseCase } from "@/application/articles/list/ListArticlesUseCase.js";
+import { UpdateArticleStatusUseCase } from "@/application/articles/update/UpdateArticleStatusUseCase.js";
+import { GetArticleByIdUseCase } from "@/application/articles/querySingle/GetArticleByIdUseCase.js";
+import { GetRecentArticlesUseCase } from "@/application/articles/list/GetRecentArticlesUseCase.js";
+
+import { PrismaUserRepository } from "../db/prisma/PrismaUserRepository.js";
+import { SignupUserUseCase } from "@/application/users/signup/SignupUserUseCase.js";
+import { LoginUserUseCase } from "@/application/users/login/LoginUserUseCase.js";
 
 /**
- * Dependency Injection Container for the Article domain.
+ * Dependency Injection Container for application use cases and repositories.
  *
- * This container centralizes the creation and wiring of repositories
- * and use cases, providing a single source of truth for dependencies.
+ * This container centralizes the creation and wiring of repositories and use cases
+ * across multiple domains (Articles, Users), providing a single source of truth for
+ * dependency management and ensuring consistent initialization order.
  *
  * @class Container
- * @property {ArticleRepository} articleRepository - The repository responsible for Article persistence.
- * @property {CreateArticleUseCase} createArticleUseCase - Use case to handle creating articles.
- * @property {EditArticleUseCase} editArticleUseCase - Use case to handle editing articles.
- * @property {DeleteArticleUseCase} deleteArticleUseCase - Use case to handle deleting articles.
- * @property {ListArticlesUseCase} listArticlesUseCase - Use case to handle listing articles.
- * @property {UpdateArticleStatusUseCase} updateArticleStatusUseCase - Use case to update an article status.
- * @property {GetArticleByIdUseCase} getArticleByIdUseCase - Use case to handle single article fetching
- * @property {GetRecentArticlesUseCase} getRecentArticlesUseCase - Use case to handle recent articles fetching
  *
  * @example
  * import { container } from './container.js';
  *
- * // Using the container to execute a use case
+ * // Article domain
  * const article = await container.createArticleUseCase.execute({
  *   authorId: 'user-id',
  *   authorRole: 'AUTHOR',
@@ -35,9 +32,17 @@ import { GetRecentArticlesUseCase } from "@/application/articles/list/GetRecentA
  *   content: 'Some content',
  *   status: 'DRAFT'
  * });
+ *
+ * @example
+ * // User domain
+ * const user = await container.signupUserUseCase.execute({
+ *   email: 'user@example.com',
+ *   password: 'secure-password',
+ *   username: 'johndoe'
+ * });
  */
-
 class Container {
+  // Article domain
   public readonly articleRepository: ArticleRepository;
   public readonly createArticleUseCase: CreateArticleUseCase;
   public readonly editArticleUseCase: EditArticleUseCase;
@@ -47,7 +52,13 @@ class Container {
   public readonly getArticleByIdUseCase: GetArticleByIdUseCase;
   public readonly getRecentArticlesUseCase: GetRecentArticlesUseCase;
 
+  // User domain
+  public readonly userRepository: PrismaUserRepository;
+  public readonly signupUserUseCase: SignupUserUseCase;
+  public readonly loginUserUseCase: LoginUserUseCase;
+
   constructor() {
+    // Article domain wiring
     this.articleRepository = new PrismaArticleRepository();
 
     this.createArticleUseCase = new CreateArticleUseCase(
@@ -73,6 +84,11 @@ class Container {
     this.getRecentArticlesUseCase = new GetRecentArticlesUseCase(
       this.articleRepository
     );
+
+    // User domain wiring
+    this.userRepository = new PrismaUserRepository();
+    this.signupUserUseCase = new SignupUserUseCase(this.userRepository);
+    this.loginUserUseCase = new LoginUserUseCase(this.userRepository);
   }
 }
 
