@@ -1,8 +1,5 @@
 import express, { RequestHandler } from "express";
-import {
-  getRecentArticles,
-  getUniquePost,
-} from "../controllers/posts.controller.js";
+import { getRecentArticles } from "../controllers/posts.controller.js";
 import passport from "passport";
 import { editArticleController } from "@/interfaces/http/controllers/articles/EditArticle.controller.js";
 import { createArticleController } from "@/interfaces/http/controllers/articles/CreateArticle.controller.js";
@@ -12,6 +9,7 @@ import {
   listPublicArticlesController,
 } from "@/interfaces/http/controllers/articles/ListArticles.controller.js";
 import { updateArticleStatusController } from "@/interfaces/http/controllers/articles/UpdateArticleStatus.controller.js";
+import { getArticleController } from "@/interfaces/http/controllers/articles/GetArticleById.controller.js";
 
 const router = express.Router();
 
@@ -25,7 +23,7 @@ router.get("/posts/published", listPublicArticlesController);
 
 router.get("/posts/recent", getRecentArticles as RequestHandler);
 
-router.get("/posts/:id", getUniquePost as RequestHandler);
+router.get("/posts/:id", getArticleController);
 
 router.post(
   "/posts",
