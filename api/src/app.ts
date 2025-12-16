@@ -3,7 +3,7 @@ dotenv.config();
 import express from "express";
 import passport from "passport";
 import router from "@/routes/appRouter.routes.js";
-import initializePassport from "@/config/passport.js";
+import initializePassport from "./infrastructure/auth/passport/passport.js";
 import cors from "cors";
 import { corsOptions } from "@/config/cors.js";
 import { errorMiddleware } from "@/interfaces/http/middlewares/error.middleware.js";

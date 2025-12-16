@@ -11,6 +11,7 @@ import { GetRecentArticlesUseCase } from "@/application/articles/list/GetRecentA
 import { PrismaUserRepository } from "../db/prisma/PrismaUserRepository.js";
 import { SignupUserUseCase } from "@/application/users/signup/SignupUserUseCase.js";
 import { LoginUserUseCase } from "@/application/users/login/LoginUserUseCase.js";
+import { GetAuthenticatedUserUseCase } from "@/application/auth/GetAuthenticatedUserUseCase.js";
 
 /**
  * Dependency Injection Container for application use cases and repositories.
@@ -56,6 +57,7 @@ class Container {
   public readonly userRepository: PrismaUserRepository;
   public readonly signupUserUseCase: SignupUserUseCase;
   public readonly loginUserUseCase: LoginUserUseCase;
+  public readonly getAuthenticatedUserUseCase: GetAuthenticatedUserUseCase;
 
   constructor() {
     // Article domain wiring
@@ -89,6 +91,9 @@ class Container {
     this.userRepository = new PrismaUserRepository();
     this.signupUserUseCase = new SignupUserUseCase(this.userRepository);
     this.loginUserUseCase = new LoginUserUseCase(this.userRepository);
+    this.getAuthenticatedUserUseCase = new GetAuthenticatedUserUseCase(
+      this.userRepository
+    );
   }
 }
 
