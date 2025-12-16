@@ -1,3 +1,7 @@
+import {
+  ArticleAlreadyDraftError,
+  ArticleAlreadyPublishedError,
+} from "./ArticleErrors.js";
 import { ArticleStatus } from "./ArticleStatus.js";
 
 export class Article {
@@ -39,5 +43,19 @@ export class Article {
     if (props.status !== undefined) {
       this.status = props.status;
     }
+  }
+
+  publish() {
+    if (this.status === ArticleStatus.PUBLISHED) {
+      throw new ArticleAlreadyPublishedError();
+    }
+    this.status = ArticleStatus.PUBLISHED;
+  }
+
+  unpublish() {
+    if (this.status === ArticleStatus.DRAFT) {
+      throw new ArticleAlreadyDraftError();
+    }
+    this.status = ArticleStatus.DRAFT;
   }
 }

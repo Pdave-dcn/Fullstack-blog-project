@@ -2,7 +2,6 @@ import express, { RequestHandler } from "express";
 import {
   getRecentArticles,
   getUniquePost,
-  updatePostStatus,
 } from "../controllers/posts.controller.js";
 import passport from "passport";
 import { editArticleController } from "@/interfaces/http/controllers/articles/EditArticle.controller.js";
@@ -12,6 +11,7 @@ import {
   listArticlesController,
   listPublicArticlesController,
 } from "@/interfaces/http/controllers/articles/ListArticles.controller.js";
+import { updateArticleStatusController } from "@/interfaces/http/controllers/articles/UpdateArticleStatus.controller.js";
 
 const router = express.Router();
 
@@ -25,7 +25,7 @@ router.get("/posts/published", listPublicArticlesController);
 
 router.get("/posts/recent", getRecentArticles as RequestHandler);
 
-router.get("/posts/:postId", getUniquePost as RequestHandler);
+router.get("/posts/:id", getUniquePost as RequestHandler);
 
 router.post(
   "/posts",
@@ -34,19 +34,19 @@ router.post(
 );
 
 router.put(
-  "/posts/:postId",
+  "/posts/:id",
   passport.authenticate("jwt", { session: false }),
   editArticleController
 );
 
 router.patch(
-  "/posts/:postId",
+  "/posts/:id",
   passport.authenticate("jwt", { session: false }),
-  updatePostStatus as RequestHandler
+  updateArticleStatusController
 );
 
 router.delete(
-  "/posts/:postId",
+  "/posts/:id",
   passport.authenticate("jwt", { session: false }),
   deleteArticleController
 );

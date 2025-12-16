@@ -1,5 +1,5 @@
-import { ArticleStatus } from "@prisma/client";
 import { Article } from "./Article.js";
+import { ArticleStatus } from "./ArticleStatus.js";
 
 export interface ArticleRepository {
   findById(id: string): Promise<Article | null>;

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { editArticleSchema } from "../../validators/editArticle.schema.js";
+import { EditArticleSchema } from "../../validators/editArticle.schema.js";
 import { EditArticleCommand } from "@/application/articles/edit/EditArticleCommand.js";
 import { AuthenticatedRequest } from "../../types/AuthRequest.js";
 import { container } from "@/infrastructure/di/container.js";
@@ -13,7 +13,7 @@ export const editArticleController = async (
     const authReq = req as AuthenticatedRequest;
     const user = authReq.user;
 
-    const parsed = editArticleSchema.parse({
+    const parsed = EditArticleSchema.parse({
       ...authReq.body,
       authorId: user?.id,
       authorRole: user?.role,

@@ -4,6 +4,7 @@ import { EditArticleUseCase } from "@/application/articles/edit/EditArticleUseCa
 import { ArticleRepository } from "@/domains/articles/ArticleRepository.js";
 import { PrismaArticleRepository } from "../db/prisma/PrismaArticleRepository";
 import { ListArticlesUseCase } from "@/application/articles/list/ListArticlesUseCase";
+import { UpdateArticleStatusUseCase } from "@/application/articles/update/UpdateArticleStatusUseCase";
 
 /**
  * Dependency Injection Container for the Article domain.
@@ -17,6 +18,7 @@ import { ListArticlesUseCase } from "@/application/articles/list/ListArticlesUse
  * @property {EditArticleUseCase} editArticleUseCase - Use case to handle editing articles.
  * @property {DeleteArticleUseCase} deleteArticleUseCase - Use case to handle deleting articles.
  * @property {ListArticlesUseCase} listArticlesUseCase - Use case to handle listing articles.
+ * @property {UpdateArticleStatusUseCase} updateArticleStatusUseCase - Use case to update an article status.
  *
  * @example
  * import { container } from './container.js';
@@ -37,17 +39,26 @@ class Container {
   public readonly editArticleUseCase: EditArticleUseCase;
   public readonly deleteArticleUseCase: DeleteArticleUseCase;
   public readonly listArticlesUseCase: ListArticlesUseCase;
+  public readonly updateArticleStatusUseCase: UpdateArticleStatusUseCase;
 
   constructor() {
     this.articleRepository = new PrismaArticleRepository();
+
     this.createArticleUseCase = new CreateArticleUseCase(
       this.articleRepository
     );
+
     this.editArticleUseCase = new EditArticleUseCase(this.articleRepository);
+
     this.deleteArticleUseCase = new DeleteArticleUseCase(
       this.articleRepository
     );
+
     this.listArticlesUseCase = new ListArticlesUseCase(this.articleRepository);
+
+    this.updateArticleStatusUseCase = new UpdateArticleStatusUseCase(
+      this.articleRepository
+    );
   }
 }
 

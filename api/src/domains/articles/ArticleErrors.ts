@@ -23,3 +23,15 @@ export class ForbiddenArticleDeleteError extends DomainError {
     super("You cannot delete someone else's article.");
   }
 }
+
+export class ArticleAlreadyPublishedError extends DomainError {
+  constructor() {
+    super("You cannot publish an already published article.");
+  }
+}
+
+export class ArticleAlreadyDraftError extends DomainError {
+  constructor() {
+    super("You cannot draft an already drafted article.");
+  }
+}
