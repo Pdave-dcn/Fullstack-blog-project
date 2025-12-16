@@ -6,6 +6,7 @@ import { PrismaArticleRepository } from "../db/prisma/PrismaArticleRepository";
 import { ListArticlesUseCase } from "@/application/articles/list/ListArticlesUseCase";
 import { UpdateArticleStatusUseCase } from "@/application/articles/update/UpdateArticleStatusUseCase";
 import { GetArticleByIdUseCase } from "@/application/articles/querySingle/GetArticleByIdUseCase";
+import { GetRecentArticlesUseCase } from "@/application/articles/list/GetRecentArticlesUseCase";
 
 /**
  * Dependency Injection Container for the Article domain.
@@ -21,6 +22,7 @@ import { GetArticleByIdUseCase } from "@/application/articles/querySingle/GetArt
  * @property {ListArticlesUseCase} listArticlesUseCase - Use case to handle listing articles.
  * @property {UpdateArticleStatusUseCase} updateArticleStatusUseCase - Use case to update an article status.
  * @property {GetArticleByIdUseCase} getArticleByIdUseCase - Use case to handle single article fetching
+ * @property {GetRecentArticlesUseCase} getRecentArticlesUseCase - Use case to handle recent articles fetching
  *
  * @example
  * import { container } from './container.js';
@@ -43,6 +45,7 @@ class Container {
   public readonly listArticlesUseCase: ListArticlesUseCase;
   public readonly updateArticleStatusUseCase: UpdateArticleStatusUseCase;
   public readonly getArticleByIdUseCase: GetArticleByIdUseCase;
+  public readonly getRecentArticlesUseCase: GetRecentArticlesUseCase;
 
   constructor() {
     this.articleRepository = new PrismaArticleRepository();
@@ -64,6 +67,10 @@ class Container {
     );
 
     this.getArticleByIdUseCase = new GetArticleByIdUseCase(
+      this.articleRepository
+    );
+
+    this.getRecentArticlesUseCase = new GetRecentArticlesUseCase(
       this.articleRepository
     );
   }
