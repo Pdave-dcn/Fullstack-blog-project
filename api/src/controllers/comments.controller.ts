@@ -62,66 +62,6 @@ export const AuthorGetComments = async (req: Request, res: Response) => {
   }
 };
 
-export const AuthorDeleteComment = async (req: Request, res: Response) => {
-  try {
-    const user = req.user as User;
-    if (user.role !== "author")
-      return res.status(403).json({ message: "Access denied" });
-
-    const commentId = Number(req.params.commentId);
-    if (isNaN(commentId)) {
-      return res.status(400).json({ message: "Invalid comment ID!" });
-    }
-
-    const isExisting = await prisma.comment.findUnique({
-      where: { id: commentId },
-    });
-    if (!isExisting)
-      return res.status(404).json({ message: "Comment not found" });
-
-    await prisma.comment.delete({
-      where: { id: commentId },
-    });
-
-    res.status(200).json({ message: "Comment deleted successfully" });
-  } catch (error) {
-    handleServerError("Error deleting comment", error, res);
-  }
-};
-
-export const deleteComment = async (req: Request, res: Response) => {
-  try {
-    const user = req.user as User;
-
-    const ids = getValidatedPostAndCommentIds(req, res);
-    if (!ids) return;
-
-    const { postId, commentId } = ids;
-
-    const comment = await prisma.comment.findFirst({
-      where: { id: commentId, postId },
-    });
-
-    if (!comment)
-      return res
-        .status(404)
-        .json({ message: "Comment not found for this post!" });
-
-    if (comment.userId !== user.id)
-      return res
-        .status(403)
-        .json({ message: "Unauthorized to delete this comment" });
-
-    await prisma.comment.delete({
-      where: { id: commentId },
-    });
-
-    res.status(200).json({ message: "Comment deleted successfully" });
-  } catch (error) {
-    handleServerError("Error deleting comment", error, res);
-  }
-};
-
 export const editComment = async (req: Request, res: Response) => {
   try {
     const user = req.user as User;

@@ -25,3 +25,9 @@ export class InvalidCommentContentError extends DomainError {
     super("Comment content cannot be empty.");
   }
 }
+
+export class ForbiddenCommentDeleteError extends DomainError {
+  constructor() {
+    super("You cannot delete someone else's comment.");
+  }
+}
