@@ -59,4 +59,11 @@ export class Comment {
       mentionedUserId
     );
   }
+
+  editContent(newContent: string) {
+    if (!newContent || newContent.trim() === "")
+      throw new InvalidCommentContentError();
+
+    this.content = newContent;
+  }
 }

@@ -15,6 +15,7 @@ import { GetAuthenticatedUserUseCase } from "@/application/auth/GetAuthenticated
 import { CreateCommentUseCase } from "@/application/comments/create/CreateCommentUseCase.js";
 import { PrismaCommentRepository } from "../db/prisma/PrismaCommentRepository.js";
 import { DeleteCommentUseCase } from "@/application/comments/DeleteCommentUseCase.js";
+import { EditCommentUseCase } from "@/application/comments/edit/EditCommentUseCase.js";
 
 /**
  * Dependency Injection Container for application use cases and repositories.
@@ -66,6 +67,7 @@ class Container {
   public readonly commentRepository: PrismaCommentRepository;
   public readonly createCommentUseCase: CreateCommentUseCase;
   public readonly deleteCommentUseCase: DeleteCommentUseCase;
+  public readonly editCommentUseCase: EditCommentUseCase;
 
   constructor() {
     // Article domain wiring
@@ -105,13 +107,17 @@ class Container {
 
     // Comment domain wiring
     this.commentRepository = new PrismaCommentRepository();
+
     this.createCommentUseCase = new CreateCommentUseCase(
       this.commentRepository,
       this.articleRepository
     );
+
     this.deleteCommentUseCase = new DeleteCommentUseCase(
       this.commentRepository
     );
+
+    this.editCommentUseCase = new EditCommentUseCase(this.commentRepository);
   }
 }
 

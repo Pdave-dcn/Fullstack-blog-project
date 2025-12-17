@@ -31,3 +31,9 @@ export class ForbiddenCommentDeleteError extends DomainError {
     super("You cannot delete someone else's comment.");
   }
 }
+
+export class ForbiddenCommentEditError extends DomainError {
+  constructor() {
+    super("You cannot edit someone else's comment.");
+  }
+}

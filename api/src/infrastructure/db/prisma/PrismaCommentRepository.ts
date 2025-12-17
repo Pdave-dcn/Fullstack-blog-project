@@ -56,4 +56,14 @@ export class PrismaCommentRepository implements CommentRepository {
   async deleteById(commentId: string): Promise<void> {
     await prisma.comment.delete({ where: { id: commentId } });
   }
+
+  async update(comment: Comment): Promise<void> {
+    await prisma.comment.update({
+      where: { id: comment.id },
+      data: {
+        content: comment.content,
+        updatedAt: new Date(),
+      },
+    });
+  }
 }

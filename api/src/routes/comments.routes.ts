@@ -1,11 +1,9 @@
 import express, { RequestHandler } from "express";
 import passport from "passport";
-import {
-  editComment,
-  AuthorGetComments,
-} from "../controllers/comments.controller.js";
+import { AuthorGetComments } from "../controllers/comments.controller.js";
 import { createCommentController } from "@/interfaces/http/controllers/comments/createComment.controller.js";
 import { deleteCommentController } from "@/interfaces/http/controllers/comments/deleteComment.controller.js";
+import { editCommentController } from "@/interfaces/http/controllers/comments/editComment.controller.js";
 
 const router = express.Router();
 
@@ -22,14 +20,14 @@ router.post(
 );
 
 router.delete(
-  "comments/:Id",
+  "comments/:id",
   passport.authenticate("jwt", { session: false }),
   deleteCommentController
 );
 
 router.put(
-  "/posts/:postId/comments/:commentId",
+  "/comments/:id",
   passport.authenticate("jwt", { session: false }),
-  editComment as RequestHandler
+  editCommentController
 );
 export default router;
