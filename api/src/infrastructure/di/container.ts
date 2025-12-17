@@ -1,7 +1,6 @@
 import { CreateArticleUseCase } from "@/application/articles/create/CreateArticleUseCase.js";
 import { DeleteArticleUseCase } from "@/application/articles/delete/DeleteArticleUseCase.js";
 import { EditArticleUseCase } from "@/application/articles/edit/EditArticleUseCase.js";
-import { ArticleRepository } from "@/domains/articles/ArticleRepository.js";
 import { PrismaArticleRepository } from "../db/prisma/PrismaArticleRepository.js";
 import { ListArticlesUseCase } from "@/application/articles/list/ListArticlesUseCase.js";
 import { UpdateArticleStatusUseCase } from "@/application/articles/update/UpdateArticleStatusUseCase.js";
@@ -12,6 +11,9 @@ import { PrismaUserRepository } from "../db/prisma/PrismaUserRepository.js";
 import { SignupUserUseCase } from "@/application/users/signup/SignupUserUseCase.js";
 import { LoginUserUseCase } from "@/application/users/login/LoginUserUseCase.js";
 import { GetAuthenticatedUserUseCase } from "@/application/auth/GetAuthenticatedUserUseCase.js";
+
+import { CreateCommentUseCase } from "@/application/comments/create/CreateCommentUseCase.js";
+import { PrismaCommentRepository } from "../db/prisma/PrismaCommentRepository.js";
 
 /**
  * Dependency Injection Container for application use cases and repositories.
@@ -44,7 +46,7 @@ import { GetAuthenticatedUserUseCase } from "@/application/auth/GetAuthenticated
  */
 class Container {
   // Article domain
-  public readonly articleRepository: ArticleRepository;
+  public readonly articleRepository: PrismaArticleRepository;
   public readonly createArticleUseCase: CreateArticleUseCase;
   public readonly editArticleUseCase: EditArticleUseCase;
   public readonly deleteArticleUseCase: DeleteArticleUseCase;
@@ -58,6 +60,10 @@ class Container {
   public readonly signupUserUseCase: SignupUserUseCase;
   public readonly loginUserUseCase: LoginUserUseCase;
   public readonly getAuthenticatedUserUseCase: GetAuthenticatedUserUseCase;
+
+  // Comment domain
+  public readonly commentRepository: PrismaCommentRepository;
+  public readonly createCommentUseCase: CreateCommentUseCase;
 
   constructor() {
     // Article domain wiring
@@ -93,6 +99,13 @@ class Container {
     this.loginUserUseCase = new LoginUserUseCase(this.userRepository);
     this.getAuthenticatedUserUseCase = new GetAuthenticatedUserUseCase(
       this.userRepository
+    );
+
+    // Comment domain wiring
+    this.commentRepository = new PrismaCommentRepository();
+    this.createCommentUseCase = new CreateCommentUseCase(
+      this.commentRepository,
+      this.articleRepository
     );
   }
 }

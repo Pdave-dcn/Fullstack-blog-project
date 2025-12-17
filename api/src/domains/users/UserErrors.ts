@@ -11,3 +11,9 @@ export class InvalidCredentialsError extends DomainError {
     super("Invalid username or password.");
   }
 }
+
+export class UserNotFoundError extends DomainError {
+  constructor(UserId: string) {
+    super(`User with ID ${UserId} not found.`);
+  }
+}

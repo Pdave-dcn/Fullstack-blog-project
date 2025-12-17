@@ -2,11 +2,11 @@ import express, { RequestHandler } from "express";
 import passport from "passport";
 import {
   AuthorDeleteComment,
-  createComment,
   deleteComment,
   editComment,
   AuthorGetComments,
 } from "../controllers/comments.controller.js";
+import { createCommentController } from "@/interfaces/http/controllers/comments/createComment.controller.js";
 
 const router = express.Router();
 
@@ -23,9 +23,9 @@ router.delete(
 );
 
 router.post(
-  "/posts/:postId/comments",
+  "/comments",
   passport.authenticate("jwt", { session: false }),
-  createComment as RequestHandler
+  createCommentController
 );
 
 router.delete(
