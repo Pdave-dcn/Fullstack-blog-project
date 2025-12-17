@@ -1,10 +1,10 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 enum ArticleStatus {
@@ -26,8 +26,9 @@ model User {
 
   createdAt DateTime @default(now()) @map("created_at")
 
-  posts    Article[]
-  comments Comment[]
+  posts               Article[]
+  comments            Comment[]
+  mentionedInComments Comment[] @relation("mentionedUser")
 
   @@map("users")
 }
@@ -49,19 +50,21 @@ model Article {
 }
 
 model Comment {
-  id        String  @id @default(uuid())
-  content   String
-  parentId  String? @map("parent_id")
-  userId    String  @map("user_id")
-  articleId String  @map("post_id")
+  id              String  @id @default(uuid())
+  content         String
+  parentId        String? @map("parent_id")
+  authorId        String  @map("author_id")
+  articleId       String  @map("post_id")
+  mentionedUserId String? @map("mentioned_user_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  user    User      @relation(fields: [userId], references: [id])
-  article Article   @relation(fields: [articleId], references: [id])
-  parent  Comment?  @relation("commentReplies", fields: [parentId], references: [id])
-  replies Comment[] @relation("commentReplies")
+  user          User      @relation(fields: [authorId], references: [id])
+  mentionedUser User?     @relation("mentionedUser", fields: [mentionedUserId], references: [id])
+  article       Article   @relation(fields: [articleId], references: [id])
+  parent        Comment?  @relation("commentReplies", fields: [parentId], references: [id])
+  replies       Comment[] @relation("commentReplies")
 
   @@map("comments")
 }

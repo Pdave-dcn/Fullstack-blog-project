@@ -33,6 +33,12 @@ export default defineConfig([
     },
   },
   {
-    ignores: ["dist/", "build/", "node_modules/", "src/generated"],
+    ignores: [
+      "dist/",
+      "build/",
+      "node_modules/",
+      "src/generated",
+      "prisma.config.ts",
+    ],
   },
 ]);
