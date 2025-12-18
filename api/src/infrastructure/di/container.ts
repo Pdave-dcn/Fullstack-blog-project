@@ -21,6 +21,11 @@ import { ListCommentsForAuthorUseCase } from "@/application/comments/queries/Lis
 import { ListArticleCommentsUseCase } from "@/application/comments/queries/ListArticleComments/ListArticleCommentsUseCase.js";
 import { ListCommentRepliesUseCase } from "@/application/comments/queries/ListCommentReplies/ListCommentRepliesUseCase.js";
 
+import { PrismaDashboardQueryRepository } from "../db/prisma/PrismaDashboardQueryRepository.js";
+import { GetDashboardStatsUseCase } from "@/application/dashboard/GetDashboardStatsUseCase.js";
+import { GetRecentArticlesUseCase as GetRecentArticlesForDashboardUseCase } from "@/application/dashboard/GetRecentArticlesUseCase.js";
+import { GetRecentCommentsUseCase } from "@/application/dashboard/GetRecentCommentsUseCase.js";
+
 /**
  * Dependency Injection Container for application use cases and repositories.
  *
@@ -77,6 +82,12 @@ class Container {
   public readonly listCommentsForAuthorUseCase: ListCommentsForAuthorUseCase;
   public readonly listArticleCommentsUseCase: ListArticleCommentsUseCase;
   public readonly listCommentRepliesUseCase: ListCommentRepliesUseCase;
+
+  // Dashboard domain
+  public readonly dashboardQueryRepository: PrismaDashboardQueryRepository;
+  public readonly getDashboardStatsUseCase: GetDashboardStatsUseCase;
+  public readonly getRecentArticlesForDashboardUseCase: GetRecentArticlesForDashboardUseCase;
+  public readonly getRecentCommentsUseCase: GetRecentCommentsUseCase;
 
   constructor() {
     // Article domain wiring
@@ -141,6 +152,20 @@ class Container {
 
     this.listCommentRepliesUseCase = new ListCommentRepliesUseCase(
       this.commentQueryRepository
+    );
+
+    // Dashboard domain wiring
+    this.dashboardQueryRepository = new PrismaDashboardQueryRepository();
+
+    this.getRecentCommentsUseCase = new GetRecentCommentsUseCase(
+      this.dashboardQueryRepository
+    );
+
+    this.getRecentArticlesForDashboardUseCase =
+      new GetRecentArticlesForDashboardUseCase(this.dashboardQueryRepository);
+
+    this.getDashboardStatsUseCase = new GetDashboardStatsUseCase(
+      this.dashboardQueryRepository
     );
   }
 }
