@@ -14,8 +14,12 @@ import { GetAuthenticatedUserUseCase } from "@/application/auth/GetAuthenticated
 
 import { CreateCommentUseCase } from "@/application/comments/create/CreateCommentUseCase.js";
 import { PrismaCommentRepository } from "../db/prisma/PrismaCommentRepository.js";
-import { DeleteCommentUseCase } from "@/application/comments/DeleteCommentUseCase.js";
+import { DeleteCommentUseCase } from "@/application/comments/delete/DeleteCommentUseCase.js";
 import { EditCommentUseCase } from "@/application/comments/edit/EditCommentUseCase.js";
+import { PrismaCommentQueryRepository } from "../db/prisma/PrismaCommentQueryRepository.js";
+import { ListCommentsForAuthorUseCase } from "@/application/comments/queries/ListAuthorComments/ListCommentsForAuthorUseCase.js";
+import { ListArticleCommentsUseCase } from "@/application/comments/queries/ListArticleComments/ListArticleCommentsUseCase.js";
+import { ListCommentRepliesUseCase } from "@/application/comments/queries/ListCommentReplies/ListCommentRepliesUseCase.js";
 
 /**
  * Dependency Injection Container for application use cases and repositories.
@@ -69,6 +73,11 @@ class Container {
   public readonly deleteCommentUseCase: DeleteCommentUseCase;
   public readonly editCommentUseCase: EditCommentUseCase;
 
+  public readonly commentQueryRepository: PrismaCommentQueryRepository;
+  public readonly listCommentsForAuthorUseCase: ListCommentsForAuthorUseCase;
+  public readonly listArticleCommentsUseCase: ListArticleCommentsUseCase;
+  public readonly listCommentRepliesUseCase: ListCommentRepliesUseCase;
+
   constructor() {
     // Article domain wiring
     this.articleRepository = new PrismaArticleRepository();
@@ -118,6 +127,21 @@ class Container {
     );
 
     this.editCommentUseCase = new EditCommentUseCase(this.commentRepository);
+
+    // ****
+    this.commentQueryRepository = new PrismaCommentQueryRepository();
+
+    this.listCommentsForAuthorUseCase = new ListCommentsForAuthorUseCase(
+      this.commentQueryRepository
+    );
+
+    this.listArticleCommentsUseCase = new ListArticleCommentsUseCase(
+      this.commentQueryRepository
+    );
+
+    this.listCommentRepliesUseCase = new ListCommentRepliesUseCase(
+      this.commentQueryRepository
+    );
   }
 }
 
