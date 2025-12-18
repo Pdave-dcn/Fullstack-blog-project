@@ -5,6 +5,8 @@ import {
   LoginUserSchema,
   SignupUserSchema,
 } from "../../validators/users/auth.schema.js";
+import { getCookieConfig } from "@/infrastructure/http/cookies/authCookieConfig.js";
+import env from "@/configs/env.js";
 
 export const signupUserController = async (
   req: Request,
@@ -17,9 +19,11 @@ export const signupUserController = async (
 
     const token = jwt.sign(
       { id: user.id, role: user.role, username: user.username },
-      process.env.JWT_SECRET!,
+      env.JWT_SECRET,
       { expiresIn: "3d" }
     );
+
+    res.cookie("auth", token, getCookieConfig());
 
     res.status(201).json({
       user: {
@@ -28,7 +32,6 @@ export const signupUserController = async (
         username: user.username,
         role: user.role,
       },
-      token,
     });
   } catch (err) {
     next(err);
@@ -46,11 +49,13 @@ export const loginUserController = async (
 
     const token = jwt.sign(
       { id: user.id, role: user.role, username: user.username },
-      process.env.JWT_SECRET!,
+      env.JWT_SECRET,
       {
         expiresIn: "3d",
       }
     );
+
+    res.cookie("auth", token, getCookieConfig());
 
     res.status(200).json({
       user: {
@@ -59,7 +64,6 @@ export const loginUserController = async (
         username: user.username,
         role: user.role,
       },
-      token,
     });
   } catch (err) {
     next(err);

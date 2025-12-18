@@ -28,25 +28,34 @@ const baseSchema = z.object({
   AUTHOR_NAME: z
     .string()
     .trim()
-    .min(3)
+    .min(3, "Author name is required")
     .max(100)
     .regex(/^[a-zA-Z0-9_-]+$/)
+    .optional()
     .default("author user"),
 
   AUTHOR_USERNAME: z
     .string()
     .trim()
-    .min(3)
+    .min(3, "Author username is required")
     .max(50)
     .regex(/^[a-zA-Z0-9_-]+$/)
+    .optional()
     .default("author_user"),
 
   AUTHOR_PASSWORD: z
     .string()
     .trim()
-    .min(8)
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
-    .regex(/^[\u0020-\u007E]+$/)
+    .min(8, "Password must be at least 8 characters")
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+      "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+    )
+    .regex(
+      /^[\u0020-\u007E]+$/,
+      "Password must not contain emojis or special Unicode characters"
+    )
+    .optional()
     .default("Author123"),
 });
 
