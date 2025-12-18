@@ -1,4 +1,4 @@
-import prisma from "@/config/db.js";
+import prisma from "@/infrastructure/db/prismaClient.js";
 import { CommentRepository } from "@/domains/comments/CommentRepository.js";
 import { Comment } from "@/domains/comments/Comment.js";
 

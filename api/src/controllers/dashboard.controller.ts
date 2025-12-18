@@ -1,4 +1,4 @@
-import prisma from "../config/db.js";
+import prisma from "../infrastructure/db/prismaClient.js";
 import { Request, Response } from "express";
 import { handleServerError } from "../utils/error.js";
 import { User } from "../utils/types.js";

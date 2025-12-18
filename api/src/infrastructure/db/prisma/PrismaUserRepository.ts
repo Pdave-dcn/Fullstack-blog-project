@@ -1,7 +1,7 @@
 import { UserRepository } from "@/domains/users/UserRepository.js";
 import { User } from "@/domains/users/User.js";
 import { UserRole as DomainUserRole } from "@/domains/users/UserRole.js";
-import prisma from "@/config/db.js";
+import prisma from "@/infrastructure/db/prismaClient.js";
 
 function mapPrismaRoleToDomain(role: string): DomainUserRole {
   switch (role) {

@@ -1,4 +1,4 @@
-import prisma from "@/config/db.js";
+import prisma from "@/infrastructure/db/prismaClient.js";
 import { Article } from "@/domains/articles/Article";
 import {
   ArticleStatus,

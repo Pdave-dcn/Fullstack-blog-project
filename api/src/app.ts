@@ -1,11 +1,10 @@
-import dotenv from "dotenv";
-dotenv.config();
+import "dotenv/config.js";
 import express from "express";
 import passport from "passport";
 import router from "@/routes/appRouter.routes.js";
 import initializePassport from "./infrastructure/auth/passport/passport.js";
 import cors from "cors";
-import { corsOptions } from "@/config/cors.js";
+import { corsOptions } from "@/configs/cors.js";
 import { errorMiddleware } from "@/interfaces/http/middlewares/error.middleware.js";
 import { httpLogger } from "@/interfaces/http/middlewares/httpLogger.middleware.js";
 
