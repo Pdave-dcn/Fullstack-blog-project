@@ -8,16 +8,20 @@ import {
   listArticleCommentsController,
   listCommentRepliesController,
 } from "../../http/controllers/comments/index.js";
+import {
+  generalApiLimiter,
+  writeOperationsLimiter,
+} from "@/infrastructure/http/rateLimit/coreRateLimits.js";
 
 const router = express.Router();
 
+router.use(generalApiLimiter);
+
 router.use(passport.authenticate("jwt", { session: false }));
 
-router.delete("comments/:id", deleteCommentController);
-
-router.put("/comments/:id", editCommentController);
-
-router.post("/comments", createCommentController);
+router.delete("comments/:id", writeOperationsLimiter, deleteCommentController);
+router.put("/comments/:id", writeOperationsLimiter, editCommentController);
+router.post("/comments", writeOperationsLimiter, createCommentController);
 
 router.get("/comments/author", getCommentsForAuthorController);
 router.get("/articles/:id/comments", listArticleCommentsController);

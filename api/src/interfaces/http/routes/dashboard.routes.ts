@@ -5,8 +5,11 @@ import {
   getRecentArticlesController,
   getRecentCommentsController,
 } from "@/interfaces/http/controllers/dashboard/dashboard.controller.js";
+import { generalApiLimiter } from "@/infrastructure/http/rateLimit/coreRateLimits.js";
 
 const router = express.Router();
+
+router.use(generalApiLimiter);
 
 router.use(passport.authenticate("jwt", { session: false }));
 
