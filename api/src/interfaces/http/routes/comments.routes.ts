@@ -1,5 +1,4 @@
 import express from "express";
-import passport from "passport";
 import {
   createCommentController,
   deleteCommentController,
@@ -12,12 +11,13 @@ import {
   generalApiLimiter,
   writeOperationsLimiter,
 } from "@/infrastructure/http/rateLimit/coreRateLimits.js";
+import { authenticateJwt } from "../middlewares/authenticateJWT.middleware.js";
 
 const router = express.Router();
 
 router.use(generalApiLimiter);
 
-router.use(passport.authenticate("jwt", { session: false }));
+router.use(authenticateJwt);
 
 router.delete("comments/:id", writeOperationsLimiter, deleteCommentController);
 router.put("/comments/:id", writeOperationsLimiter, editCommentController);
