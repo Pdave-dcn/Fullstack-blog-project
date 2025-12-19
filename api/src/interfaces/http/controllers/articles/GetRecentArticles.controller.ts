@@ -1,5 +1,5 @@
+import { container } from "@/infrastructure/di/containers/index.js";
 import { Request, Response, NextFunction } from "express";
-import { container } from "@/infrastructure/di/container.js";
 
 export const getRecentArticlesController = async (
   _req: Request,
@@ -7,7 +7,7 @@ export const getRecentArticlesController = async (
   next: NextFunction
 ) => {
   try {
-    const recentArticles = await container.getRecentArticlesUseCase.execute();
+    const recentArticles = await container.articles.getRecentUseCase.execute();
     res.status(200).json(recentArticles);
   } catch (err) {
     next(err);

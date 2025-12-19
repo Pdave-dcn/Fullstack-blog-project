@@ -1,5 +1,5 @@
+import { container } from "@/infrastructure/di/containers/index.js";
 import { Request, Response, NextFunction } from "express";
-import { container } from "@/infrastructure/di/container.js";
 
 export const getDashboardStatsController = async (
   _req: Request,
@@ -7,7 +7,7 @@ export const getDashboardStatsController = async (
   next: NextFunction
 ) => {
   try {
-    const stats = await container.getDashboardStatsUseCase.execute();
+    const stats = await container.dashboard.getStatsUseCase.execute();
     res.status(200).json(stats);
   } catch (err) {
     next(err);
@@ -20,7 +20,9 @@ export const getRecentArticlesController = async (
   next: NextFunction
 ) => {
   try {
-    const articles = await container.getRecentArticlesUseCase.execute(4);
+    const articles = await container.dashboard.getRecentArticlesUseCase.execute(
+      4
+    );
 
     res.status(200).json(articles);
   } catch (err) {
@@ -34,7 +36,9 @@ export const getRecentCommentsController = async (
   next: NextFunction
 ) => {
   try {
-    const comments = await container.getRecentCommentsUseCase.execute(2);
+    const comments = await container.dashboard.getRecentCommentsUseCase.execute(
+      2
+    );
 
     res.status(200).json(comments);
   } catch (err) {

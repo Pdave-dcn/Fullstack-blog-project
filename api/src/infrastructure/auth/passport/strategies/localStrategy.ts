@@ -1,7 +1,7 @@
 import { Strategy as LocalStrategy } from "passport-local";
-import { container } from "@/infrastructure/di/container.js";
 import { LoginUserCommand } from "@/application/users/login/LoginUserCommand.js";
 import { InvalidCredentialsError } from "@/domains/users/UserErrors.js";
+import { container } from "@/infrastructure/di/containers/index.js";
 
 const localStrategy = new LocalStrategy(
   {
@@ -11,7 +11,7 @@ const localStrategy = new LocalStrategy(
   async (username, password, done) => {
     try {
       const command: LoginUserCommand = { username, password };
-      const user = await container.loginUserUseCase.execute(command);
+      const user = await container.users.loginUseCase.execute(command);
 
       return done(null, user);
     } catch (err) {

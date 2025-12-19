@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import { container } from "@/infrastructure/di/container.js";
 import jwt from "jsonwebtoken";
 import {
   LoginUserSchema,
@@ -7,6 +6,7 @@ import {
 } from "../../validators/users/auth.schema.js";
 import { getCookieConfig } from "@/infrastructure/http/cookies/authCookieConfig.js";
 import env from "@/configs/env.js";
+import { container } from "@/infrastructure/di/containers/index.js";
 
 export const signupUserController = async (
   req: Request,
@@ -15,7 +15,7 @@ export const signupUserController = async (
 ) => {
   try {
     const parsed = SignupUserSchema.parse(req.body);
-    const user = await container.signupUserUseCase.execute(parsed);
+    const user = await container.users.signupUseCase.execute(parsed);
 
     const token = jwt.sign(
       { id: user.id, role: user.role, username: user.username },
@@ -45,7 +45,7 @@ export const loginUserController = async (
 ) => {
   try {
     const parsed = LoginUserSchema.parse(req.body);
-    const user = await container.loginUserUseCase.execute(parsed);
+    const user = await container.users.loginUseCase.execute(parsed);
 
     const token = jwt.sign(
       { id: user.id, role: user.role, username: user.username },

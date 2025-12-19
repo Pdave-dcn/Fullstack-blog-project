@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { AuthenticatedRequest } from "../../types/AuthRequest";
-import { UpdateArticleStatusSchema } from "../../validators/articles/editArticle.schema";
-import { container } from "@/infrastructure/di/container";
+import { AuthenticatedRequest } from "../../types/AuthRequest.js";
+import { UpdateArticleStatusSchema } from "../../validators/articles/editArticle.schema.js";
+import { container } from "@/infrastructure/di/containers/index.js";
 
 export const updateArticleStatusController = async (
   req: Request,
@@ -18,7 +18,7 @@ export const updateArticleStatusController = async (
       status: authReq.body.status,
     });
 
-    await container.updateArticleStatusUseCase.execute(parsed);
+    await container.articles.updateStatusUseCase.execute(parsed);
   } catch (error) {
     next(error);
   }

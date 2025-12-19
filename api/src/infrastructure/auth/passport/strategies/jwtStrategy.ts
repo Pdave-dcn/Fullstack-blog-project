@@ -1,5 +1,5 @@
+import { container } from "@/infrastructure/di/containers/index.js";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
-import { container } from "@/infrastructure/di/container.js";
 
 const jwtSecret = process.env.JWT_SECRET;
 if (!jwtSecret) {
@@ -21,7 +21,7 @@ const jwtStrategy = new JwtStrategy(
   jwtOptions,
   async (payload: JwtPayload, done) => {
     try {
-      const user = await container.getAuthenticatedUserUseCase.execute(
+      const user = await container.users.getAuthenticatedUseCase.execute(
         payload.id
       );
 

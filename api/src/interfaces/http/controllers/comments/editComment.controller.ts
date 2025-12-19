@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { container } from "@/infrastructure/di/container.js";
 import { AuthenticatedRequest } from "../../types/AuthRequest.js";
 import { EditCommentSchema } from "../../validators/comments/editComment.schema.js";
+import { container } from "@/infrastructure/di/containers/index.js";
 
 export const editCommentController = async (
   req: Request,
@@ -18,7 +18,7 @@ export const editCommentController = async (
       content: req.body.content,
     });
 
-    await container.editCommentUseCase.execute(parsed);
+    await container.comments.editUseCase.execute(parsed);
 
     res.status(200).json({
       message: "Comment edited successfully",

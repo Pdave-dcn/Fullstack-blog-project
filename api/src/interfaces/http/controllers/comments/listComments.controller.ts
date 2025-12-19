@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import { AuthenticatedRequest } from "../../types/AuthRequest.js";
-import { container } from "@/infrastructure/di/container.js";
 import {
   ArticleCommentsQuerySchema,
   AuthorCommentsQuerySchema,
   CommentRepliesQuerySchema,
 } from "../../validators/comments/commentQueries.schema.js";
+import { container } from "@/infrastructure/di/containers/index.js";
 
 export const getCommentsForAuthorController = async (
   req: Request,
@@ -22,7 +22,9 @@ export const getCommentsForAuthorController = async (
 
     const parsed = AuthorCommentsQuerySchema.parse(req.query);
 
-    const result = await container.listCommentsForAuthorUseCase.execute(parsed);
+    const result = await container.comments.listForAuthorUseCase.execute(
+      parsed
+    );
 
     res.status(200).json({
       data: result.items,
@@ -52,7 +54,9 @@ export const listArticleCommentsController = async (
       cursor: authReq.query.cursor,
     });
 
-    const result = await container.listArticleCommentsUseCase.execute(parsed);
+    const result = await container.comments.listArticleCommentsUseCase.execute(
+      parsed
+    );
 
     res.status(200).json({
       data: result.items,
@@ -81,7 +85,7 @@ export const listCommentRepliesController = async (
       cursor: authReq.query.cursor,
     });
 
-    const result = await container.listCommentRepliesUseCase.execute(parsed);
+    const result = await container.comments.listRepliesUseCase.execute(parsed);
 
     res.status(200).json({
       data: result.items,

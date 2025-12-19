@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { AuthenticatedRequest } from "../../types/AuthRequest.js";
 import { DeleteArticleSchema } from "../../validators/articles/deleteArticle.schema.js";
-import { container } from "@/infrastructure/di/container.js";
+import { container } from "@/infrastructure/di/containers/index.js";
 
 export const deleteArticleController = async (
   req: Request,
@@ -17,7 +17,7 @@ export const deleteArticleController = async (
       authorRole: authReq.user.role,
     });
 
-    await container.deleteArticleUseCase.execute(parsed);
+    await container.articles.deleteUseCase.execute(parsed);
 
     res.status(204).json({ message: "Article successfully deleted" });
   } catch (error) {

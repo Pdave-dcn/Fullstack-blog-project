@@ -1,5 +1,5 @@
+import { container } from "@/infrastructure/di/containers/index.js";
 import { Request, Response, NextFunction } from "express";
-import { container } from "@/infrastructure/di/container";
 
 export const getArticleController = async (
   req: Request,
@@ -8,7 +8,7 @@ export const getArticleController = async (
 ) => {
   try {
     const articleId = req.params.id;
-    const article = await container.getArticleByIdUseCase.execute(articleId);
+    const article = await container.articles.getByIdUseCase.execute(articleId);
 
     res.status(200).json(article);
   } catch (err) {

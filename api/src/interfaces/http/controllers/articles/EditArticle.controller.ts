@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { EditArticleSchema } from "../../validators/articles/editArticle.schema.js";
 import { EditArticleCommand } from "@/application/articles/edit/EditArticleCommand.js";
 import { AuthenticatedRequest } from "../../types/AuthRequest.js";
-import { container } from "@/infrastructure/di/container.js";
+import { container } from "@/infrastructure/di/containers/index.js";
 
 export const editArticleController = async (
   req: Request,
@@ -29,7 +29,9 @@ export const editArticleController = async (
       status: parsed.status,
     };
 
-    const updatedArticle = await container.editArticleUseCase.execute(command);
+    const updatedArticle = await container.articles.editUseCase.execute(
+      command
+    );
 
     res.status(200).json(updatedArticle);
   } catch (error) {
