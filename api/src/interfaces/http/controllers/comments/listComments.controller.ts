@@ -15,15 +15,28 @@ export const getCommentsForAuthorController = async (
   try {
     const { user } = req as AuthenticatedRequest;
 
-    if (user.role !== "AUTHOR") {
-      res.status(403).json({ message: "Access denied" });
-      return;
-    }
+    req.log.info(
+      {
+        userId: user.id,
+        role: user.role,
+      },
+      "Get comments for author request received"
+    );
 
     const parsed = AuthorCommentsQuerySchema.parse(req.query);
 
     const result = await container.comments.listForAuthorUseCase.execute(
       parsed
+    );
+
+    req.log.info(
+      {
+        userId: user.id,
+        totalItems: result.total,
+        page: parsed.page,
+        pageSize: parsed.pageSize,
+      },
+      "Author comments retrieved successfully"
     );
 
     res.status(200).json({
@@ -46,16 +59,34 @@ export const listArticleCommentsController = async (
   next: NextFunction
 ) => {
   try {
-    const authReq = req as AuthenticatedRequest;
+    const { params, query } = req as AuthenticatedRequest;
+
+    req.log.info(
+      {
+        articleId: params.articleId,
+        limit: query.limit,
+        cursor: query.cursor,
+      },
+      "List article comments request received"
+    );
 
     const parsed = ArticleCommentsQuerySchema.parse({
-      articleId: authReq.params.articleId,
-      limit: authReq.query.limit,
-      cursor: authReq.query.cursor,
+      articleId: params.articleId,
+      limit: query.limit,
+      cursor: query.cursor,
     });
 
     const result = await container.comments.listArticleCommentsUseCase.execute(
       parsed
+    );
+
+    req.log.info(
+      {
+        articleId: params.articleId,
+        count: result.items.length,
+        hasMore: result.hasMore,
+      },
+      "Article comments retrieved successfully"
     );
 
     res.status(200).json({
@@ -77,15 +108,33 @@ export const listCommentRepliesController = async (
   next: NextFunction
 ) => {
   try {
-    const authReq = req as AuthenticatedRequest;
+    const { params, query } = req as AuthenticatedRequest;
+
+    req.log.info(
+      {
+        parentCommentId: params.id,
+        limit: query.limit,
+        cursor: query.cursor,
+      },
+      "List comment replies request received"
+    );
 
     const parsed = CommentRepliesQuerySchema.parse({
-      parentCommentId: authReq.params.id,
-      limit: authReq.query.limit,
-      cursor: authReq.query.cursor,
+      parentCommentId: params.id,
+      limit: query.limit,
+      cursor: query.cursor,
     });
 
     const result = await container.comments.listRepliesUseCase.execute(parsed);
+
+    req.log.info(
+      {
+        parentCommentId: params.id,
+        count: result.items.length,
+        hasMore: result.hasMore,
+      },
+      "Comment replies retrieved successfully"
+    );
 
     res.status(200).json({
       data: result.items,

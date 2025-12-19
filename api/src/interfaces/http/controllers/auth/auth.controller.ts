@@ -14,6 +14,13 @@ export const signupUserController = async (
   next: NextFunction
 ) => {
   try {
+    req.log.info(
+      {
+        username: req.body.username,
+      },
+      "User signup request received"
+    );
+
     const parsed = SignupUserSchema.parse(req.body);
     const user = await container.users.signupUseCase.execute(parsed);
 
@@ -24,6 +31,15 @@ export const signupUserController = async (
     );
 
     res.cookie("auth", token, getCookieConfig());
+
+    req.log.info(
+      {
+        userId: user.id,
+        username: user.username,
+        role: user.role,
+      },
+      "User signed up successfully"
+    );
 
     res.status(201).json({
       user: {
@@ -44,6 +60,13 @@ export const loginUserController = async (
   next: NextFunction
 ) => {
   try {
+    req.log.info(
+      {
+        username: req.body.username,
+      },
+      "User login request received"
+    );
+
     const parsed = LoginUserSchema.parse(req.body);
     const user = await container.users.loginUseCase.execute(parsed);
 
@@ -56,6 +79,15 @@ export const loginUserController = async (
     );
 
     res.cookie("auth", token, getCookieConfig());
+
+    req.log.info(
+      {
+        userId: user.id,
+        username: user.username,
+        role: user.role,
+      },
+      "User logged in successfully"
+    );
 
     res.status(200).json({
       user: {

@@ -15,7 +15,8 @@ export const requireRole =
         "Authorization attempted without authenticated user"
       );
 
-      return res.status(403).json({ message: "Access denied" });
+      res.status(403).json({ message: "Access denied" });
+      return;
     }
 
     if (!roles.includes(user.role)) {
@@ -29,7 +30,8 @@ export const requireRole =
         "Authorization denied"
       );
 
-      return res.status(403).json({ message: "Access denied" });
+      res.status(403).json({ message: "Access denied" });
+      return;
     }
 
     req.log.info(

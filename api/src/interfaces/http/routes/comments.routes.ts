@@ -12,6 +12,8 @@ import {
   writeOperationsLimiter,
 } from "@/infrastructure/http/rateLimit/coreRateLimits.js";
 import { authenticateJwt } from "../middlewares/authenticateJWT.middleware.js";
+import { requireRole } from "../middlewares/requireRole.middleware.js";
+import { UserRole } from "@/domains/users/UserRole.js";
 
 const router = express.Router();
 
@@ -23,7 +25,11 @@ router.delete("comments/:id", writeOperationsLimiter, deleteCommentController);
 router.put("/comments/:id", writeOperationsLimiter, editCommentController);
 router.post("/comments", writeOperationsLimiter, createCommentController);
 
-router.get("/comments/author", getCommentsForAuthorController);
+router.get(
+  "/comments/author",
+  requireRole(UserRole.AUTHOR),
+  getCommentsForAuthorController
+);
 router.get("/articles/:id/comments", listArticleCommentsController);
 router.get("/comments/:id/replies", listCommentRepliesController);
 

@@ -8,9 +8,17 @@ export const deleteArticleController = async (
   res: Response,
   next: NextFunction
 ) => {
-  try {
-    const authReq = req as AuthenticatedRequest;
+  const authReq = req as AuthenticatedRequest;
 
+  req.log.info(
+    {
+      userId: authReq.user.id,
+      role: authReq.user.role,
+    },
+    "Delete article request received"
+  );
+
+  try {
     const parsed = DeleteArticleSchema.parse({
       articleId: authReq.params.id,
       authorId: authReq.user.id,
@@ -18,6 +26,15 @@ export const deleteArticleController = async (
     });
 
     await container.articles.deleteUseCase.execute(parsed);
+
+    req.log.info(
+      {
+        articleId: authReq.params.id,
+        authorId: authReq.user.id,
+        authorRole: authReq.user.role,
+      },
+      "Article deleted successfully"
+    );
 
     res.status(204).json({ message: "Article successfully deleted" });
   } catch (error) {

@@ -11,6 +11,15 @@ export const createCommentController = async (
   try {
     const authReq = req as AuthenticatedRequest;
 
+    req.log.info(
+      {
+        userId: authReq.user.id,
+        articleId: authReq.body.articleId,
+        parentId: authReq.body.parentId,
+      },
+      "Create comment request received"
+    );
+
     const parsed = CreateCommentSchema.parse({
       authorId: authReq.user.id,
       articleId: authReq.body.articleId,
@@ -18,7 +27,17 @@ export const createCommentController = async (
       parentId: authReq.body.parentId,
     });
 
-    await container.comments.createUseCase.execute(parsed);
+    const comment = await container.comments.createUseCase.execute(parsed);
+
+    req.log.info(
+      {
+        commentId: comment.id,
+        userId: authReq.user.id,
+        articleId: authReq.body.articleId,
+        isReply: !!authReq.body.parentId,
+      },
+      "Comment created successfully"
+    );
 
     res.status(201).json({ message: "Comment created successfully" });
   } catch (error) {

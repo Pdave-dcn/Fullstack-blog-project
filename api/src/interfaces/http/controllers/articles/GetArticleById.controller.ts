@@ -8,7 +8,22 @@ export const getArticleController = async (
 ) => {
   try {
     const articleId = req.params.id;
+
+    req.log.info(
+      {
+        articleId,
+      },
+      "Get article request received"
+    );
+
     const article = await container.articles.getByIdUseCase.execute(articleId);
+
+    req.log.info(
+      {
+        articleId,
+      },
+      "Article retrieved successfully"
+    );
 
     res.status(200).json(article);
   } catch (err) {

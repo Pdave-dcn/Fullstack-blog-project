@@ -10,14 +10,21 @@ export const editArticleController = async (
   next: NextFunction
 ) => {
   try {
-    const authReq = req as AuthenticatedRequest;
-    const user = authReq.user;
+    const { user, params, body } = req as AuthenticatedRequest;
+
+    req.log.info(
+      {
+        userId: user.id,
+        role: user.role,
+      },
+      "Edit article request received"
+    );
 
     const parsed = EditArticleSchema.parse({
-      ...authReq.body,
-      authorId: user?.id,
-      authorRole: user?.role,
-      articleId: authReq.params.id,
+      ...body,
+      authorId: user.id,
+      authorRole: user.role,
+      articleId: params.id,
     });
 
     const command: EditArticleCommand = {
@@ -31,6 +38,15 @@ export const editArticleController = async (
 
     const updatedArticle = await container.articles.editUseCase.execute(
       command
+    );
+
+    req.log.info(
+      {
+        articleId: params.id,
+        authorId: user.id,
+        authorRole: user.role,
+      },
+      "Article edited successfully"
     );
 
     res.status(200).json(updatedArticle);

@@ -11,6 +11,15 @@ export const editCommentController = async (
   try {
     const authReq = req as AuthenticatedRequest;
 
+    req.log.info(
+      {
+        userId: authReq.user.id,
+        commentId: req.params.commentId,
+        articleId: req.body.postId,
+      },
+      "Edit comment request received"
+    );
+
     const parsed = EditCommentSchema.parse({
       editorId: authReq.user.id,
       commentId: req.params.commentId,
@@ -19,6 +28,14 @@ export const editCommentController = async (
     });
 
     await container.comments.editUseCase.execute(parsed);
+
+    req.log.info(
+      {
+        commentId: req.params.commentId,
+        userId: authReq.user.id,
+      },
+      "Comment edited successfully"
+    );
 
     res.status(200).json({
       message: "Comment edited successfully",

@@ -8,19 +8,35 @@ export const createArticleController = async (
   res: Response,
   next: NextFunction
 ) => {
-  try {
-    const authReq = req as AuthenticatedRequest;
-    const user = authReq.user;
+  const { user, body } = req as AuthenticatedRequest;
 
-    const body = createArticleSchema.parse(authReq.body);
+  req.log.info(
+    {
+      userId: user.id,
+      role: user.role,
+    },
+    "Create article request received"
+  );
+
+  try {
+    const parsed = createArticleSchema.parse(body);
 
     const article = await container.articles.createUseCase.execute({
       authorId: user.id,
       authorRole: user.role,
-      title: body.title,
-      content: body.content,
-      status: body.status,
+      title: parsed.title,
+      content: parsed.content,
+      status: parsed.status,
     });
+
+    req.log.info(
+      {
+        articleId: article.id,
+        authorId: user.id,
+        status: article.status,
+      },
+      "Article created successfully"
+    );
 
     res.status(201).json(article);
   } catch (error) {

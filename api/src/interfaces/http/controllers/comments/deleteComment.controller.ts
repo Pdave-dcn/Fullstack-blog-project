@@ -11,6 +11,16 @@ export const deleteCommentController = async (
   try {
     const authReq = req as AuthenticatedRequest;
 
+    req.log.info(
+      {
+        userId: authReq.user.id,
+        role: authReq.user.role,
+        commentId: authReq.params.id,
+        articleId: authReq.body.articleId,
+      },
+      "Delete comment request received"
+    );
+
     const parsed = DeleteCommentSchema.parse({
       articleId: authReq.body.articleId,
       commentId: authReq.params.id,
@@ -20,7 +30,16 @@ export const deleteCommentController = async (
 
     await container.comments.deleteUseCase.execute(parsed);
 
-    res.status(209).json({ message: "Comment deleted successfully" });
+    req.log.info(
+      {
+        commentId: authReq.params.id,
+        userId: authReq.user.id,
+        role: authReq.user.role,
+      },
+      "Comment deleted successfully"
+    );
+
+    res.status(200).json({ message: "Comment deleted successfully" });
   } catch (err) {
     next(err);
   }
