@@ -1,5 +1,4 @@
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import {
   Card,
   CardContent,
@@ -393,8 +392,6 @@ const About = () => {
           </motion.div>
         </section>
       </main>
-
-      <Footer />
     </motion.div>
   );
 };

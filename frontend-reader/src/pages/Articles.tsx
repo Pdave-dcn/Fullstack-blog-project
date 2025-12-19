@@ -1,5 +1,4 @@
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import ArticleCard from "@/components/ArticleCard";
 import { useDataFetching } from "@/hooks/use-dataFetching";
 import { AlertCircle } from "lucide-react";
@@ -212,8 +211,6 @@ const Articles = () => {
           </div>
         </section>
       </main>
-
-      <Footer />
     </motion.div>
   );
 };
