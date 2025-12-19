@@ -190,7 +190,7 @@ export type UserWhereInput = {
   passwordHash?: Prisma.StringFilter<"User"> | string
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  posts?: Prisma.ArticleListRelationFilter
+  articles?: Prisma.ArticleListRelationFilter
   comments?: Prisma.CommentListRelationFilter
   mentionedInComments?: Prisma.CommentListRelationFilter
 }
@@ -202,7 +202,7 @@ export type UserOrderByWithRelationInput = {
   passwordHash?: Prisma.SortOrder
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  posts?: Prisma.ArticleOrderByRelationAggregateInput
+  articles?: Prisma.ArticleOrderByRelationAggregateInput
   comments?: Prisma.CommentOrderByRelationAggregateInput
   mentionedInComments?: Prisma.CommentOrderByRelationAggregateInput
 }
@@ -217,7 +217,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   passwordHash?: Prisma.StringFilter<"User"> | string
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  posts?: Prisma.ArticleListRelationFilter
+  articles?: Prisma.ArticleListRelationFilter
   comments?: Prisma.CommentListRelationFilter
   mentionedInComments?: Prisma.CommentListRelationFilter
 }, "id" | "username">
@@ -253,7 +253,7 @@ export type UserCreateInput = {
   passwordHash: string
   role: $Enums.Role
   createdAt?: Date | string
-  posts?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
   comments?: Prisma.CommentCreateNestedManyWithoutUserInput
   mentionedInComments?: Prisma.CommentCreateNestedManyWithoutMentionedUserInput
 }
@@ -265,7 +265,7 @@ export type UserUncheckedCreateInput = {
   passwordHash: string
   role: $Enums.Role
   createdAt?: Date | string
-  posts?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutUserInput
   mentionedInComments?: Prisma.CommentUncheckedCreateNestedManyWithoutMentionedUserInput
 }
@@ -277,7 +277,7 @@ export type UserUpdateInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  posts?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
   comments?: Prisma.CommentUpdateManyWithoutUserNestedInput
   mentionedInComments?: Prisma.CommentUpdateManyWithoutMentionedUserNestedInput
 }
@@ -289,7 +289,7 @@ export type UserUncheckedUpdateInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  posts?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutUserNestedInput
   mentionedInComments?: Prisma.CommentUncheckedUpdateManyWithoutMentionedUserNestedInput
 }
@@ -370,18 +370,18 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
-export type UserCreateNestedOneWithoutPostsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutPostsInput, Prisma.UserUncheckedCreateWithoutPostsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPostsInput
+export type UserCreateNestedOneWithoutArticlesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutArticlesInput, Prisma.UserUncheckedCreateWithoutArticlesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutArticlesInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutPostsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutPostsInput, Prisma.UserUncheckedCreateWithoutPostsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPostsInput
-  upsert?: Prisma.UserUpsertWithoutPostsInput
+export type UserUpdateOneRequiredWithoutArticlesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutArticlesInput, Prisma.UserUncheckedCreateWithoutArticlesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutArticlesInput
+  upsert?: Prisma.UserUpsertWithoutArticlesInput
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPostsInput, Prisma.UserUpdateWithoutPostsInput>, Prisma.UserUncheckedUpdateWithoutPostsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutArticlesInput, Prisma.UserUpdateWithoutArticlesInput>, Prisma.UserUncheckedUpdateWithoutArticlesInput>
 }
 
 export type UserCreateNestedOneWithoutCommentsInput = {
@@ -414,7 +414,7 @@ export type UserUpdateOneWithoutMentionedInCommentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMentionedInCommentsInput, Prisma.UserUpdateWithoutMentionedInCommentsInput>, Prisma.UserUncheckedUpdateWithoutMentionedInCommentsInput>
 }
 
-export type UserCreateWithoutPostsInput = {
+export type UserCreateWithoutArticlesInput = {
   id?: string
   name: string
   username: string
@@ -425,7 +425,7 @@ export type UserCreateWithoutPostsInput = {
   mentionedInComments?: Prisma.CommentCreateNestedManyWithoutMentionedUserInput
 }
 
-export type UserUncheckedCreateWithoutPostsInput = {
+export type UserUncheckedCreateWithoutArticlesInput = {
   id?: string
   name: string
   username: string
@@ -436,23 +436,23 @@ export type UserUncheckedCreateWithoutPostsInput = {
   mentionedInComments?: Prisma.CommentUncheckedCreateNestedManyWithoutMentionedUserInput
 }
 
-export type UserCreateOrConnectWithoutPostsInput = {
+export type UserCreateOrConnectWithoutArticlesInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutPostsInput, Prisma.UserUncheckedCreateWithoutPostsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutArticlesInput, Prisma.UserUncheckedCreateWithoutArticlesInput>
 }
 
-export type UserUpsertWithoutPostsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutPostsInput, Prisma.UserUncheckedUpdateWithoutPostsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutPostsInput, Prisma.UserUncheckedCreateWithoutPostsInput>
+export type UserUpsertWithoutArticlesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutArticlesInput, Prisma.UserUncheckedUpdateWithoutArticlesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutArticlesInput, Prisma.UserUncheckedCreateWithoutArticlesInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutPostsInput = {
+export type UserUpdateToOneWithWhereWithoutArticlesInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutPostsInput, Prisma.UserUncheckedUpdateWithoutPostsInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutArticlesInput, Prisma.UserUncheckedUpdateWithoutArticlesInput>
 }
 
-export type UserUpdateWithoutPostsInput = {
+export type UserUpdateWithoutArticlesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
@@ -463,7 +463,7 @@ export type UserUpdateWithoutPostsInput = {
   mentionedInComments?: Prisma.CommentUpdateManyWithoutMentionedUserNestedInput
 }
 
-export type UserUncheckedUpdateWithoutPostsInput = {
+export type UserUncheckedUpdateWithoutArticlesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
@@ -481,7 +481,7 @@ export type UserCreateWithoutCommentsInput = {
   passwordHash: string
   role: $Enums.Role
   createdAt?: Date | string
-  posts?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
   mentionedInComments?: Prisma.CommentCreateNestedManyWithoutMentionedUserInput
 }
 
@@ -492,7 +492,7 @@ export type UserUncheckedCreateWithoutCommentsInput = {
   passwordHash: string
   role: $Enums.Role
   createdAt?: Date | string
-  posts?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
   mentionedInComments?: Prisma.CommentUncheckedCreateNestedManyWithoutMentionedUserInput
 }
 
@@ -508,7 +508,7 @@ export type UserCreateWithoutMentionedInCommentsInput = {
   passwordHash: string
   role: $Enums.Role
   createdAt?: Date | string
-  posts?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
+  articles?: Prisma.ArticleCreateNestedManyWithoutAuthorInput
   comments?: Prisma.CommentCreateNestedManyWithoutUserInput
 }
 
@@ -519,7 +519,7 @@ export type UserUncheckedCreateWithoutMentionedInCommentsInput = {
   passwordHash: string
   role: $Enums.Role
   createdAt?: Date | string
-  posts?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
+  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutAuthorInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -546,7 +546,7 @@ export type UserUpdateWithoutCommentsInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  posts?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
   mentionedInComments?: Prisma.CommentUpdateManyWithoutMentionedUserNestedInput
 }
 
@@ -557,7 +557,7 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  posts?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
   mentionedInComments?: Prisma.CommentUncheckedUpdateManyWithoutMentionedUserNestedInput
 }
 
@@ -579,7 +579,7 @@ export type UserUpdateWithoutMentionedInCommentsInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  posts?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
+  articles?: Prisma.ArticleUpdateManyWithoutAuthorNestedInput
   comments?: Prisma.CommentUpdateManyWithoutUserNestedInput
 }
 
@@ -590,7 +590,7 @@ export type UserUncheckedUpdateWithoutMentionedInCommentsInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  posts?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+  articles?: Prisma.ArticleUncheckedUpdateManyWithoutAuthorNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -600,13 +600,13 @@ export type UserUncheckedUpdateWithoutMentionedInCommentsInput = {
  */
 
 export type UserCountOutputType = {
-  posts: number
+  articles: number
   comments: number
   mentionedInComments: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  posts?: boolean | UserCountOutputTypeCountPostsArgs
+  articles?: boolean | UserCountOutputTypeCountArticlesArgs
   comments?: boolean | UserCountOutputTypeCountCommentsArgs
   mentionedInComments?: boolean | UserCountOutputTypeCountMentionedInCommentsArgs
 }
@@ -624,7 +624,7 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountPostsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserCountOutputTypeCountArticlesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ArticleWhereInput
 }
 
@@ -650,7 +650,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   passwordHash?: boolean
   role?: boolean
   createdAt?: boolean
-  posts?: boolean | Prisma.User$postsArgs<ExtArgs>
+  articles?: boolean | Prisma.User$articlesArgs<ExtArgs>
   comments?: boolean | Prisma.User$commentsArgs<ExtArgs>
   mentionedInComments?: boolean | Prisma.User$mentionedInCommentsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -685,7 +685,7 @@ export type UserSelectScalar = {
 
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "username" | "passwordHash" | "role" | "createdAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  posts?: boolean | Prisma.User$postsArgs<ExtArgs>
+  articles?: boolean | Prisma.User$articlesArgs<ExtArgs>
   comments?: boolean | Prisma.User$commentsArgs<ExtArgs>
   mentionedInComments?: boolean | Prisma.User$mentionedInCommentsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -696,7 +696,7 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
-    posts: Prisma.$ArticlePayload<ExtArgs>[]
+    articles: Prisma.$ArticlePayload<ExtArgs>[]
     comments: Prisma.$CommentPayload<ExtArgs>[]
     mentionedInComments: Prisma.$CommentPayload<ExtArgs>[]
   }
@@ -1101,7 +1101,7 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  posts<T extends Prisma.User$postsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$postsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ArticlePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  articles<T extends Prisma.User$articlesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$articlesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ArticlePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   comments<T extends Prisma.User$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   mentionedInComments<T extends Prisma.User$mentionedInCommentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$mentionedInCommentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -1527,9 +1527,9 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
- * User.posts
+ * User.articles
  */
-export type User$postsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$articlesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Article
    */

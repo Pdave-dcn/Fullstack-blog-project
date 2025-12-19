@@ -262,7 +262,7 @@ export type ArticleCreateInput = {
   status: $Enums.ArticleStatus
   createdAt?: Date | string
   updatedAt?: Date | string
-  author: Prisma.UserCreateNestedOneWithoutPostsInput
+  author: Prisma.UserCreateNestedOneWithoutArticlesInput
   comments?: Prisma.CommentCreateNestedManyWithoutArticleInput
 }
 
@@ -284,7 +284,7 @@ export type ArticleUpdateInput = {
   status?: Prisma.EnumArticleStatusFieldUpdateOperationsInput | $Enums.ArticleStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  author?: Prisma.UserUpdateOneRequiredWithoutPostsNestedInput
+  author?: Prisma.UserUpdateOneRequiredWithoutArticlesNestedInput
   comments?: Prisma.CommentUpdateManyWithoutArticleNestedInput
 }
 
@@ -499,7 +499,7 @@ export type ArticleCreateWithoutCommentsInput = {
   status: $Enums.ArticleStatus
   createdAt?: Date | string
   updatedAt?: Date | string
-  author: Prisma.UserCreateNestedOneWithoutPostsInput
+  author: Prisma.UserCreateNestedOneWithoutArticlesInput
 }
 
 export type ArticleUncheckedCreateWithoutCommentsInput = {
@@ -535,7 +535,7 @@ export type ArticleUpdateWithoutCommentsInput = {
   status?: Prisma.EnumArticleStatusFieldUpdateOperationsInput | $Enums.ArticleStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  author?: Prisma.UserUpdateOneRequiredWithoutPostsNestedInput
+  author?: Prisma.UserUpdateOneRequiredWithoutArticlesNestedInput
 }
 
 export type ArticleUncheckedUpdateWithoutCommentsInput = {
