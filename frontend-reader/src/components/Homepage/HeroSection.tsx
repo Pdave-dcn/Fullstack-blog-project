@@ -15,12 +15,7 @@ export const HeroSection = () => {
           "md:w-[60%] flex flex-col items-center text-center text-pretty md:items-start md:text-start"
         )}
       >
-        <h1
-          className={cn(
-            typography.hero.title,
-            "font-bold mb-6 leading-tight lg:leading-22"
-          )}
-        >
+        <h1 className={cn(typography.hero.title, "mb-6")}>
           {HOMEPAGE_DATA.hero.title}
         </h1>
         <p

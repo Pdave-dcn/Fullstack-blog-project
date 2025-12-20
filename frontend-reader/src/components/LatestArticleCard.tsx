@@ -9,11 +9,11 @@ interface BlogPost {
   createdAt: string;
 }
 
-interface ArticleCardProps {
+interface LatestArticleCardProps {
   post: BlogPost;
 }
 
-const ArticleCard = ({ post }: ArticleCardProps) => {
+const LatestArticleCard = ({ post }: LatestArticleCardProps) => {
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -52,7 +52,7 @@ const ArticleCard = ({ post }: ArticleCardProps) => {
 
   return (
     <Link to={`/articles/${post.id}`} className="block group">
-      <Card className="h-full hover:shadow-lg transition-all duration-300 transform group-hover:-translate-y-1">
+      <Card className="h-full transition-all duration-300 transform group-hover:-translate-y-1 rounded-xl">
         <CardHeader className="p-6">
           <div className="flex items-center justify-between text-sm text-muted-foreground mb-3">
             <span className="bg-muted px-3 py-1 rounded-full text-xs font-medium border">
@@ -60,8 +60,6 @@ const ArticleCard = ({ post }: ArticleCardProps) => {
             </span>
             <span>{formatDate(post.createdAt)}</span>
           </div>
-
-          <div className="h-40 md:70 lg:h-80 w-full bg-muted" />
 
           <CardTitle className="text-lg text-pretty font-bold leading-tight mb-3 line-clamp-2">
             {post.title}
@@ -83,4 +81,4 @@ const ArticleCard = ({ post }: ArticleCardProps) => {
   );
 };
 
-export default ArticleCard;
+export default LatestArticleCard;

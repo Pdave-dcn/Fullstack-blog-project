@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
 import { containerVariants, itemVariants } from "@/lib/animation-variants";
 import { blogPosts } from "@/lib/mock-article-data";
-import ArticleCard from "../ArticleCard";
+import LatestArticleCard from "../LatestArticleCard";
 
 export const LatestArticlesSection = () => {
   const mockRecentArticles = blogPosts.slice(0, 3);
@@ -47,7 +47,7 @@ export const LatestArticlesSection = () => {
               whileHover="hover"
               className="cursor-pointer"
             >
-              <ArticleCard post={post} />
+              <LatestArticleCard post={post} />
             </motion.div>
           ))}
         </motion.div>
