@@ -1,6 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import Header from "@/components/layout/Header";
 import CommentSection from "@/components/CommentSection";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -57,7 +56,6 @@ const ArticleDetails = () => {
             </div>
           </div>
         </main>
-        <Footer />
       </div>
     );
   }
@@ -85,7 +83,6 @@ const ArticleDetails = () => {
             </div>
           </div>
         </main>
-        <Footer />
       </div>
     );
   }
@@ -135,8 +132,6 @@ const ArticleDetails = () => {
           </div>
         </article>
       </main>
-
-      <Footer />
     </div>
   );
 };

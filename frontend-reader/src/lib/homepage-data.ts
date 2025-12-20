@@ -1,3 +1,5 @@
+import { Star_13, Star_1, Ellipse_8 } from "@/components/ui/svgs";
+
 export const HOMEPAGE_DATA = {
   hero: {
     title: "Welcome to TextNode",
@@ -5,44 +7,31 @@ export const HOMEPAGE_DATA = {
       "Discover insightful articles, expert opinions, and the latest trends in technology, development, and beyond.",
     ctaText: "Start Reading",
   },
+
   features: [
     {
       id: "quality-content",
       title: "Quality Content",
       description:
         "Carefully crafted articles covering the latest in tech, development, and industry insights.",
-      colorScheme: {
-        gradient: "from-blue-50 to-indigo-50",
-        border: "border-blue-100",
-        iconBg: "bg-blue-100",
-        iconColor: "text-blue-600",
-      },
+      icon: Star_13,
     },
     {
       id: "always-fresh",
       title: "Always Fresh",
       description:
         "Regular updates with new perspectives on emerging technologies and best practices.",
-      colorScheme: {
-        gradient: "from-green-50 to-emerald-50",
-        border: "border-green-100",
-        iconBg: "bg-green-100",
-        iconColor: "text-green-600",
-      },
+      icon: Star_1,
     },
     {
       id: "for-developers",
       title: "For Developers",
       description:
         "Written by a developer, for developers. Practical insights you can apply immediately.",
-      colorScheme: {
-        gradient: "from-purple-50 to-violet-50",
-        border: "border-purple-100",
-        iconBg: "bg-purple-100",
-        iconColor: "text-purple-600",
-      },
+      icon: Ellipse_8,
     },
   ],
+
   recentArticles: {
     title: "Latest Articles",
     subtitle: "Fresh insights and perspectives from the world of development",

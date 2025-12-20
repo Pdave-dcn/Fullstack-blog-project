@@ -2,10 +2,12 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, Home, BookOpen, User, type LucideIcon } from "lucide-react";
-import AuthModal from "./AuthModal";
-import UserMenu from "./UserMenu";
+import AuthModal from "../AuthModal";
+import UserMenu from "../UserMenu";
 import { useAuth } from "@/hooks/use-auth";
 import { motion } from "motion/react";
+import { cn } from "@/lib/utils";
+import { spacing } from "@/lib/design-tokens";
 
 interface NavLink {
   path: string;
@@ -72,8 +74,13 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b shadow-lg">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <header
+      className={cn(
+        spacing.padding_x,
+        "sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b shadow-lg"
+      )}
+    >
+      <div className="">
         <div className="flex justify-between items-center h-16">
           <motion.div
             whileHover={{ scale: 1.1, rotate: 5 }}

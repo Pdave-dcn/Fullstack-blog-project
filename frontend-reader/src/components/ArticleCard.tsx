@@ -52,25 +52,25 @@ const ArticleCard = ({ post }: ArticleCardProps) => {
 
   return (
     <Link to={`/articles/${post.id}`} className="block group">
-      <Card className="h-full hover:shadow-lg transition-all duration-300 transform group-hover:-translate-y-1 border border-gray-200">
+      <Card className="h-full hover:shadow-lg transition-all duration-300 transform group-hover:-translate-y-1 border">
         <CardHeader className="p-6">
-          <div className="flex items-center justify-between text-sm text-gray-500 mb-3">
-            <span className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-medium border border-blue-200">
+          <div className="flex items-center justify-between text-sm text-muted-foreground mb-3">
+            <span className="bg-muted px-3 py-1 rounded-full text-xs font-medium border">
               Article
             </span>
             <span>{formatDate(post.createdAt)}</span>
           </div>
 
-          <CardTitle className="text-lg font-bold leading-tight group-hover:text-blue-600 transition-colors mb-3 line-clamp-2">
+          <CardTitle className="text-lg text-pretty font-bold leading-tight mb-3 line-clamp-2">
             {post.title}
           </CardTitle>
 
-          <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
+          <p className="text-muted-foreground text-sm leading-relaxed mb-4 line-clamp-3">
             {getExcerpt(post.content)}
           </p>
 
-          <div className="flex items-center justify-between text-xs text-gray-500 pt-2 border-t border-gray-100">
-            <span>BlogReader</span>
+          <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t">
+            <span>TextNode</span>
             <span className="flex items-center">
               {estimateReadTime(post.content)} min read
             </span>

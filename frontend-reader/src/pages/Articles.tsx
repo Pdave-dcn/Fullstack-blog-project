@@ -1,4 +1,4 @@
-import Header from "@/components/Header";
+import Header from "@/components/layout/Header";
 import ArticleCard from "@/components/ArticleCard";
 import { useDataFetching } from "@/hooks/use-dataFetching";
 import { AlertCircle } from "lucide-react";
