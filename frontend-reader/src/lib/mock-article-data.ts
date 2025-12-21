@@ -5,7 +5,7 @@ interface BlogPost {
   createdAt: string;
 }
 
-interface Article {
+export interface Article {
   id: string;
   title: string;
   content: string;
