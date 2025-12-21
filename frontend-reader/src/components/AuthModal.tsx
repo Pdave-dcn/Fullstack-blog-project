@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useForm, type FieldErrors } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -10,26 +12,20 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff, User, SquareUser, Lock, AlertCircle } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Eye, EyeOff, AlertCircle } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
+import {
+  loginSchema,
+  signupSchema,
+  type FormData,
+  type SignupFormData,
+} from "@/zodSchemas/auth.zod";
 
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
   defaultMode?: "login" | "signup";
-}
-
-interface FormData {
-  name?: string;
-  username: string;
-  password: string;
-}
-
-interface FormErrors {
-  name?: string;
-  username?: string;
-  password?: string;
-  general?: string;
 }
 
 const AuthModal = ({
@@ -39,307 +35,198 @@ const AuthModal = ({
 }: AuthModalProps) => {
   const [mode, setMode] = useState<"login" | "signup">(defaultMode);
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [formData, setFormData] = useState<FormData>({
-    name: "",
-    username: "",
-    password: "",
-  });
+  const [serverError, setServerError] = useState("");
   const { login } = useAuth();
 
-  const validateForm = (): boolean => {
-    const newErrors: FormErrors = {};
+  const schema = mode === "signup" ? signupSchema : loginSchema;
 
-    if (mode === "signup") {
-      if (!formData.name?.trim()) {
-        newErrors.name = "Full name is required";
-      } else if (formData.name.trim().length < 2) {
-        newErrors.name = "Name must be at least 2 characters long";
-      }
-    }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+    setError,
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+    mode: "onBlur",
+  });
 
-    if (!formData.username.trim()) {
-      newErrors.username = "Username is required";
-    } else if (formData.username.length < 3) {
-      newErrors.username = "Username must be at least 3 characters long";
-    } else if (!/^[a-zA-Z0-9_]+$/.test(formData.username)) {
-      newErrors.username =
-        "Username can only contain letters, numbers, and underscores";
-    }
-
-    if (!formData.password) {
-      newErrors.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters long";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const clearErrors = () => {
-    setErrors({});
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    clearErrors();
-
-    if (!validateForm()) {
-      return;
-    }
-
-    setIsLoading(true);
+  const onSubmit = async (data: FormData) => {
+    setServerError("");
 
     try {
       const endpoint = `${import.meta.env.VITE_API_BASE_URL}/users/${
         mode === "signup" ? "signup" : "login"
       }`;
 
+      const payload =
+        mode === "signup"
+          ? {
+              name: (data as SignupFormData).name.trim(),
+              username: data.username.trim(),
+              password: data.password,
+            }
+          : { username: data.username.trim(), password: data.password };
+
       const response = await fetch(endpoint, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(
-          mode === "signup"
-            ? {
-                name: formData.name?.trim(),
-                username: formData.username.trim(),
-                password: formData.password,
-              }
-            : {
-                username: formData.username.trim(),
-                password: formData.password,
-              }
-        ),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
 
-      const data = await response.json();
+      const result = await response.json();
 
       if (!response.ok) {
         if (response.status === 409) {
-          setErrors({ username: "Username is already taken" });
+          setError("username", { message: "Username is already taken" });
         } else if (response.status === 401) {
-          setErrors({ general: "Invalid username or password" });
-        } else if (response.status === 400) {
-          setErrors({ general: data.message || "Invalid input data" });
+          setServerError("Invalid username or password");
         } else {
-          setErrors({ general: "Authentication failed. Please try again." });
+          setServerError(
+            result.message || "Authentication failed. Please try again."
+          );
         }
         return;
       }
 
-      login(data.token, data.user);
-
+      login(result.token, result.user);
       toast.success(
-        `Welcome ${mode === "login" ? "back" : ""}, ${data.user.username}`
+        `Welcome ${mode === "login" ? "back" : ""}, ${result.user.username}`
       );
+      reset();
       onClose();
-
-      setFormData({
-        name: "",
-        username: "",
-        password: "",
-      });
-      clearErrors();
     } catch (error) {
-      console.error("Auth error:", error);
-      setErrors({
-        general:
-          error instanceof Error
-            ? error.message
-            : "Network error. Please try again.",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleInputChange = (field: keyof FormData, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-
-    if (errors[field]) {
-      setErrors((prev) => ({
-        ...prev,
-        [field]: undefined,
-      }));
-    }
-
-    if (errors.general) {
-      setErrors((prev) => ({
-        ...prev,
-        general: undefined,
-      }));
+      setServerError("Network error. Please try again.");
+      console.error(error);
     }
   };
 
   const handleModeSwitch = () => {
     setMode(mode === "login" ? "signup" : "login");
-    clearErrors();
+    setServerError("");
+    reset();
+  };
+
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      reset();
+      setServerError("");
+      onClose();
+    }
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md bg-white/95 backdrop-blur-xl border border-white/20 shadow-2xl">
-        <DialogHeader className="text-center">
-          <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>
             {mode === "login" ? "Welcome Back" : "Join BlogReader"}
           </DialogTitle>
-          <DialogDescription className="text-gray-600">
+          <DialogDescription>
             {mode === "login"
               ? "Sign in to your account to continue"
               : "Create an account to start commenting and engaging"}
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {errors.general && (
-            <div className="flex items-center space-x-2 p-3 text-red-600 bg-red-50 border border-red-200 rounded-md">
-              <AlertCircle size={16} />
-              <span className="text-sm">{errors.general}</span>
-            </div>
+        <div className="space-y-4">
+          {serverError && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>{serverError}</AlertDescription>
+            </Alert>
           )}
 
           {mode === "signup" && (
             <div className="space-y-2">
-              <Label
-                htmlFor="name"
-                className="text-sm font-medium text-gray-700"
-              >
-                Full Name
-              </Label>
-              <div className="relative">
-                <User
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                  size={18}
-                />
-                <Input
-                  id="name"
-                  type="text"
-                  placeholder="Enter your full name"
-                  value={formData.name || ""}
-                  onChange={(e) => handleInputChange("name", e.target.value)}
-                  className={`pl-10 bg-white/50 border-gray-200 focus:border-blue-500 focus:ring-blue-500 ${
-                    errors.name
-                      ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                      : ""
-                  }`}
-                />
-              </div>
-              {errors.name && (
-                <p className="text-red-500 text-xs mt-1 flex items-center space-x-1">
-                  <AlertCircle size={12} />
-                  <span>{errors.name}</span>
+              <Label htmlFor="name">Full Name</Label>
+              <Input
+                id="name"
+                {...register("name")}
+                placeholder="Enter your full name"
+              />
+              {(errors as FieldErrors<SignupFormData>).name && (
+                <p className="text-sm text-destructive">
+                  {(errors as FieldErrors<SignupFormData>).name?.message}
                 </p>
               )}
             </div>
           )}
 
           <div className="space-y-2">
-            <Label
-              htmlFor="username"
-              className="text-sm font-medium text-gray-700"
-            >
-              Username
-            </Label>
-            <div className="relative">
-              <SquareUser
-                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                size={18}
-              />
-              <Input
-                id="username"
-                type="text"
-                placeholder="Enter your username"
-                value={formData.username}
-                onChange={(e) => handleInputChange("username", e.target.value)}
-                className={`pl-10 bg-white/50 border-gray-200 focus:border-blue-500 focus:ring-blue-500 ${
-                  errors.username
-                    ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                    : ""
-                }`}
-              />
-            </div>
+            <Label htmlFor="username">Username</Label>
+            <Input
+              id="username"
+              {...register("username")}
+              placeholder="Enter your username"
+            />
             {errors.username && (
-              <p className="text-red-500 text-xs mt-1 flex items-center space-x-1">
-                <AlertCircle size={12} />
-                <span>{errors.username}</span>
+              <p className="text-sm text-destructive">
+                {errors.username.message}
               </p>
             )}
           </div>
 
           <div className="space-y-2">
-            <Label
-              htmlFor="password"
-              className="text-sm font-medium text-gray-700"
-            >
-              Password
-            </Label>
+            <Label htmlFor="password">Password</Label>
             <div className="relative">
-              <Lock
-                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                size={18}
-              />
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
+                {...register("password")}
                 placeholder="Enter your password"
-                value={formData.password}
-                onChange={(e) => handleInputChange("password", e.target.value)}
-                className={`pl-10 pr-10 bg-white/50 border-gray-200 focus:border-blue-500 focus:ring-blue-500 ${
-                  errors.password
-                    ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                    : ""
-                }`}
+                className="pr-10"
               />
-              <button
+              <Button
                 type="button"
+                variant="ghost"
+                size="sm"
+                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
               >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </Button>
             </div>
             {errors.password && (
-              <p className="text-red-500 text-xs mt-1 flex items-center space-x-1">
-                <AlertCircle size={12} />
-                <span>{errors.password}</span>
+              <p className="text-sm text-destructive">
+                {errors.password.message}
               </p>
             )}
           </div>
 
           <Button
-            type="submit"
-            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2.5 rounded-lg transition-all duration-200 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-            disabled={isLoading}
+            type="button"
+            className="w-full"
+            disabled={isSubmitting}
+            onClick={handleSubmit(onSubmit)}
           >
-            {isLoading
+            {isSubmitting
               ? "Loading..."
               : mode === "login"
               ? "Sign In"
               : "Create Account"}
           </Button>
-        </form>
+        </div>
 
-        <div className="text-center">
-          <p className="text-sm text-gray-600">
+        <div className="text-center text-sm">
+          <span className="text-muted-foreground">
             {mode === "login"
               ? "Don't have an account?"
               : "Already have an account?"}
-            <button
-              type="button"
-              onClick={handleModeSwitch}
-              className="ml-1 text-blue-600 hover:text-blue-700 font-medium hover:underline"
-              disabled={isLoading}
-            >
-              {mode === "login" ? "Sign up" : "Sign in"}
-            </button>
-          </p>
+          </span>
+          <Button
+            type="button"
+            variant="link"
+            className="ml-1 p-0 h-auto font-normal"
+            onClick={handleModeSwitch}
+            disabled={isSubmitting}
+          >
+            {mode === "login" ? "Sign up" : "Sign in"}
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
