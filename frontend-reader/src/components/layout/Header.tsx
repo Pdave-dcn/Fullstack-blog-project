@@ -2,12 +2,12 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, Home, BookOpen, User, type LucideIcon } from "lucide-react";
-import AuthModal from "../AuthModal";
+import AuthModal from "../AuthModal/AuthModal";
 import UserMenu from "../UserMenu";
-import { useAuth } from "@/hooks/use-auth";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { spacing } from "@/lib/design-tokens";
+import { useAuthStore } from "@/store/auth.store";
 
 interface NavLink {
   path: string;
@@ -25,7 +25,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const location = useLocation();
-  const { user } = useAuth();
+  const { user } = useAuthStore();
 
   const isActive = (path: string) => location.pathname === path;
 

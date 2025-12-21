@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MessageSquare, Lock } from "lucide-react";
-import AuthModal from "./AuthModal";
+import AuthModal from "./AuthModal/AuthModal";
 import { useAuth } from "@/hooks/use-auth";
 import { useComments } from "@/hooks/use-comments";
 import { useCommentForm } from "@/hooks/use-commentForms";

@@ -11,6 +11,34 @@ api.interceptors.response.use(
   (error: AxiosError) => {
     const status = error.response?.status;
 
+    if (status === 429) {
+      const errorData = error.response?.data as {
+        code?: string;
+        message?: string;
+      };
+
+      const message =
+        errorData?.message ?? "Too many requests. Please try again later.";
+
+      toast.error("Rate Limit Exceeded", {
+        description: message,
+        duration: 6000,
+      });
+
+      return Promise.reject(error);
+    }
+
+    if (status === 403) {
+      const errorData = error.response?.data as { message?: string };
+      const message = errorData?.message ?? "Access denied";
+
+      toast.error("Action Restricted", {
+        description: message ?? "You're not allowed to perform this action.",
+        duration: 5000,
+      });
+      return Promise.reject(error);
+    }
+
     if (!error.response) {
       toast.error("Network Error", {
         description:
