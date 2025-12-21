@@ -19,7 +19,9 @@ export const listPublicArticlesController = async (
       "Public articles retrieved successfully"
     );
 
-    res.status(200).json(articles);
+    res.status(200).json({
+      data: articles,
+    });
   } catch (err) {
     next(err);
   }
@@ -54,7 +56,9 @@ export const listArticlesController = async (
       "Articles retrieved successfully"
     );
 
-    res.status(200).json(articles);
+    res.status(200).json({
+      data: articles,
+    });
   } catch (err) {
     next(err);
   }

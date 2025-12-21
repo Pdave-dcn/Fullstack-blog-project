@@ -8,7 +8,7 @@ import api from "./axios";
 
 export const getArticles = async () => {
   try {
-    const res = await api.get("/articles");
+    const res = await api.get("/articles/published");
     const parsed = ArticlesResponseSchema.parse(res.data);
     return parsed.data;
   } catch (error) {

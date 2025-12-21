@@ -1,12 +1,17 @@
 import { motion } from "motion/react";
 import { containerVariants, itemVariants } from "@/lib/animation-variants";
-import { articles } from "@/lib/mock-article-data";
 import { cn } from "@/lib/utils";
 import { layout, spacing, typography } from "@/lib/design-tokens";
 import { Ellipse_5 } from "@/components/ui/svgs";
 import ArticleCard from "@/components/ArticleCard";
+import { useArticlesQuery } from "@/queries/article.query";
+import { ArticlesSkeleton } from "@/components/ArticlesPage/ArticlesSkeleton";
+import { ArticlesError } from "@/components/ArticlesPage/ArticlesError";
+import { ArticlesEmpty } from "@/components/ArticlesPage/ArticlesEmpty";
 
 const Articles = () => {
+  const { data: articles, isLoading, isError, refetch } = useArticlesQuery();
+
   return (
     <main className="w-full flex flex-col md:gap-18 lg:gap-30">
       {/* Page Header */}
@@ -28,22 +33,42 @@ const Articles = () => {
       {/* Articles Grid */}
       <section className="py-12">
         <div className={cn(spacing.padding_x)}>
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {articles.map((post) => (
-              <motion.div
-                key={post.id}
-                variants={itemVariants}
-                className="cursor-pointer"
-              >
-                <ArticleCard post={post} />
-              </motion.div>
-            ))}
-          </motion.div>
+          {/* Loading State */}
+          {isLoading && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <ArticlesSkeleton key={i} />
+              ))}
+            </div>
+          )}
+
+          {/* Error State */}
+          {isError && !isLoading && <ArticlesError refetch={refetch} />}
+
+          {/* Success State - with articles */}
+          {!isLoading && !isError && articles && articles.length > 0 && (
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              {articles.map((post) => (
+                <motion.div
+                  key={post.id}
+                  variants={itemVariants}
+                  className="cursor-pointer"
+                >
+                  <ArticleCard post={post} />
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+
+          {/* Empty State - no articles */}
+          {!isLoading && !isError && articles && articles.length === 0 && (
+            <ArticlesEmpty />
+          )}
         </div>
       </section>
     </main>
