@@ -25,7 +25,9 @@ export const getArticleController = async (
       "Article retrieved successfully"
     );
 
-    res.status(200).json(article);
+    res.status(200).json({
+      data: article,
+    });
   } catch (err) {
     next(err);
   }

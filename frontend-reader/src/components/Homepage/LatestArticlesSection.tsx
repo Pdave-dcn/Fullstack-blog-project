@@ -4,11 +4,18 @@ import { Button } from "../ui/button";
 import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
 import { containerVariants, itemVariants } from "@/lib/animation-variants";
-import { blogPosts } from "@/lib/mock-article-data";
 import LatestArticleCard from "../LatestArticleCard";
+import { useLatestArticlesQuery } from "@/queries/article.query";
+import { LatestArticlesSkeleton } from "./LatestArticlesSkeleton";
+import { LatestArticlesError } from "./LatestArticlesError";
 
 export const LatestArticlesSection = () => {
-  const mockRecentArticles = blogPosts.slice(0, 3);
+  const {
+    data: articles,
+    isLoading,
+    isError,
+    refetch,
+  } = useLatestArticlesQuery();
 
   return (
     <section className="py-16 bg-muted/50">
@@ -34,23 +41,41 @@ export const LatestArticlesSection = () => {
           </div>
         </div>
 
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {mockRecentArticles.map((post) => (
-            <motion.div
-              key={post.id}
-              variants={itemVariants}
-              whileHover="hover"
-              className="cursor-pointer"
-            >
-              <LatestArticleCard post={post} />
-            </motion.div>
-          ))}
-        </motion.div>
+        {/* Loading State */}
+        {isLoading && <LatestArticlesSkeleton />}
+
+        {/* Error State */}
+        {isError && !isLoading && <LatestArticlesError refetch={refetch} />}
+
+        {/* Success State */}
+        {!isLoading && !isError && articles && (
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            {articles.map((article) => (
+              <motion.div
+                key={article.id}
+                variants={itemVariants}
+                whileHover="hover"
+                className="cursor-pointer"
+              >
+                <LatestArticleCard article={article} />
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+
+        {/* Empty State */}
+        {!isLoading && !isError && articles && articles.length === 0 && (
+          <div className="flex flex-col items-center justify-center py-12 space-y-4">
+            <p className="text-muted-foreground text-center">
+              No articles available at the moment.
+            </p>
+          </div>
+        )}
 
         <div className="text-center mt-12 sm:hidden">
           <div>

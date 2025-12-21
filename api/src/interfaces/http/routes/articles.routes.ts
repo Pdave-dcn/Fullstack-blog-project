@@ -13,7 +13,7 @@ import {
   generalApiLimiter,
   writeOperationsLimiter,
 } from "@/infrastructure/http/rateLimit/coreRateLimits.js";
-import { authenticateJwt } from "../middlewares/authenticateJWT.middleware.js";
+import { authenticateJwt } from "../middlewares/authenticateJwt.middleware.js";
 import { requireRole } from "../middlewares/requireRole.middleware.js";
 import { UserRole } from "@/domains/users/UserRole.js";
 
@@ -22,7 +22,7 @@ const router = express.Router();
 router.use(generalApiLimiter);
 
 router.get("/published", listPublicArticlesController);
-router.get("/recent", getRecentArticlesController);
+router.get("/latest", getRecentArticlesController);
 router.get("/:id", getArticleController);
 
 router.use(authenticateJwt);

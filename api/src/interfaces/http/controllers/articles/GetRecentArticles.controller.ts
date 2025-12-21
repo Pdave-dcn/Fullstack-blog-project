@@ -18,7 +18,9 @@ export const getRecentArticlesController = async (
       "Recent articles retrieved successfully"
     );
 
-    res.status(200).json(recentArticles);
+    res.status(200).json({
+      data: recentArticles,
+    });
   } catch (err) {
     next(err);
   }
