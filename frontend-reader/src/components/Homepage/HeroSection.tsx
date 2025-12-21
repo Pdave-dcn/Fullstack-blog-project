@@ -4,23 +4,16 @@ import { Button } from "../ui/button";
 import { ArrowRight } from "lucide-react";
 import { Moon_4 } from "../ui/svgs";
 import { cn } from "@/lib/utils";
-import { spacing, typography } from "@/lib/design-tokens";
+import { layout, spacing, typography } from "@/lib/design-tokens";
 
 export const HeroSection = () => {
   return (
-    <section className="flex md:justify-between bg-primary text-secondary py-10 overflow-hidden">
-      <div
-        className={cn(
-          spacing.padding_x,
-          "md:w-[60%] flex flex-col items-center text-center text-pretty md:items-start md:text-start"
-        )}
-      >
+    <section className={cn(layout.headerSection)}>
+      <div className={cn(spacing.padding_x, layout.heroSection)}>
         <h1 className={cn(typography.hero.title, "mb-6")}>
           {HOMEPAGE_DATA.hero.title}
         </h1>
-        <p
-          className={cn(typography.hero.subtitle, "mb-8 text-muted-foreground")}
-        >
+        <p className={cn(typography.hero.subtitle, "mb-8")}>
           {HOMEPAGE_DATA.hero.subtitle}
         </p>
         <div>

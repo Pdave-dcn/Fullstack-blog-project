@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 import { containerVariants, itemVariants } from "@/lib/animation-variants";
 import { articles } from "@/lib/mock-article-data";
 import { cn } from "@/lib/utils";
-import { spacing, typography } from "@/lib/design-tokens";
+import { layout, spacing, typography } from "@/lib/design-tokens";
 import { Ellipse_5 } from "@/components/ui/svgs";
 import ArticleCard from "@/components/ArticleCard";
 
@@ -10,20 +10,10 @@ const Articles = () => {
   return (
     <main className="w-full flex flex-col md:gap-18 lg:gap-30">
       {/* Page Header */}
-      <section className="bg-primary text-background py-16 flex justify-between items-center">
-        <div
-          className={cn(
-            spacing.padding_x,
-            "md:w-[60%] flex flex-col items-center text-center text-pretty md:items-start md:text-start"
-          )}
-        >
+      <section className={cn(layout.headerSection)}>
+        <div className={cn(spacing.padding_x, layout.heroSection)}>
           <h1 className={cn(typography.hero.title, "mb-4")}>Articles</h1>
-          <p
-            className={cn(
-              typography.hero.subtitle,
-              "text-muted-foreground lg:w-[70%]"
-            )}
-          >
+          <p className={cn(typography.hero.subtitle, "lg:w-[70%]")}>
             Explore a complete collection of articles across various topics
           </p>
         </div>
