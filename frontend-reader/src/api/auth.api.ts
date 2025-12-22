@@ -18,7 +18,7 @@ const login = async (data: FormData) => {
 
 const signup = async (data: FormData) => {
   try {
-    const res = await api.post("/users/register", data);
+    const res = await api.post("/users/signup", data);
 
     const validatedData = AuthResponseSchema.parse(res.data);
 

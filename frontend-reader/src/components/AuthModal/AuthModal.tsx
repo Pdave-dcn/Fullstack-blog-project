@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -16,6 +16,7 @@ import {
 } from "@/zodSchemas/auth.zod";
 import { useAuthMutation } from "@/queries/auth.query";
 import { AuthFormFields } from "./AuthFormFields";
+import { RotateCcw } from "lucide-react";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -35,18 +36,27 @@ const AuthModal = ({
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     reset,
     setError,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-    mode: "onBlur",
+    defaultValues: {
+      name: "",
+      username: "",
+      password: "",
+    },
   });
 
   const authMutation = useAuthMutation(mode, setError);
 
   const onSubmit = async (data: FormData) => {
-    authMutation.mutate(data);
+    authMutation.mutate(data, {
+      onSuccess: () => {
+        reset();
+        onClose();
+      },
+    });
   };
 
   const handleModeSwitch = () => {
@@ -60,6 +70,17 @@ const AuthModal = ({
       onClose();
     }
   };
+
+  // Reset form when modal closes or mode changes
+  useEffect(() => {
+    if (!isOpen) {
+      reset();
+    }
+  }, [isOpen, reset]);
+
+  useEffect(() => {
+    reset();
+  }, [mode, reset]);
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
@@ -81,14 +102,16 @@ const AuthModal = ({
           <Button
             type="button"
             className="w-full"
-            disabled={isSubmitting}
+            disabled={authMutation.isPending}
             onClick={handleSubmit(onSubmit)}
           >
-            {isSubmitting
-              ? "Loading..."
-              : mode === "login"
-              ? "Sign In"
-              : "Create Account"}
+            {authMutation.isPending ? (
+              <RotateCcw className="animate-spin" />
+            ) : mode === "login" ? (
+              "Sign In"
+            ) : (
+              "Create Account"
+            )}
           </Button>
         </div>
 
@@ -103,7 +126,7 @@ const AuthModal = ({
             variant="link"
             className="ml-1 p-0 h-auto font-normal"
             onClick={handleModeSwitch}
-            disabled={isSubmitting}
+            disabled={authMutation.isPending}
           >
             {mode === "login" ? "Sign up" : "Sign in"}
           </Button>
