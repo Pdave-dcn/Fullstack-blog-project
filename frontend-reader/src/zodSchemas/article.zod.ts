@@ -9,11 +9,11 @@ const ArticleSchema = z.object({
 });
 
 const LatestArticlesResponse = z.object({
-  data: z.array(ArticleSchema),
+  data: z.array(ArticleSchema).max(3),
 });
 
 const ArticlesResponseSchema = z.object({
-  data: z.array(ArticleSchema).max(3),
+  data: z.array(ArticleSchema),
 });
 
 export type Article = z.infer<typeof ArticleSchema>;
