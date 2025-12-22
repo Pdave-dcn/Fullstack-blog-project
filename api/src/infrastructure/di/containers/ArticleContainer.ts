@@ -3,9 +3,10 @@ import { DeleteArticleUseCase } from "@/application/articles/delete/DeleteArticl
 import { EditArticleUseCase } from "@/application/articles/edit/EditArticleUseCase.js";
 import { ListArticlesUseCase } from "@/application/articles/list/ListArticlesUseCase.js";
 import { UpdateArticleStatusUseCase } from "@/application/articles/update/UpdateArticleStatusUseCase.js";
-import { GetArticleByIdUseCase } from "@/application/articles/querySingle/GetArticleByIdUseCase.js";
+import { GetArticleByIdUseCase } from "@/application/articles/queries/GetArticleByIdUseCase.js";
 import { GetRecentArticlesUseCase } from "@/application/articles/list/GetRecentArticlesUseCase.js";
 import { PrismaArticleRepository } from "@/infrastructure/db/prisma/PrismaArticleRepository.js";
+import { GetArticleDetailsUseCase } from "@/application/articles/queries/GetArticleDetailsUseCase";
 
 /**
  * Article domain dependency injection container.
@@ -32,6 +33,7 @@ export class ArticleContainer {
   public readonly updateStatusUseCase: UpdateArticleStatusUseCase;
   public readonly getByIdUseCase: GetArticleByIdUseCase;
   public readonly getRecentUseCase: GetRecentArticlesUseCase;
+  public readonly getDetailsUseCase: GetArticleDetailsUseCase;
 
   constructor() {
     this.repository = new PrismaArticleRepository();
@@ -42,5 +44,6 @@ export class ArticleContainer {
     this.updateStatusUseCase = new UpdateArticleStatusUseCase(this.repository);
     this.getByIdUseCase = new GetArticleByIdUseCase(this.repository);
     this.getRecentUseCase = new GetRecentArticlesUseCase(this.repository);
+    this.getDetailsUseCase = new GetArticleDetailsUseCase(this.repository);
   }
 }

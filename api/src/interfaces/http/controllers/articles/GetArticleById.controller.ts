@@ -1,6 +1,7 @@
 import { container } from "@/infrastructure/di/containers/index.js";
 import { Request, Response, NextFunction } from "express";
 
+// ! Not in use
 export const getArticleController = async (
   req: Request,
   res: Response,

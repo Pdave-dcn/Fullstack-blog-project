@@ -1,6 +1,6 @@
 import handleZodValidationError from "@/utils/zodErrorHandler";
 import {
-  ArticleSchema,
+  ArticleResponseSchema,
   ArticlesResponseSchema,
   LatestArticlesResponse,
 } from "@/zodSchemas/article.zod";
@@ -20,9 +20,9 @@ export const getArticles = async () => {
 export const getArticleById = async (articleId: string) => {
   try {
     const res = await api.get(`/articles/${articleId}`);
-    const parsed = ArticleSchema.parse(res.data);
+    const parsed = ArticleResponseSchema.parse(res.data);
 
-    return parsed;
+    return parsed.data;
   } catch (error) {
     handleZodValidationError(error, "getArticleById");
     throw error;

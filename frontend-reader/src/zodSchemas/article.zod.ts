@@ -1,11 +1,11 @@
 import { z } from "zod";
 
 const ArticleSchema = z.object({
-  id: z.string(),
+  id: z.uuid(),
   title: z.string(),
   content: z.string(),
   createdAt: z.string(),
-  commentCount: z.number().nonnegative().optional(),
+  commentsCount: z.number().nonnegative(),
 });
 
 const LatestArticlesResponse = z.object({
@@ -16,6 +16,15 @@ const ArticlesResponseSchema = z.object({
   data: z.array(ArticleSchema),
 });
 
+const ArticleResponseSchema = z.object({
+  data: ArticleSchema,
+});
+
 export type Article = z.infer<typeof ArticleSchema>;
 
-export { ArticleSchema, LatestArticlesResponse, ArticlesResponseSchema };
+export {
+  ArticleSchema,
+  LatestArticlesResponse,
+  ArticlesResponseSchema,
+  ArticleResponseSchema,
+};

@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Articles from "./pages/Articles";
-import ArticleDetails from "./pages/ArticleDetails";
+import ArticleReadPage from "./pages/ArticleReadPage";
 import { Toaster } from "sonner";
 import NotFound from "./pages/NotFound";
 import About from "./pages/About";
@@ -13,7 +13,7 @@ const App = () => {
     <>
       <BrowserRouter>
         <ScrollToTop />
-        <Toaster position="bottom-right" richColors />
+        <Toaster position="top-center" richColors />
         <Routes>
           <Route
             path="/"
@@ -35,7 +35,7 @@ const App = () => {
             path={`/articles/:id`}
             element={
               <PageWrapper>
-                <ArticleDetails />
+                <ArticleReadPage />
               </PageWrapper>
             }
           />
