@@ -9,6 +9,8 @@ export const errorMiddleware: ErrorRequestHandler = (
   res: Response,
   _next: NextFunction
 ) => {
+  logger.warn({ err }, "Request error caught in middleware");
+
   if (err instanceof ZodError) {
     res.status(400).json({
       message: "Validation failed",
@@ -17,19 +19,13 @@ export const errorMiddleware: ErrorRequestHandler = (
     return;
   }
 
-  // Domain errors → client errors
   if (err instanceof DomainError) {
-    switch (err.name) {
-      case "UnauthorizedAuthorError":
-        res.status(403).json({ message: err.message });
-      default:
-        res.status(400).json({ message: err.message });
-    }
+    const status = err.name === "UnauthorizedAuthorError" ? 403 : 400;
+    res.status(status).json({ message: err.message });
+    return;
   }
 
-  // Unknown / programmer / infra errors
-  logger.error({ err }, "Unhandled error");
-
+  logger.error({ err }, "Unhandled critical error");
   res.status(500).json({
     message: "Internal server error",
   });

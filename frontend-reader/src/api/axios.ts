@@ -12,6 +12,15 @@ api.interceptors.response.use(
   (error: AxiosError) => {
     const status = error.response?.status;
 
+    if (status === 400) {
+      toast.error("Request Failed", {
+        description:
+          "Something went wrong with this request. Please try again.",
+      });
+
+      return Promise.reject(error);
+    }
+
     if (status === 429) {
       const errorData = error.response?.data as {
         code?: string;

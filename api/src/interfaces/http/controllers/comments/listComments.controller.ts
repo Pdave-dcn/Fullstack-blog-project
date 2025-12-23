@@ -71,7 +71,7 @@ export const listArticleCommentsController = async (
     );
 
     const parsed = ArticleCommentsQuerySchema.parse({
-      articleId: params.articleId,
+      articleId: params.id,
       limit: query.limit,
       cursor: query.cursor,
     });
@@ -94,10 +94,10 @@ export const listArticleCommentsController = async (
       pagination: {
         nextCursor: result.nextCursor,
         hasMore: result.hasMore,
-        limit: parsed.limit,
       },
     });
   } catch (err) {
+    console.log(err);
     next(err);
   }
 };
@@ -141,7 +141,6 @@ export const listCommentRepliesController = async (
       pagination: {
         nextCursor: result.nextCursor,
         hasMore: result.hasMore,
-        limit: parsed.limit,
       },
     });
   } catch (err) {

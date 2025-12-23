@@ -15,11 +15,6 @@ export class DeleteCommentUseCase {
       throw new CommentNotFoundError(command.commentId);
     }
 
-    // If articleId is provided, enforce article ownership
-    if (command.articleId && comment.articleId !== command.articleId) {
-      throw new CommentNotFoundError(command.commentId);
-    }
-
     const isAuthor = command.requesterRole === "AUTHOR";
     const isOwner = comment.authorId === command.requesterId;
 

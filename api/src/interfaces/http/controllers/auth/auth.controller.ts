@@ -30,7 +30,7 @@ export const signupUserController = async (
       { expiresIn: "3d" }
     );
 
-    res.cookie("auth", token, getCookieConfig());
+    res.cookie("token", token, getCookieConfig());
 
     req.log.info(
       {
@@ -78,7 +78,7 @@ export const loginUserController = async (
       }
     );
 
-    res.cookie("auth", token, getCookieConfig());
+    res.cookie("token", token, getCookieConfig());
 
     req.log.info(
       {

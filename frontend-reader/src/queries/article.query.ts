@@ -7,21 +7,21 @@ import { useQuery } from "@tanstack/react-query";
 
 export const useArticlesQuery = () => {
   return useQuery({
-    queryKey: ["article", "published"],
+    queryKey: ["articles", "published"],
     queryFn: getArticles,
   });
 };
 
 export const useLatestArticlesQuery = () => {
   return useQuery({
-    queryKey: ["article", "latest"],
+    queryKey: ["articles", "latest"],
     queryFn: getLatestArticles,
   });
 };
 
 export const useSingleArticleQuery = (articleId: string) => {
   return useQuery({
-    queryKey: ["article", articleId],
+    queryKey: ["articles", articleId],
     queryFn: () => getArticleById(articleId),
   });
 };

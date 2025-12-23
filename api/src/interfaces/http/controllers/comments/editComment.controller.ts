@@ -22,8 +22,8 @@ export const editCommentController = async (
 
     const parsed = EditCommentSchema.parse({
       editorId: authReq.user.id,
-      commentId: req.params.commentId,
-      articleId: req.body.postId,
+      commentId: req.params.id,
+      articleId: req.body.articleId,
       content: req.body.content,
     });
 
@@ -31,7 +31,7 @@ export const editCommentController = async (
 
     req.log.info(
       {
-        commentId: req.params.commentId,
+        commentId: req.params.id,
         userId: authReq.user.id,
       },
       "Comment edited successfully"

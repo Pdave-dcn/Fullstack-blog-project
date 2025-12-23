@@ -11,8 +11,8 @@ router.get("/health", (_req, res) => {
 });
 
 router.use("/api/users", authRoutes);
-router.use("/api/articles", articlesRoutes);
 router.use("/api", commentsRoutes);
+router.use("/api/articles", articlesRoutes);
 router.use("/api/dashboard", dashboardRoutes);
 
 router.use(/.*/, (_req, res) => {

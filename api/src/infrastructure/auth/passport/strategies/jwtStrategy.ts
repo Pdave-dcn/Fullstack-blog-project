@@ -1,14 +1,19 @@
+import env from "@/configs/env";
 import { container } from "@/infrastructure/di/containers/index.js";
-import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
+import { Request } from "express";
+import { Strategy as JwtStrategy } from "passport-jwt";
 
-const jwtSecret = process.env.JWT_SECRET;
-if (!jwtSecret) {
-  throw new Error("JWT_SECRET not defined in environment variables");
-}
+const cookieExtractor = (req: Request) => {
+  if (req?.cookies) {
+    return req.cookies["token"];
+  }
+
+  return null;
+};
 
 const jwtOptions = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: jwtSecret,
+  jwtFromRequest: cookieExtractor,
+  secretOrKey: env.JWT_SECRET,
 };
 
 type JwtPayload = {

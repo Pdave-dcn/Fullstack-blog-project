@@ -5,6 +5,9 @@ const ArticleSchema = z.object({
   title: z.string(),
   content: z.string(),
   createdAt: z.string(),
+});
+
+const ArticleDetailsSchema = ArticleSchema.extend({
   commentsCount: z.number().nonnegative(),
 });
 
@@ -17,13 +20,15 @@ const ArticlesResponseSchema = z.object({
 });
 
 const ArticleResponseSchema = z.object({
-  data: ArticleSchema,
+  data: ArticleDetailsSchema,
 });
 
 export type Article = z.infer<typeof ArticleSchema>;
+export type ArticleDetails = z.infer<typeof ArticleDetailsSchema>;
 
 export {
   ArticleSchema,
+  ArticleDetailsSchema,
   LatestArticlesResponse,
   ArticlesResponseSchema,
   ArticleResponseSchema,

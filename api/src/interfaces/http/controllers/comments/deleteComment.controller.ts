@@ -16,13 +16,11 @@ export const deleteCommentController = async (
         userId: authReq.user.id,
         role: authReq.user.role,
         commentId: authReq.params.id,
-        articleId: authReq.body.articleId,
       },
       "Delete comment request received"
     );
 
     const parsed = DeleteCommentSchema.parse({
-      articleId: authReq.body.articleId,
       commentId: authReq.params.id,
       requesterId: authReq.user.id,
       requesterRole: authReq.user.role,

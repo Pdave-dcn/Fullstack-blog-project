@@ -77,6 +77,7 @@ export class PrismaCommentQueryRepository implements CommentQueryRepository {
         id: true,
         content: true,
         createdAt: true,
+        authorId: true,
         user: {
           select: {
             id: true,
@@ -101,6 +102,7 @@ export class PrismaCommentQueryRepository implements CommentQueryRepository {
       id: row.id,
       content: row.content,
       createdAt: row.createdAt,
+      authorId: row.authorId,
       author: {
         id: row.user.id,
         username: row.user.username,
@@ -138,6 +140,7 @@ export class PrismaCommentQueryRepository implements CommentQueryRepository {
         id: true,
         content: true,
         createdAt: true,
+        authorId: true,
         user: {
           select: {
             id: true,
@@ -146,6 +149,7 @@ export class PrismaCommentQueryRepository implements CommentQueryRepository {
         },
         mentionedUser: {
           select: {
+            id: true,
             username: true,
           },
         },
@@ -162,6 +166,7 @@ export class PrismaCommentQueryRepository implements CommentQueryRepository {
       id: row.id,
       content: row.content,
       createdAt: row.createdAt,
+      authorId: row.authorId,
       mentionedUser: row.mentionedUser ?? undefined,
       author: {
         id: row.user.id,
