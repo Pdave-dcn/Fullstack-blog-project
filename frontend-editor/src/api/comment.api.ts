@@ -1,5 +1,6 @@
 import handleZodValidationError from "@/utils/zodErrorHandler";
 import {
+  CommentForAuthorViewResponseSchema,
   ParentCommentsResponseSchema,
   RepliesResponseSchema,
   type CommentCreationData,
@@ -11,6 +12,20 @@ export interface CommentEditData {
   articleId: string;
   content: string;
 }
+
+const getCommentsForAuthorView = async (page: number, pageSize: number) => {
+  try {
+    const res = await api.get("/comments/author", {
+      params: { page, pageSize },
+    });
+    const parsed = CommentForAuthorViewResponseSchema.parse(res.data);
+
+    return parsed;
+  } catch (error) {
+    handleZodValidationError(error, "getCommentsForAuthorView");
+    throw error;
+  }
+};
 
 const getArticleParentComments = async (
   articleId: string,
@@ -65,6 +80,7 @@ const deleteComment = async (commentId: string) => {
 export {
   getArticleParentComments,
   getParentCommentReplies,
+  getCommentsForAuthorView,
   createComment,
   editComment,
   deleteComment,

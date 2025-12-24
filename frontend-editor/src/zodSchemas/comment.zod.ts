@@ -14,6 +14,30 @@ const BaseCommentSchema = z.object({
   repliesCount: z.number().nonnegative(),
 });
 
+const CommentForAuthorViewSchema = z.object({
+  id: z.uuid(),
+  content: z.string(),
+  article: z.object({
+    id: z.uuid(),
+    title: z.string(),
+  }),
+  author: z.object({
+    name: z.string(),
+    username: z.string(),
+  }),
+  createdAt: z.string(),
+});
+
+const CommentForAuthorViewResponseSchema = z.object({
+  data: z.array(CommentForAuthorViewSchema),
+  pagination: z.object({
+    totalItems: z.number().int().nonnegative(),
+    currentPage: z.number().int().nonnegative(),
+    pageSize: z.number().int().nonnegative(),
+    totalPages: z.number().int().nonnegative(),
+  }),
+});
+
 const CommentPaginationSchema = z.object({
   hasMore: z.boolean(),
   nextCursor: z.uuid().nullable(),
@@ -72,6 +96,7 @@ const PaginationSchema = z.object({
 });
 
 export type Comment = z.infer<typeof BaseCommentSchema>;
+export type CommentForAuthorView = z.infer<typeof CommentForAuthorViewSchema>;
 export type CommentCreationData = z.infer<typeof CommentCreationSchema>;
 export type ParentCommentsResponse = z.infer<
   typeof ParentCommentsResponseSchema
@@ -86,4 +111,5 @@ export {
   PaginationSchema,
   ParentCommentsResponseSchema,
   RepliesResponseSchema,
+  CommentForAuthorViewResponseSchema,
 };

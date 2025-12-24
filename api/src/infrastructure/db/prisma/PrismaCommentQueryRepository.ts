@@ -40,7 +40,7 @@ export class PrismaCommentQueryRepository implements CommentQueryRepository {
         id: row.article.id,
         title: row.article.title,
       },
-      user: {
+      author: {
         name: row.user.name,
         username: row.user.username,
       },

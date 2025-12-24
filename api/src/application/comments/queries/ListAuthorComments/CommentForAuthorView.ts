@@ -5,7 +5,7 @@ export interface CommentForAuthorView {
     id: string;
     title: string;
   };
-  user: {
+  author: {
     name: string;
     username: string;
   };
