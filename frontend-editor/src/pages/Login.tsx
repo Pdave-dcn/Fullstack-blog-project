@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,61 +10,27 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { toast } from "sonner";
 import { Lock, User } from "lucide-react";
-import { useAuth } from "@/hooks/use-auth";
-import { handleApiResponseError } from "@/lib/utils";
+import { useAuthMutation } from "@/queries/auth.query";
+import { loginSchema, type LoginFormData } from "@/zodSchemas/auth.zod";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
-  const { login } = useAuth();
+  const { mutate: loginMutation, isPending } = useAuthMutation();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
 
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/users/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ username, password }),
-          mode: "cors",
-        }
-      );
-
-      if (!response.ok) {
-        handleApiResponseError(response, "Invalid credentials");
-      }
-
-      const { token, user } = await response.json();
-
-      if (user.role !== "author") {
-        toast.warning("Access Denied", {
-          description: "You do not have permission to access the editor.",
-        });
-        return;
-      }
-
-      login(token, user);
-      toast.success("Login successful", {
-        description: `Welcome back, ${user.username}.`,
-      });
-      navigate("/dashboard");
-    } catch (error: unknown) {
-      toast.error("Login failed", {
-        description:
-          error instanceof Error ? error.message : "Something went wrong",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+  const onSubmit = (data: LoginFormData) => {
+    loginMutation(data);
   };
 
   return (
@@ -86,7 +52,7 @@ const Login = () => {
               Enter your credentials to access the editor dashboard.
             </CardDescription>
           </CardHeader>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="username">Username</Label>
@@ -98,12 +64,15 @@ const Login = () => {
                     id="username"
                     type="text"
                     placeholder="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
                     className="pl-10"
-                    required
+                    {...register("username")}
                   />
                 </div>
+                {errors.username && (
+                  <p className="text-sm text-destructive">
+                    {errors.username.message}
+                  </p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -116,18 +85,20 @@ const Login = () => {
                     id="password"
                     type="password"
                     placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
                     className="pl-10"
-                    required
+                    {...register("password")}
                   />
                 </div>
-                <div>
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? "Signing in..." : "Sign In"}
-                  </Button>
-                </div>
+                {errors.password && (
+                  <p className="text-sm text-destructive">
+                    {errors.password.message}
+                  </p>
+                )}
               </div>
+
+              <Button type="submit" className="w-full" disabled={isPending}>
+                {isPending ? "Signing in..." : "Sign In"}
+              </Button>
             </CardContent>
           </form>
         </Card>

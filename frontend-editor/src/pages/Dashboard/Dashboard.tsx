@@ -11,10 +11,10 @@ import {
 } from "@/hooks/dashboardHooks";
 import { MessageLoading } from "@/components/ui/MessageLoading";
 import { handleDate } from "@/lib/utils";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuthStore } from "@/stores/auth.store";
 
 const Dashboard = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuthStore();
   const { stats, errorStats, loadingStats } = useDashboardStats();
   const { articles, errorArticles, loadingArticles } = useRecentArticles();
   const { comments, errorComments, loadingComments } = useRecentComments();

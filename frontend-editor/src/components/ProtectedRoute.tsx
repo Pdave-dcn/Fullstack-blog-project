@@ -1,19 +1,10 @@
 import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "@/hooks/use-auth";
 import Layout from "./Layout";
-import { MessageLoading } from "./ui/MessageLoading";
+import { useAuthStore } from "@/stores/auth.store";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated } = useAuthStore();
   const location = useLocation();
-
-  if (isLoading) {
-    return (
-      <div className="flex h-screen w-full items-center justify-center">
-        <MessageLoading />
-      </div>
-    );
-  }
 
   if (!isAuthenticated) {
     return <Navigate to="/" state={{ from: location }} replace />;

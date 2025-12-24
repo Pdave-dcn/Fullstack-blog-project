@@ -28,11 +28,14 @@ const baseSchema = z.object({
   AUTHOR_NAME: z
     .string()
     .trim()
-    .min(3, "Author name is required")
-    .max(100)
-    .regex(/^[a-zA-Z0-9_-]+$/)
+    .min(3, "Author name must be at least 3 characters")
+    .max(100, "Author name must not exceed 100 characters")
+    .regex(
+      /^[a-zA-Z]+(?:\s[a-zA-Z]+)+$/,
+      "Author name must contain at least first and last name separated by space (letters only)"
+    )
     .optional()
-    .default("author user"),
+    .default("Author User"),
 
   AUTHOR_USERNAME: z
     .string()
