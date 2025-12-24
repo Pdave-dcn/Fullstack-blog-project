@@ -2,7 +2,7 @@ export interface RecentCommentView {
   id: string;
   content: string;
   articleTitle: string;
-  user: {
+  author: {
     name: string;
     username: string;
   };

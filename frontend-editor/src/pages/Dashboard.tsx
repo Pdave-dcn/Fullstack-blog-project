@@ -1,38 +1,35 @@
 import { MessageSquare, Archive, Send, Newspaper } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
-import { Button } from "../../components/ui/button";
-import StatCard from "./StatCard";
-import RecentArticle from "./RecentArticle";
-import {
-  useDashboardStats,
-  useRecentArticles,
-  useRecentComments,
-} from "@/hooks/dashboardHooks";
-import { MessageLoading } from "@/components/ui/MessageLoading";
+import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import StatCard from "@/components/Dashboard/StatCard";
+import { RecentArticle } from "@/components/Dashboard/RecentArticle";
+import { useDashboard } from "@/hooks/useDashboard";
 import { handleDate } from "@/lib/utils";
 import { useAuthStore } from "@/stores/auth.store";
+import { DashboardSkeleton } from "@/components/Dashboard/DashboardSkeleton";
+import { DashboardError } from "@/components/Dashboard/DashboardError";
 
 const Dashboard = () => {
   const { isAuthenticated } = useAuthStore();
-  const { stats, errorStats, loadingStats } = useDashboardStats();
-  const { articles, errorArticles, loadingArticles } = useRecentArticles();
-  const { comments, errorComments, loadingComments } = useRecentComments();
+  const { stats, recentArticles, recentComments, isLoading, isError, refetch } =
+    useDashboard();
 
   const statsCategories = [
     {
       title: "Articles",
-      value: `${stats?.totalPosts ?? 0}`,
+      value: `${stats?.totalArticles ?? 0}`,
       icon: <Newspaper size={20} />,
     },
     {
       title: "Published Articles",
-      value: `${stats?.publishedPosts ?? 0}`,
+      value: `${stats?.publishedArticles ?? 0}`,
       icon: <Send size={20} />,
     },
     {
       title: "Draft Articles",
-      value: `${stats?.draftPosts ?? 0}`,
+      value: `${stats?.draftArticles ?? 0}`,
       icon: <Archive size={20} />,
     },
     {
@@ -45,26 +42,18 @@ const Dashboard = () => {
   if (!isAuthenticated) {
     return (
       <div className="flex items-center justify-center h-full">
-        <p>Please log in to view the dashboard</p>
+        <Alert>
+          <AlertDescription>
+            Please log in to view the dashboard
+          </AlertDescription>
+        </Alert>
       </div>
     );
   }
 
-  if (loadingStats || loadingArticles || loadingComments) {
-    return (
-      <div className="flex items-center justify-center h-1/2">
-        <MessageLoading />
-      </div>
-    );
-  }
+  if (isLoading) return <DashboardSkeleton />;
 
-  if (errorStats || errorArticles || errorComments) {
-    return (
-      <div className="flex items-center justify-center h-1/2">
-        <p>A network error was encountered</p>
-      </div>
-    );
-  }
+  if (isError) return <DashboardError refetch={refetch} />;
 
   return (
     <div className="container mx-auto px-6 py-8 w-full">
@@ -81,15 +70,22 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-1">
-              {articles && articles.length > 0 ? (
-                articles.map((article, i) => (
-                  <RecentArticle key={i} {...article} />
+              {recentArticles && recentArticles.length > 0 ? (
+                recentArticles.map((article) => (
+                  <RecentArticle
+                    key={article.id}
+                    title={article.title}
+                    updatedAt={article.updatedAt}
+                    status={article.status}
+                  />
                 ))
               ) : (
-                <p className="text-sm">No recent articles</p>
+                <p className="text-sm text-muted-foreground">
+                  No recent articles
+                </p>
               )}
             </div>
-            <Button className="w-full mt-4" variant="outline">
+            <Button className="w-full mt-4" variant="outline" asChild>
               <Link to="/articles">View All Articles</Link>
             </Button>
           </CardContent>
@@ -101,16 +97,16 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {comments && comments.length > 0 ? (
-                comments.map((comment) => (
+              {recentComments && recentComments.length > 0 ? (
+                recentComments.map((comment) => (
                   <div key={comment.id} className="flex flex-col space-y-1">
                     <div className="flex items-center justify-between">
                       <div className="flex flex-col">
                         <span className="text-sm font-medium">
-                          {comment.user.name}
+                          {comment.author.name}
                         </span>
                         <span className="text-xs text-muted-foreground">
-                          {comment.user.username}
+                          {comment.author.username}
                         </span>
                       </div>
                       <span className="text-xs text-muted-foreground">
@@ -120,7 +116,7 @@ const Dashboard = () => {
                     <p className="text-sm text-muted-foreground">
                       On:{" "}
                       <span className="font-medium text-foreground">
-                        {comment.post.title}
+                        {comment.articleTitle}
                       </span>
                     </p>
                     <p className="text-sm">{comment.content}</p>
@@ -128,10 +124,12 @@ const Dashboard = () => {
                   </div>
                 ))
               ) : (
-                <p className="text-sm">No recent comments</p>
+                <p className="text-sm text-muted-foreground">
+                  No recent comments
+                </p>
               )}
             </div>
-            <Button className="w-full mt-4" variant="outline">
+            <Button className="w-full mt-4" variant="outline" asChild>
               <Link to="/comments">View All Comments</Link>
             </Button>
           </CardContent>

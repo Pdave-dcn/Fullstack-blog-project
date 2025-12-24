@@ -1,6 +1,6 @@
 export interface DashboardStatsView {
-  totalPosts: number;
-  publishedPosts: number;
-  draftPosts: number;
+  totalArticles: number;
+  publishedArticles: number;
+  draftArticles: number;
   totalComments: number;
 }

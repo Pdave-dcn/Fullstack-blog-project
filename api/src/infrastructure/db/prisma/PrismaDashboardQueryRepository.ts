@@ -5,7 +5,7 @@ export class PrismaDashboardQueryRepository
   implements DashboardQueryRepository
 {
   async getStats() {
-    const [totalPosts, publishedPosts, draftPosts, totalComments] =
+    const [totalArticles, publishedArticles, draftArticles, totalComments] =
       await Promise.all([
         prisma.article.count(),
         prisma.article.count({ where: { status: "PUBLISHED" } }),
@@ -14,9 +14,9 @@ export class PrismaDashboardQueryRepository
       ]);
 
     return {
-      totalPosts,
-      publishedPosts,
-      draftPosts,
+      totalArticles,
+      publishedArticles,
+      draftArticles,
       totalComments,
     };
   }
@@ -37,7 +37,7 @@ export class PrismaDashboardQueryRepository
       id: row.id,
       title: row.title,
       status: row.status,
-      updatedAt: row.updatedAt.toISOString(),
+      updatedAt: row.updatedAt,
     }));
   }
 
@@ -63,7 +63,7 @@ export class PrismaDashboardQueryRepository
       id: row.id,
       content: row.content,
       articleTitle: row.article.title,
-      user: {
+      author: {
         name: row.user.name,
         username: row.user.username,
       },

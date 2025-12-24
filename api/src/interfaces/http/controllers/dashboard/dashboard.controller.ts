@@ -38,7 +38,7 @@ export const getRecentArticlesController = async (
     );
 
     const articles = await container.dashboard.getRecentArticlesUseCase.execute(
-      4
+      6
     );
 
     req.log.info(
@@ -48,7 +48,7 @@ export const getRecentArticlesController = async (
       "Recent articles for dashboard retrieved successfully"
     );
 
-    res.status(200).json(articles);
+    res.status(200).json({ data: articles });
   } catch (err) {
     next(err);
   }
@@ -78,7 +78,7 @@ export const getRecentCommentsController = async (
       "Recent comments for dashboard retrieved successfully"
     );
 
-    res.status(200).json(comments);
+    res.status(200).json({ data: comments });
   } catch (err) {
     next(err);
   }

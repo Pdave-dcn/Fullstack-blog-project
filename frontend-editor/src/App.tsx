@@ -4,7 +4,7 @@ import { Toaster } from "sonner";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard/Dashboard";
+import Dashboard from "./pages/Dashboard";
 import Comments from "./pages/Comments";
 import Articles from "./pages/Articles/Articles";
 import NewArticle from "./pages/NewArticle";
@@ -16,10 +16,10 @@ const App = () => {
   return (
     <Router>
       <SidebarProvider>
-        <Toaster position="top-center" richColors />
+        <Toaster position="top-center" />
         <div className="flex h-screen w-full overflow-hidden">
           <div className="flex-1 flex flex-col min-w-0">
-            <div className="flex-1 p-4">
+            <div className="flex-1 p-1.5 md:p-0">
               <Routes>
                 <Route path="/" element={<Login />} />
                 <Route

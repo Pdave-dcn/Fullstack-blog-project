@@ -1,13 +1,13 @@
 import { handleDate } from "@/lib/utils";
 
-const RecentArticle = ({
+export const RecentArticle = ({
   title,
   updatedAt,
   status,
 }: {
   title: string;
   updatedAt: string;
-  status: "published" | "draft";
+  status: "PUBLISHED" | "DRAFT";
 }) => {
   return (
     <div className="flex items-center justify-between py-3 border-b border-muted-foreground last:border-0">
@@ -20,16 +20,14 @@ const RecentArticle = ({
       <div className="flex items-center space-x-4">
         <span
           className={`px-2 py-1 text-xs rounded-full ${
-            status === "published"
+            status === "PUBLISHED"
               ? "bg-primary text-secondary"
               : "bg-accent text-foreground"
           }`}
         >
-          {status === "published" ? "Published" : "Draft"}
+          {status === "PUBLISHED" ? "PUBLISHED" : "DRAFT"}
         </span>
       </div>
     </div>
   );
 };
-
-export default RecentArticle;
