@@ -9,7 +9,7 @@ import Comments from "./pages/Comments";
 import Articles from "./pages/Articles";
 import NewArticle from "./pages/NewArticle";
 import NotFound from "./pages/NotFound";
-import ArticleDetails from "./pages/ArticleDetails/ArticleDetails";
+import ArticleReadPage from "./pages/ArticleReadPage";
 import ArticleEdit from "./pages/ArticleEdit";
 
 const App = () => {
@@ -42,7 +42,7 @@ const App = () => {
                   path="/articles/:id"
                   element={
                     <ProtectedRoute>
-                      <ArticleDetails />
+                      <ArticleReadPage />
                     </ProtectedRoute>
                   }
                 />

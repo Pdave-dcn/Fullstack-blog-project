@@ -10,6 +10,7 @@ const ArticleSchema = z.object({
 });
 
 const ArticleDetailsSchema = ArticleSchema.extend({
+  status: ArticleStatusEnum,
   commentsCount: z.number().nonnegative(),
 });
 
