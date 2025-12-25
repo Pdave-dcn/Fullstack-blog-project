@@ -4,14 +4,23 @@ import { useParams } from "react-router-dom";
 import { ArticleHeader } from "@/components/ArticleReadPage/ArticleHeader";
 import CommentCard from "@/components/Comment/CommentCard";
 import { Badge } from "@/components/ui/badge";
+import { ArticleReadSkeleton } from "@/components/ArticleReadPage/ArticleReadSkeleton";
+import { ArticleReadError } from "@/components/ArticleReadPage/ArticleReadError";
 
 const ArticleReadPage = () => {
   const { id } = useParams<{ id: string }>();
-  const { data: article, isLoading, isError } = useSingleArticleQuery(id ?? "");
+  const {
+    data: article,
+    isLoading,
+    isError,
+    refetch,
+  } = useSingleArticleQuery(id ?? "");
 
-  if (isLoading) return <h1>Loading...</h1>;
-  if (isError) return <h1>Error!</h1>;
-  if (!article) return null;
+  if (isLoading) return <ArticleReadSkeleton />;
+
+  if (isError) return <ArticleReadError refetch={() => refetch()} />;
+
+  if (!article) return <ArticleReadError refetch={() => refetch()} />;
 
   return (
     <div title={article.title}>
