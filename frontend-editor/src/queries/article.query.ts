@@ -1,4 +1,5 @@
 import {
+  createArticle,
   deleteArticleById,
   getArticleById,
   getArticlesForTable,
@@ -6,6 +7,7 @@ import {
   updateArticleStatus,
   type ArticlesQueryParams,
   type ArticleUpdateData,
+  type CreateArticleData,
 } from "@/api/article.api";
 import type { ArticleStatus } from "@/zodSchemas/article.zod";
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
@@ -21,6 +23,18 @@ export const useSingleArticleQuery = (articleId: string) => {
   return useQuery({
     queryKey: ["articles", articleId],
     queryFn: () => getArticleById(articleId),
+  });
+};
+
+export const useCreateArticleMutation = () => {
+  const queryClient = new QueryClient();
+  return useMutation({
+    mutationFn: (data: CreateArticleData) => createArticle(data),
+    onSuccess: async () => {
+      queryClient.invalidateQueries({
+        queryKey: ["articles"],
+      });
+    },
   });
 };
 

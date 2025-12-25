@@ -16,6 +16,12 @@ export interface ArticleUpdateData {
   title: string;
 }
 
+export interface CreateArticleData {
+  title: string;
+  content: string;
+  status: ArticleStatus;
+}
+
 export const getArticlesForTable = async (params?: ArticlesQueryParams) => {
   try {
     const queryParams = new URLSearchParams();
@@ -51,6 +57,10 @@ export const getArticleById = async (articleId: string) => {
     handleZodValidationError(error, "getArticleById");
     throw error;
   }
+};
+
+export const createArticle = async (data: CreateArticleData) => {
+  await api.post("/articles", data);
 };
 
 export const updateArticleStatus = async (
