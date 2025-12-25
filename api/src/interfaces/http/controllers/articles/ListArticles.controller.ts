@@ -27,7 +27,7 @@ export const listPublicArticlesController = async (
   }
 };
 
-export const listArticlesController = async (
+export const listArticlesForAuthorTableController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -35,16 +35,20 @@ export const listArticlesController = async (
   try {
     const authReq = req as AuthenticatedRequest;
 
+    const { status, search } = req.query;
+
     req.log.info(
       {
         userId: authReq.user.id,
         role: authReq.user.role,
+        filters: { status, search },
       },
       "List articles request received"
     );
 
-    const articles = await container.articles.listUseCase.execute({
-      requesterRole: authReq.user.role,
+    const articles = await container.articles.getForAuthorTableUseCase.execute({
+      status: status as string | undefined,
+      search: search as string | undefined,
     });
 
     req.log.info(
@@ -52,6 +56,7 @@ export const listArticlesController = async (
         userId: authReq.user.id,
         role: authReq.user.role,
         count: articles.length,
+        filters: { status, search },
       },
       "Articles retrieved successfully"
     );

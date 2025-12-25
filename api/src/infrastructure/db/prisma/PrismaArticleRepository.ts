@@ -5,7 +5,6 @@ import {
   ArticleStatus as DomainArticleStatus,
 } from "@/domains/articles/ArticleStatus";
 import { ArticleRepository } from "@/domains/articles/ArticleRepository.js";
-import { ArticleDetailsView } from "@/application/articles/queries/ArticleDetailsView";
 
 type PrismaArticleRow = {
   id: string;
@@ -47,35 +46,6 @@ export class PrismaArticleRepository implements ArticleRepository {
     if (!row) return null;
 
     return mapPrismaArticleToDomain(row);
-  }
-
-  async getArticleDetails(id: string): Promise<ArticleDetailsView | null> {
-    const article = await prisma.article.findUnique({
-      where: { id },
-      select: {
-        id: true,
-        title: true,
-        content: true,
-        status: true,
-        createdAt: true,
-        _count: {
-          select: {
-            comments: true,
-          },
-        },
-      },
-    });
-
-    if (!article) return null;
-
-    return {
-      id: article.id,
-      title: article.title,
-      content: article.content,
-      status: mapPrismaStatusToDomain(article.status),
-      createdAt: article.createdAt,
-      commentsCount: article._count.comments,
-    };
   }
 
   async findByStatuses(statuses: ArticleStatus[]): Promise<Article[]> {

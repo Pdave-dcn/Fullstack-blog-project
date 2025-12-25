@@ -1,16 +1,15 @@
 import { Search, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { type Article } from "./Articles";
 import { Input } from "@/components/ui/input";
+import type { ArticleStatus } from "@/zodSchemas/article.zod";
 
-interface Toolbar {
-  filter: string;
-  setFilter: React.Dispatch<React.SetStateAction<string>>;
+interface ToolbarProps {
+  filter: ArticleStatus | "all";
+  setFilter: (filter: ArticleStatus | "all") => void;
   searchQuery: string;
-  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
-  articles: Article[] | null;
-  filteredArticles: Article[] | undefined;
+  setSearchQuery: (query: string) => void;
+  totalCount: number;
 }
 
 const Toolbar = ({
@@ -18,9 +17,8 @@ const Toolbar = ({
   setFilter,
   searchQuery,
   setSearchQuery,
-  articles,
-  filteredArticles,
-}: Toolbar) => {
+  totalCount,
+}: ToolbarProps) => {
   return (
     <div className="mb-6 flex flex-col sm:flex-row justify-between gap-4">
       <div className="relative max-w-md w-full">
@@ -45,24 +43,33 @@ const Toolbar = ({
             <Filter size={16} className="mr-2" />
             Filter
             <span className="ml-2 px-1.5 py-0.5 text-xs rounded-full bg-primary text-secondary">
-              {filter === "all" ? articles?.length : filteredArticles?.length}
+              {totalCount}
             </span>
           </Button>
         </div>
 
         <div className="flex space-x-3">
-          <Button variant="outline" onClick={() => setFilter("all")}>
+          <Button
+            variant={filter === "all" ? "default" : "outline"}
+            onClick={() => setFilter("all")}
+          >
             All
           </Button>
-          <Button variant="outline" onClick={() => setFilter("published")}>
+          <Button
+            variant={filter === "PUBLISHED" ? "default" : "outline"}
+            onClick={() => setFilter("PUBLISHED")}
+          >
             Published
           </Button>
-          <Button variant="outline" onClick={() => setFilter("draft")}>
+          <Button
+            variant={filter === "DRAFT" ? "default" : "outline"}
+            onClick={() => setFilter("DRAFT")}
+          >
             Drafts
           </Button>
         </div>
 
-        <Button>
+        <Button asChild>
           <Link to="/new-article">New Article</Link>
         </Button>
       </div>

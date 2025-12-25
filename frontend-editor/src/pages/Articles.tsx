@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { MoreVertical, Edit, Trash2, Eye, Send, Archive } from "lucide-react";
 import {
   DropdownMenu,
@@ -16,133 +15,38 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { toast } from "sonner";
-import { useDataFetching } from "@/hooks/use-dataFetching";
-import { MessageLoading } from "../../components/ui/MessageLoading";
-import {
-  handleApiResponseError,
-  handleDate,
-  handleNetworkError,
-} from "@/lib/utils";
-import Toolbar from "./Toolbar";
-import { useAuth } from "@/hooks/use-auth";
-
-export interface Article {
-  id: number;
-  title: string;
-  status: "published" | "draft";
-  createdAt: string;
-  comments: string[];
-}
+import { handleDate } from "@/lib/utils";
+import Toolbar from "../components/ArticlesPage/Toolbar";
+import { useArticles } from "@/hooks/useArticles";
+import ArticlesSkeleton from "@/components/ArticlesPage/ArticlesSkeleton";
+import { ArticlesError } from "@/components/ArticlesPage/ArticlesError";
 
 const Articles = () => {
-  const [filter, setFilter] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const { token } = useAuth();
-
   const {
-    data: articles,
-    error: articleError,
-    loading: articleLoading,
+    filter,
+    setFilter,
+    searchQuery,
+    setSearchQuery,
+    articles,
+    isLoading,
+    isError,
     refetch,
-  } = useDataFetching<Article[]>(
-    `${import.meta.env.VITE_API_BASE_URL}`,
-    "/posts"
-  );
+    handleDeleteArticle,
+    handlePublishStatus,
+  } = useArticles();
 
-  const filteredArticles = articles?.filter((article) => {
-    const matchesFilter = filter === "all" || article.status === filter;
-    const matchesSearch = article.title
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-    return matchesFilter && matchesSearch;
-  });
-
-  const handleDeleteArticle = (articleId: number) => {
-    toast.warning("Delete Comment", {
-      description: "Are you sure you want to delete this article?",
-      action: {
-        label: "Delete",
-        onClick: async () => {
-          try {
-            const res = await fetch(
-              `${import.meta.env.VITE_API_BASE_URL}/posts/${articleId}`,
-              {
-                method: "DELETE",
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                  "Content-Type": "application/json",
-                },
-                credentials: "include",
-              }
-            );
-            if (!res.ok) {
-              handleApiResponseError(res, "Failed to delete article");
-            }
-
-            toast.success(`Article deleted successfully`);
-            refetch();
-          } catch (error) {
-            handleNetworkError(error);
-          }
-        },
-      },
-    });
-  };
-
-  const handlePublishStatus = async (
-    articleId: number,
-    newStatus: "published" | "draft"
-  ) => {
-    try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/posts/${articleId}`,
-        {
-          method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({ status: newStatus }),
-        }
-      );
-
-      if (!res.ok) {
-        handleApiResponseError(
-          res,
-          `Failed to ${
-            newStatus === "published" ? "publish" : "unpublish"
-          } article`
-        );
-      }
-
-      toast.success(
-        `Article ${
-          newStatus === "published" ? "published" : "unpublished"
-        } successfully`
-      );
-      refetch();
-    } catch (error) {
-      handleNetworkError(error);
-    }
-  };
-
-  if (articleLoading) {
+  if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-1/2">
-        <MessageLoading />
+      <div title="Articles">
+        <div className="mb-6">
+          <div className="h-16 w-full bg-accent rounded-lg animate-pulse" />
+        </div>
+        <ArticlesSkeleton />
       </div>
     );
   }
 
-  if (articleError) {
-    return (
-      <div className="flex items-center justify-center h-1/2">
-        <p>A network error was encountered</p>
-      </div>
-    );
-  }
+  if (isError) return <ArticlesError refetch={refetch} />;
 
   return (
     <div title="Articles">
@@ -151,8 +55,7 @@ const Articles = () => {
         setFilter={setFilter}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
-        articles={articles}
-        filteredArticles={filteredArticles}
+        totalCount={articles.length}
       />
 
       <div className="bg-background rounded-lg shadow overflow-hidden">
@@ -167,30 +70,30 @@ const Articles = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredArticles?.length === 0 ? (
+            {articles.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={5} className="text-center py-8">
                   No articles found{searchQuery && ` matching "${searchQuery}"`}
                 </TableCell>
               </TableRow>
             ) : (
-              filteredArticles?.map((article) => (
+              articles.map((article) => (
                 <TableRow key={article.id}>
                   <TableCell className="font-medium">{article.title}</TableCell>
                   <TableCell>
                     <span
                       className={`px-2 py-1 text-xs rounded-full ${
-                        article.status === "published"
+                        article.status === "PUBLISHED"
                           ? "bg-primary text-secondary"
                           : "bg-accent text-foreground"
                       }`}
                     >
-                      {article.status === "published" ? "Published" : "Draft"}
+                      {article.status === "PUBLISHED" ? "Published" : "Draft"}
                     </span>
                   </TableCell>
                   <TableCell>{handleDate(article.createdAt)}</TableCell>
                   <TableCell className="text-right">
-                    {article.comments.length}
+                    {article.commentsCount}
                   </TableCell>
                   <TableCell>
                     <DropdownMenu>
@@ -222,11 +125,11 @@ const Articles = () => {
                           onClick={() =>
                             handlePublishStatus(
                               article.id,
-                              article.status === "draft" ? "published" : "draft"
+                              article.status === "DRAFT" ? "PUBLISHED" : "DRAFT"
                             )
                           }
                         >
-                          {article.status === "draft" ? (
+                          {article.status === "DRAFT" ? (
                             <>
                               <Send className="mr-2 h-4 w-4" />
                               <span>Publish</span>

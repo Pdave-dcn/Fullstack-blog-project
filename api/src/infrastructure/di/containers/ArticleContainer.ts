@@ -6,7 +6,9 @@ import { UpdateArticleStatusUseCase } from "@/application/articles/update/Update
 import { GetArticleByIdUseCase } from "@/application/articles/queries/GetArticleByIdUseCase.js";
 import { GetRecentArticlesUseCase } from "@/application/articles/list/GetRecentArticlesUseCase.js";
 import { PrismaArticleRepository } from "@/infrastructure/db/prisma/PrismaArticleRepository.js";
-import { GetArticleDetailsUseCase } from "@/application/articles/queries/GetArticleDetailsUseCase";
+import { GetArticleDetailsUseCase } from "@/application/articles/queries/ArticleDetails/GetArticleDetailsUseCase";
+import { GetArticlesForAuthorTableUseCase } from "@/application/articles/queries/ArticlesForAuthorTable/ArticlesForAuthorTableUseCase";
+import { PrismaArticleQueryRepository } from "@/infrastructure/db/prisma/PrismaArticleQueryRepository";
 
 /**
  * Article domain dependency injection container.
@@ -26,6 +28,8 @@ import { GetArticleDetailsUseCase } from "@/application/articles/queries/GetArti
  */
 export class ArticleContainer {
   public readonly repository: PrismaArticleRepository;
+  public readonly queryRepository: PrismaArticleQueryRepository;
+
   public readonly createUseCase: CreateArticleUseCase;
   public readonly editUseCase: EditArticleUseCase;
   public readonly deleteUseCase: DeleteArticleUseCase;
@@ -34,9 +38,12 @@ export class ArticleContainer {
   public readonly getByIdUseCase: GetArticleByIdUseCase;
   public readonly getRecentUseCase: GetRecentArticlesUseCase;
   public readonly getDetailsUseCase: GetArticleDetailsUseCase;
+  public readonly getForAuthorTableUseCase: GetArticlesForAuthorTableUseCase;
 
   constructor() {
     this.repository = new PrismaArticleRepository();
+    this.queryRepository = new PrismaArticleQueryRepository();
+
     this.createUseCase = new CreateArticleUseCase(this.repository);
     this.editUseCase = new EditArticleUseCase(this.repository);
     this.deleteUseCase = new DeleteArticleUseCase(this.repository);
@@ -44,6 +51,10 @@ export class ArticleContainer {
     this.updateStatusUseCase = new UpdateArticleStatusUseCase(this.repository);
     this.getByIdUseCase = new GetArticleByIdUseCase(this.repository);
     this.getRecentUseCase = new GetRecentArticlesUseCase(this.repository);
-    this.getDetailsUseCase = new GetArticleDetailsUseCase(this.repository);
+
+    this.getDetailsUseCase = new GetArticleDetailsUseCase(this.queryRepository);
+    this.getForAuthorTableUseCase = new GetArticlesForAuthorTableUseCase(
+      this.queryRepository
+    );
   }
 }

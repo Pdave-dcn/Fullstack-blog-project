@@ -1,6 +1,5 @@
 import express from "express";
 import {
-  listArticlesController,
   listPublicArticlesController,
   getRecentArticlesController,
   getArticleController,
@@ -8,6 +7,7 @@ import {
   editArticleController,
   updateArticleStatusController,
   deleteArticleController,
+  listArticlesForAuthorTableController,
 } from "@/interfaces/http/controllers/articles/index.js";
 import {
   generalApiLimiter,
@@ -26,11 +26,11 @@ router.get("/latest", getRecentArticlesController);
 router.get("/:id", getArticleController);
 
 router.use(authenticateJwt);
+router.use(requireRole(UserRole.AUTHOR));
 
-router.get("/", listArticlesController);
+router.get("/", listArticlesForAuthorTableController);
 
 router.use(writeOperationsLimiter);
-router.use(requireRole(UserRole.AUTHOR));
 
 router.post("/", createArticleController);
 router.put("/:id", editArticleController);
