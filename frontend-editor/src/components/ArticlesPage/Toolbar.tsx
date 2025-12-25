@@ -1,6 +1,5 @@
 import { Search, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import type { ArticleStatus } from "@/zodSchemas/article.zod";
 
@@ -42,7 +41,7 @@ const Toolbar = ({
           >
             <Filter size={16} className="mr-2" />
             Filter
-            <span className="ml-2 px-1.5 py-0.5 text-xs rounded-full bg-primary text-secondary">
+            <span className="ml-2 px-1.5 py-0.5 text-xs rounded-full bg-primary text-background dark:text-foreground">
               {totalCount}
             </span>
           </Button>
@@ -50,28 +49,24 @@ const Toolbar = ({
 
         <div className="flex space-x-3">
           <Button
-            variant={filter === "all" ? "default" : "outline"}
+            variant={filter === "all" ? "default" : "ghost"}
             onClick={() => setFilter("all")}
           >
             All
           </Button>
           <Button
-            variant={filter === "PUBLISHED" ? "default" : "outline"}
+            variant={filter === "PUBLISHED" ? "default" : "ghost"}
             onClick={() => setFilter("PUBLISHED")}
           >
             Published
           </Button>
           <Button
-            variant={filter === "DRAFT" ? "default" : "outline"}
+            variant={filter === "DRAFT" ? "default" : "ghost"}
             onClick={() => setFilter("DRAFT")}
           >
             Drafts
           </Button>
         </div>
-
-        <Button asChild>
-          <Link to="/new-article">New Article</Link>
-        </Button>
       </div>
     </div>
   );

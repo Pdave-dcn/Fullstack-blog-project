@@ -29,8 +29,10 @@ export const NewArticleForm = ({
   return (
     <div className="h-full flex flex-col">
       <div className="flex-1 space-y-4">
-        <div>
-          <Label htmlFor="title">Title</Label>
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="title" className="font-semibold">
+            Title
+          </Label>
           <Input
             id="title"
             placeholder="Enter your article title"
@@ -41,7 +43,7 @@ export const NewArticleForm = ({
         </div>
 
         <div className="flex-1 h-[calc(100%-120px)]">
-          <Label>Content</Label>
+          <Label className="mb-1.5 font-semibold">Content</Label>
           <div className="h-full">
             <Editor
               apiKey={import.meta.env.VITE_TINYMCE_API_KEY}
@@ -86,7 +88,7 @@ export const NewArticleForm = ({
           </div>
         </div>
 
-        <div className="sticky bottom-2 flex justify-end space-x-4 pt-4 bg-background border-t">
+        <div className="sticky bottom-5 md:bottom-2 flex justify-center md:justify-end space-x-4 pt-4 bg-background border-t">
           <Button variant="outline" onClick={onCancel} disabled={isSubmitting}>
             Cancel
           </Button>

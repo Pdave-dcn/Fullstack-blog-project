@@ -60,7 +60,7 @@ const Articles = () => {
 
       <div className="bg-background rounded-lg shadow overflow-hidden">
         <Table>
-          <TableHeader className="pointer-events-none bg-accent">
+          <TableHeader className="pointer-events-none bg-muted">
             <TableRow>
               <TableHead className="w-[400px]">Title</TableHead>
               <TableHead>Status</TableHead>
@@ -84,11 +84,11 @@ const Articles = () => {
                     <span
                       className={`px-2 py-1 text-xs rounded-full ${
                         article.status === "PUBLISHED"
-                          ? "bg-primary text-secondary"
-                          : "bg-accent text-foreground"
+                          ? "bg-primary text-background dark:text-foreground"
+                          : "bg-accent text-foreground dark:text-background"
                       }`}
                     >
-                      {article.status === "PUBLISHED" ? "Published" : "Draft"}
+                      {article.status === "PUBLISHED" ? "PUBLISHED" : "DRAFT"}
                     </span>
                   </TableCell>
                   <TableCell>{handleDate(article.createdAt)}</TableCell>

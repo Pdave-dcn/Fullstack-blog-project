@@ -39,15 +39,16 @@ const items = [
     icon: LayoutDashboard,
   },
   {
-    title: "Articles",
-    url: "/articles",
-    icon: Newspaper,
-  },
-  {
     title: "New Article",
     url: "/new-article",
     icon: FilePlus,
   },
+  {
+    title: "Articles",
+    url: "/articles",
+    icon: Newspaper,
+  },
+
   {
     title: "Comments",
     url: "/comments",

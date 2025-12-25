@@ -43,7 +43,7 @@ const Header = () => {
         </div>
         <div className="flex items-center space-x-4">
           <ModeToggle />
-          <Button variant="outline" asChild>
+          <Button asChild>
             <Link to="/new-article">New Article</Link>
           </Button>
         </div>

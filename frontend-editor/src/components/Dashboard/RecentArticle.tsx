@@ -21,8 +21,8 @@ export const RecentArticle = ({
         <span
           className={`px-2 py-1 text-xs rounded-full ${
             status === "PUBLISHED"
-              ? "bg-primary text-secondary"
-              : "bg-accent text-foreground"
+              ? "bg-primary text-background dark:text-foreground"
+              : "bg-accent text-foreground dark:text-background"
           }`}
         >
           {status === "PUBLISHED" ? "PUBLISHED" : "DRAFT"}

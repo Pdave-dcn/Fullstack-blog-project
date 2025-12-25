@@ -77,7 +77,7 @@ const Comments = () => {
     <div className="container mx-auto p-6">
       <div className="bg-background rounded-lg shadow overflow-hidden">
         <Table>
-          <TableHeader className="pointer-events-none bg-accent">
+          <TableHeader className="pointer-events-none bg-muted">
             <TableRow>
               <TableHead className="w-[200px]">Author</TableHead>
               <TableHead className="w-[250px]">Article</TableHead>
@@ -99,7 +99,7 @@ const Comments = () => {
                   <TableCell>
                     <div className="flex flex-col">
                       <span className="font-medium">{comment.author.name}</span>
-                      <span className="text-sm text-muted-foreground">
+                      <span className="text-sm text-primary dark:text-accent">
                         @{comment.author.username}
                       </span>
                     </div>
