@@ -29,8 +29,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { useAuth } from "@/hooks/use-auth";
 import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "@/stores/auth.store";
 
 const items = [
   {
@@ -56,7 +56,7 @@ const items = [
 ];
 
 function AppSidebar() {
-  const { user, logout } = useAuth();
+  const { user, logout } = useAuthStore();
   const navigate = useNavigate();
 
   const handleSignOut = () => {
@@ -71,7 +71,7 @@ function AppSidebar() {
   };
 
   return (
-    <Sidebar variant="floating" collapsible="icon">
+    <Sidebar variant="sidebar" collapsible="icon">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>

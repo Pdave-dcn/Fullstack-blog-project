@@ -1,5 +1,5 @@
 import { Navigate, useLocation } from "react-router-dom";
-import Layout from "./Layout";
+import Layout from "./layout/Layout";
 import { useAuthStore } from "@/stores/auth.store";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
