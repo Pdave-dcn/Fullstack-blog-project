@@ -11,6 +11,11 @@ export interface ArticlesQueryParams {
   search?: string;
 }
 
+export interface ArticleUpdateData {
+  content: string;
+  title: string;
+}
+
 export const getArticlesForTable = async (params?: ArticlesQueryParams) => {
   try {
     const queryParams = new URLSearchParams();
@@ -53,6 +58,13 @@ export const updateArticleStatus = async (
   data: { status: ArticleStatus }
 ) => {
   await api.patch(`/articles/${articleId}`, data);
+};
+
+export const updateArticle = async (
+  articleId: string,
+  data: ArticleUpdateData
+) => {
+  await api.put(`/articles/${articleId}`, data);
 };
 
 export const deleteArticleById = async (articleId: string) => {
