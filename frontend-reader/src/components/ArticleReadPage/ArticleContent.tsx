@@ -48,7 +48,6 @@ export const ArticleContent = ({ article }: ArticleContentProps) => {
         <h2 className="text-2xl font-bold mb-6">
           Comments ({article.commentsCount})
         </h2>
-        {/* Comment section will go here */}
       </div>
     </article>
   );
