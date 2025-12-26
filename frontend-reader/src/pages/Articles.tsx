@@ -48,18 +48,18 @@ const Articles = () => {
           {/* Success State - with articles */}
           {!isLoading && !isError && articles && articles.length > 0 && (
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 auto-rows-fr"
               variants={containerVariants}
               initial="hidden"
               animate="visible"
             >
-              {articles.map((post) => (
+              {articles.map((article) => (
                 <motion.div
-                  key={post.id}
+                  key={article.id}
                   variants={itemVariants}
                   className="cursor-pointer"
                 >
-                  <ArticleCard post={post} />
+                  <ArticleCard article={article} />
                 </motion.div>
               ))}
             </motion.div>
