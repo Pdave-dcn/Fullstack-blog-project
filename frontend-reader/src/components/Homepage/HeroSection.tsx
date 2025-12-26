@@ -5,18 +5,26 @@ import { ArrowRight } from "lucide-react";
 import { Moon_4 } from "../ui/svgs";
 import { cn } from "@/lib/utils";
 import { layout, spacing, typography } from "@/lib/design-tokens";
+import { motion } from "motion/react";
+import { fadeUp, slideFade } from "@/lib/animation-variants";
 
 export const HeroSection = () => {
   return (
     <section className={cn(layout.headerSection)}>
       <div className={cn(spacing.padding_x, layout.heroSection)}>
-        <h1 className={cn(typography.hero.title, "mb-6")}>
+        <motion.h1
+          className={cn(typography.hero.title, "mb-6")}
+          variants={fadeUp}
+        >
           {HOMEPAGE_DATA.hero.title}
-        </h1>
-        <p className={cn(typography.hero.subtitle, "mb-8")}>
+        </motion.h1>
+        <motion.p
+          className={cn(typography.hero.subtitle, "mb-8")}
+          variants={fadeUp}
+        >
           {HOMEPAGE_DATA.hero.subtitle}
-        </p>
-        <div>
+        </motion.p>
+        <motion.div variants={fadeUp}>
           <Link to="/articles">
             <Button size="lg" variant="secondary">
               {HOMEPAGE_DATA.hero.ctaText}
@@ -25,11 +33,11 @@ export const HeroSection = () => {
               </div>
             </Button>
           </Link>
-        </div>
+        </motion.div>
       </div>
-      <div className="hidden md:block">
+      <motion.div className="hidden md:block" variants={slideFade}>
         <Moon_4 />
-      </div>
+      </motion.div>
     </section>
   );
 };

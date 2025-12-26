@@ -2,12 +2,16 @@ import { HOMEPAGE_DATA } from "@/lib/homepage-data";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import { ArrowRight } from "lucide-react";
-import { motion } from "motion/react";
-import { containerVariants, itemVariants } from "@/lib/animation-variants";
 import LatestArticleCard from "../LatestArticleCard";
 import { useLatestArticlesQuery } from "@/queries/article.query";
 import { LatestArticlesSkeleton } from "./LatestArticlesSkeleton";
 import { LatestArticlesError } from "./LatestArticlesError";
+import { motion } from "motion/react";
+import {
+  fadeUp,
+  staggerContainerFaster,
+  viewportOptions,
+} from "@/lib/animation-variants";
 
 export const LatestArticlesSection = () => {
   const {
@@ -20,7 +24,13 @@ export const LatestArticlesSection = () => {
   return (
     <section className="py-16 bg-muted/50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center mb-12">
+        <motion.div
+          className="flex justify-between items-center mb-12"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOptions}
+          variants={fadeUp}
+        >
           <div>
             <h2 className="text-3xl md:text-4xl font-bold">
               {HOMEPAGE_DATA.recentArticles.title}
@@ -39,7 +49,7 @@ export const LatestArticlesSection = () => {
               </Button>
             </Link>
           </div>
-        </div>
+        </motion.div>
 
         {/* Loading State */}
         {isLoading && <LatestArticlesSkeleton />}
@@ -51,16 +61,16 @@ export const LatestArticlesSection = () => {
         {!isLoading && !isError && articles && (
           <motion.div
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            variants={containerVariants}
+            variants={staggerContainerFaster}
             initial="hidden"
-            animate="visible"
+            whileInView="visible"
+            viewport={viewportOptions}
           >
             {articles.map((article) => (
               <motion.div
                 key={article.id}
-                variants={itemVariants}
-                whileHover="hover"
                 className="cursor-pointer"
+                variants={fadeUp}
               >
                 <LatestArticleCard article={article} />
               </motion.div>
@@ -70,11 +80,17 @@ export const LatestArticlesSection = () => {
 
         {/* Empty State */}
         {!isLoading && !isError && articles && articles.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-12 space-y-4">
+          <motion.div
+            className="flex flex-col items-center justify-center py-12 space-y-4"
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOptions}
+          >
             <p className="text-muted-foreground text-center">
               No articles available at the moment.
             </p>
-          </div>
+          </motion.div>
         )}
 
         <div className="text-center mt-12 sm:hidden">

@@ -17,6 +17,8 @@ import {
 import { useAuthMutation } from "@/queries/auth.query";
 import { AuthFormFields } from "./AuthFormFields";
 import { RotateCcw } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
+import { fadeUp, staggerContainer } from "@/lib/animation-variants";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -85,52 +87,64 @@ const AuthModal = ({
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>
-            {mode === "login" ? "Welcome Back" : "Join TextNode"}
-          </DialogTitle>
-          <DialogDescription>
-            {mode === "login"
-              ? "Sign in to your account to continue"
-              : "Create an account to start commenting and engaging"}
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="space-y-4">
-          <AuthFormFields mode={mode} register={register} errors={errors} />
-
-          <Button
-            type="button"
-            className="w-full"
-            disabled={authMutation.isPending}
-            onClick={handleSubmit(onSubmit)}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={mode}
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
           >
-            {authMutation.isPending ? (
-              <RotateCcw className="animate-spin" />
-            ) : mode === "login" ? (
-              "Sign In"
-            ) : (
-              "Create Account"
-            )}
-          </Button>
-        </div>
+            <motion.div variants={fadeUp}>
+              <DialogHeader>
+                <DialogTitle>
+                  {mode === "login" ? "Welcome Back" : "Join TextNode"}
+                </DialogTitle>
+                <DialogDescription>
+                  {mode === "login"
+                    ? "Sign in to your account to continue"
+                    : "Create an account to start commenting and engaging"}
+                </DialogDescription>
+              </DialogHeader>
+            </motion.div>
 
-        <div className="text-center text-sm">
-          <span className="text-muted-foreground">
-            {mode === "login"
-              ? "Don't have an account?"
-              : "Already have an account?"}
-          </span>
-          <Button
-            type="button"
-            variant="link"
-            className="ml-1 p-0 h-auto font-normal"
-            onClick={handleModeSwitch}
-            disabled={authMutation.isPending}
-          >
-            {mode === "login" ? "Sign up" : "Sign in"}
-          </Button>
-        </div>
+            <motion.div className="space-y-4 py-4" variants={fadeUp}>
+              <AuthFormFields mode={mode} register={register} errors={errors} />
+
+              <Button
+                type="button"
+                className="w-full"
+                disabled={authMutation.isPending}
+                onClick={handleSubmit(onSubmit)}
+              >
+                {authMutation.isPending ? (
+                  <RotateCcw className="animate-spin" />
+                ) : mode === "login" ? (
+                  "Sign In"
+                ) : (
+                  "Create Account"
+                )}
+              </Button>
+            </motion.div>
+
+            <motion.div className="text-center text-sm" variants={fadeUp}>
+              <span className="text-muted-foreground">
+                {mode === "login"
+                  ? "Don't have an account?"
+                  : "Already have an account?"}
+              </span>
+              <Button
+                type="button"
+                variant="link"
+                className="ml-1 p-0 h-auto font-normal"
+                onClick={handleModeSwitch}
+                disabled={authMutation.isPending}
+              >
+                {mode === "login" ? "Sign up" : "Sign in"}
+              </Button>
+            </motion.div>
+          </motion.div>
+        </AnimatePresence>
       </DialogContent>
     </Dialog>
   );

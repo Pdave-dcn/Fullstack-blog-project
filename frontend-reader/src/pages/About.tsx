@@ -3,14 +3,15 @@ import { AboutPageHeader } from "@/components/AboutPage/AboutPageHeader";
 import { ContactSection } from "@/components/AboutPage/ContactSection";
 import { WhatIWriteAboutSection } from "@/components/AboutPage/WhatIWriteAboutSection";
 import { motion } from "motion/react";
+import { staggerContainer } from "@/lib/animation-variants";
 
 const About = () => {
   return (
     <motion.div
       className="flex flex-col"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
+      variants={staggerContainer}
+      initial="hidden"
+      animate="visible"
     >
       <main>
         {/* Page Header */}

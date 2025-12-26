@@ -1,24 +1,23 @@
-import { motion } from "motion/react";
 import { HeroSection } from "@/components/Homepage/HeroSection";
 import { StatsFeaturesSection } from "@/components/Homepage/StatsFeaturesSection";
 import { LatestArticlesSection } from "@/components/Homepage/LatestArticlesSection";
+import { motion } from "motion/react";
+import { staggerContainer } from "@/lib/animation-variants";
 
 const Home = () => {
   return (
-    <motion.div
-      className="min-h-screen flex flex-col"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <main className="flex-1">
+    <div className="min-h-screen flex flex-col">
+      <motion.main
+        className="flex-1"
+        variants={staggerContainer}
+        initial="hidden"
+        animate="visible"
+      >
         <HeroSection />
-
         <StatsFeaturesSection />
-
         <LatestArticlesSection />
-      </main>
-    </motion.div>
+      </motion.main>
+    </div>
   );
 };
 

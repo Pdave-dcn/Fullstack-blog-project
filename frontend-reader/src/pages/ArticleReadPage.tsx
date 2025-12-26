@@ -8,6 +8,8 @@ import { SignInPrompt } from "@/components/ArticleReadPage/SignInPrompt";
 import { useAuthStore } from "@/store/auth.store";
 import AuthModal from "@/components/AuthModal/AuthModal";
 import CommentCard from "@/components/Comment/CommentCard";
+import { motion } from "motion/react";
+import { staggerContainer, fadeUp } from "@/lib/animation-variants";
 
 const ArticleReadPage = () => {
   const { id } = useParams();
@@ -28,23 +30,30 @@ const ArticleReadPage = () => {
     return <ArticleReadError refetch={refetch} isError={isError} />;
 
   return (
-    <main className="py-12 container mx-auto px-4 lg:px-8 max-w-4xl">
+    <motion.main
+      className="py-12 container mx-auto px-4 lg:px-8 max-w-4xl"
+      variants={staggerContainer}
+      initial="hidden"
+      animate="visible"
+    >
       <ArticleContent article={article} />
 
-      {isAuthenticated ? (
-        <div>
-          <CommentCard articleId={id ?? ""} />
-        </div>
-      ) : (
-        <SignInPrompt onOpenAuthModal={() => setIsAuthModalOpen(true)} />
-      )}
+      <motion.div variants={fadeUp}>
+        {isAuthenticated ? (
+          <div>
+            <CommentCard articleId={id ?? ""} />
+          </div>
+        ) : (
+          <SignInPrompt onOpenAuthModal={() => setIsAuthModalOpen(true)} />
+        )}
+      </motion.div>
 
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
         defaultMode="login"
       />
-    </main>
+    </motion.main>
   );
 };
 
