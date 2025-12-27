@@ -9,8 +9,8 @@ import {
   type ArticleUpdateData,
   type CreateArticleData,
 } from "@/api/article.api";
-import type { ArticleStatus } from "@/zodSchemas/article.zod";
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import type { ArticleForTable, ArticleStatus } from "@/zodSchemas/article.zod";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useArticlesQuery = (params?: ArticlesQueryParams) => {
   return useQuery({
@@ -27,10 +27,10 @@ export const useSingleArticleQuery = (articleId: string) => {
 };
 
 export const useCreateArticleMutation = () => {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: CreateArticleData) => createArticle(data),
-    onSuccess: async () => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["articles"],
       });
@@ -39,7 +39,8 @@ export const useCreateArticleMutation = () => {
 };
 
 export const useUpdateArticleStatusMutation = () => {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: ({
       articleId,
@@ -48,8 +49,43 @@ export const useUpdateArticleStatusMutation = () => {
       articleId: string;
       data: { status: ArticleStatus };
     }) => updateArticleStatus(articleId, data),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
+
+    onMutate: async ({ articleId, data }) => {
+      await queryClient.cancelQueries({ queryKey: ["articles"] });
+
+      const previousArticles = queryClient.getQueriesData({
+        queryKey: ["articles"],
+      });
+
+      queryClient.setQueriesData<{ data: ArticleForTable[] }>(
+        { queryKey: ["articles"] },
+        (old) => {
+          if (!old) return old;
+
+          return {
+            ...old,
+            data: old.data.map((article) =>
+              article.id === articleId
+                ? { ...article, status: data.status }
+                : article
+            ),
+          };
+        }
+      );
+
+      return { previousArticles };
+    },
+
+    onError: (_err, _variables, context) => {
+      if (context?.previousArticles) {
+        context.previousArticles.forEach(([queryKey, queryData]) => {
+          queryClient.setQueryData(queryKey, queryData);
+        });
+      }
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({
         queryKey: ["articles"],
       });
     },
@@ -57,7 +93,7 @@ export const useUpdateArticleStatusMutation = () => {
 };
 
 export const useUpdateArticleMutation = () => {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({
       articleId,
@@ -66,8 +102,8 @@ export const useUpdateArticleMutation = () => {
       articleId: string;
       data: ArticleUpdateData;
     }) => updateArticle(articleId, data),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
         queryKey: ["articles"],
       });
     },
@@ -75,7 +111,13 @@ export const useUpdateArticleMutation = () => {
 };
 
 export const useDeleteArticleMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (articleId: string) => deleteArticleById(articleId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["articles"],
+      });
+    },
   });
 };
