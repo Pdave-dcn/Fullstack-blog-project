@@ -1,6 +1,3 @@
-import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Dialog,
   DialogContent,
@@ -9,16 +6,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import {
-  loginSchema,
-  signupSchema,
-  type FormData,
-} from "@/zodSchemas/auth.zod";
-import { useAuthMutation } from "@/queries/auth.query";
 import { AuthFormFields } from "./AuthFormFields";
 import { RotateCcw } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { fadeUp, staggerContainer } from "@/lib/animation-variants";
+import { useAuthModal } from "@/hooks/useAuthModal";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -31,58 +23,16 @@ const AuthModal = ({
   onClose,
   defaultMode = "login",
 }: AuthModalProps) => {
-  const [mode, setMode] = useState<"login" | "signup">(defaultMode);
-
-  const schema = mode === "signup" ? signupSchema : loginSchema;
-
   const {
+    mode,
     register,
     handleSubmit,
-    formState: { errors },
-    reset,
-    setError,
-  } = useForm<FormData>({
-    resolver: zodResolver(schema),
-    defaultValues: {
-      name: "",
-      username: "",
-      password: "",
-    },
-  });
-
-  const authMutation = useAuthMutation(mode, setError);
-
-  const onSubmit = async (data: FormData) => {
-    authMutation.mutate(data, {
-      onSuccess: () => {
-        reset();
-        onClose();
-      },
-    });
-  };
-
-  const handleModeSwitch = () => {
-    setMode(mode === "login" ? "signup" : "login");
-    reset();
-  };
-
-  const handleOpenChange = (open: boolean) => {
-    if (!open) {
-      reset();
-      onClose();
-    }
-  };
-
-  // Reset form when modal closes or mode changes
-  useEffect(() => {
-    if (!isOpen) {
-      reset();
-    }
-  }, [isOpen, reset]);
-
-  useEffect(() => {
-    reset();
-  }, [mode, reset]);
+    errors,
+    authMutation,
+    onSubmit,
+    handleModeSwitch,
+    handleOpenChange,
+  } = useAuthModal({ isOpen, onClose, defaultMode });
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
