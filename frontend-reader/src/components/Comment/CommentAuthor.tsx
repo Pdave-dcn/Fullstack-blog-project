@@ -19,7 +19,7 @@ const CommentAuthor = ({ author, createdAt }: CommentAuthorProps) => {
       </Avatar>
 
       <div className="flex items-center space-x-2">
-        <span className="font-medium text-sm">{author.username}</span>
+        <span className="font-semibold text-sm">{author.username}</span>
         <span className="text-xs text-muted-foreground">
           {formatTimeAgo(createdAt)}
         </span>
