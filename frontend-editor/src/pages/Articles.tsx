@@ -20,8 +20,10 @@ import Toolbar from "../components/ArticlesPage/Toolbar";
 import { useArticles } from "@/hooks/useArticles";
 import ArticlesSkeleton from "@/components/ArticlesPage/ArticlesSkeleton";
 import { ArticlesError } from "@/components/ArticlesPage/ArticlesError";
+import { useAuthStore } from "@/stores/auth.store";
 
 const Articles = () => {
+  const { ability } = useAuthStore();
   const {
     filter,
     setFilter,
@@ -112,7 +114,10 @@ const Articles = () => {
                             <span>View</span>
                           </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
+                        <DropdownMenuItem
+                          asChild
+                          disabled={!ability?.can("update", "Article")}
+                        >
                           <Link
                             to={`/articles/${article.id}/edit`}
                             className="flex items-center cursor-pointer"
@@ -126,6 +131,14 @@ const Articles = () => {
                             handlePublishStatus(
                               article.id,
                               article.status === "DRAFT" ? "PUBLISHED" : "DRAFT"
+                            )
+                          }
+                          disabled={
+                            !ability?.can(
+                              article.status === "DRAFT"
+                                ? "publish"
+                                : "unpublish",
+                              "Article"
                             )
                           }
                         >
@@ -143,6 +156,7 @@ const Articles = () => {
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => handleDeleteArticle(article.id)}
+                          disabled={!ability?.can("delete", "Article")}
                         >
                           <Trash2 className="mr-2 h-4 w-4" />
                           <span>Delete</span>

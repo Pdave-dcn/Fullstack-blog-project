@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { AuthFormFields } from "./AuthFormFields";
-import { RotateCcw } from "lucide-react";
+import { RotateCcw, UserCircle } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { fadeUp, staggerContainer } from "@/lib/animation-variants";
 import { useAuthModal } from "@/hooks/useAuthModal";
@@ -28,8 +28,9 @@ const AuthModal = ({
     register,
     handleSubmit,
     errors,
-    authMutation,
+    isLoading,
     onSubmit,
+    handleGuestLogin,
     handleModeSwitch,
     handleOpenChange,
   } = useAuthModal({ isOpen, onClose, defaultMode });
@@ -64,16 +65,38 @@ const AuthModal = ({
               <Button
                 type="button"
                 className="w-full"
-                disabled={authMutation.isPending}
+                disabled={isLoading}
                 onClick={handleSubmit(onSubmit)}
               >
-                {authMutation.isPending ? (
+                {isLoading ? (
                   <RotateCcw className="animate-spin" />
                 ) : mode === "login" ? (
                   "Sign In"
                 ) : (
                   "Create Account"
                 )}
+              </Button>
+
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-background px-2 text-muted-foreground">
+                    Or
+                  </span>
+                </div>
+              </div>
+
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full"
+                onClick={handleGuestLogin}
+                disabled={isLoading}
+              >
+                <UserCircle className="mr-2 h-4 w-4" />
+                Continue as Guest
               </Button>
             </motion.div>
 
@@ -88,7 +111,7 @@ const AuthModal = ({
                 variant="link"
                 className="ml-1 p-0 h-auto font-normal"
                 onClick={handleModeSwitch}
-                disabled={authMutation.isPending}
+                disabled={isLoading}
               >
                 {mode === "login" ? "Sign up" : "Sign in"}
               </Button>

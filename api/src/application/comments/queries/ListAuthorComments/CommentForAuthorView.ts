@@ -1,6 +1,7 @@
 export interface CommentForAuthorView {
   id: string;
   content: string;
+  authorId: string;
   article: {
     id: string;
     title: string;

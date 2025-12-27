@@ -17,6 +17,7 @@ const BaseCommentSchema = z.object({
 const CommentForAuthorViewSchema = z.object({
   id: z.uuid(),
   content: z.string(),
+  authorId: z.uuid(),
   article: z.object({
     id: z.uuid(),
     title: z.string(),

@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Editor } from "@tinymce/tinymce-react";
 import type { Editor as TinyMCEEditor } from "tinymce";
 import type { Article } from "@/zodSchemas/article.zod";
+import { useAuthStore } from "@/stores/auth.store";
 
 interface ArticleEditFormProps {
   article: Article;
@@ -19,6 +20,7 @@ export const ArticleEditForm = ({
   onCancel,
   isSubmitting,
 }: ArticleEditFormProps) => {
+  const { ability } = useAuthStore();
   const editorRef = useRef<TinyMCEEditor | null>(null);
   const [title, setTitle] = useState(article.title);
 
@@ -101,7 +103,10 @@ export const ArticleEditForm = ({
           <Button variant="outline" onClick={onCancel} disabled={isSubmitting}>
             Cancel
           </Button>
-          <Button onClick={handleSubmit} disabled={isSubmitting}>
+          <Button
+            onClick={handleSubmit}
+            disabled={isSubmitting || !ability?.can("update", "Article")}
+          >
             {isSubmitting ? "Updating..." : "Update Article"}
           </Button>
         </div>

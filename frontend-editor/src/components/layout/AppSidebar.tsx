@@ -32,6 +32,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/auth.store";
 import { useLogoutMutation } from "@/queries/auth.query";
+import type { Action, Subjects } from "@/lib/security/ability";
 
 const items = [
   {
@@ -43,6 +44,8 @@ const items = [
     title: "New Article",
     url: "/new-article",
     icon: FilePlus,
+    action: "create",
+    subject: "Article",
   },
   {
     title: "Articles",
@@ -58,6 +61,7 @@ const items = [
 ];
 
 function AppSidebar() {
+  const { ability } = useAuthStore();
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
 
@@ -97,7 +101,17 @@ function AppSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton
+                    asChild
+                    disabled={
+                      item.action && item.subject
+                        ? !ability?.can(
+                            item.action as Action,
+                            item.subject as Subjects
+                          )
+                        : false
+                    }
+                  >
                     <Link to={item.url}>
                       <item.icon />
                       <span>{item.title}</span>

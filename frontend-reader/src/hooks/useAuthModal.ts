@@ -6,7 +6,7 @@ import {
   signupSchema,
   type FormData,
 } from "@/zodSchemas/auth.zod";
-import { useAuthMutation } from "@/queries/auth.query";
+import { useAuthMutation, useGuestAuthMutation } from "@/queries/auth.query";
 
 interface UseAuthModalProps {
   isOpen: boolean;
@@ -39,9 +39,19 @@ export const useAuthModal = ({
   });
 
   const authMutation = useAuthMutation(mode, setError);
+  const guestMutation = useGuestAuthMutation();
 
   const onSubmit = async (data: FormData) => {
     authMutation.mutate(data, {
+      onSuccess: () => {
+        reset();
+        onClose();
+      },
+    });
+  };
+
+  const handleGuestLogin = () => {
+    guestMutation.mutate(undefined, {
       onSuccess: () => {
         reset();
         onClose();
@@ -61,6 +71,8 @@ export const useAuthModal = ({
     }
   };
 
+  const isLoading = authMutation.isPending || guestMutation.isPending;
+
   // Reset form when modal closes
   useEffect(() => {
     if (!isOpen) {
@@ -79,7 +91,10 @@ export const useAuthModal = ({
     handleSubmit,
     errors,
     authMutation,
+    guestMutation,
+    isLoading,
     onSubmit,
+    handleGuestLogin,
     handleModeSwitch,
     handleOpenChange,
   };

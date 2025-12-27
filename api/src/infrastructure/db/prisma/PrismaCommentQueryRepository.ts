@@ -16,6 +16,7 @@ export class PrismaCommentQueryRepository implements CommentQueryRepository {
       select: {
         id: true,
         content: true,
+        authorId: true,
         createdAt: true,
         article: {
           select: {
@@ -35,6 +36,7 @@ export class PrismaCommentQueryRepository implements CommentQueryRepository {
     const items: CommentForAuthorView[] = rows.map((row) => ({
       id: row.id,
       content: row.content,
+      authorId: row.authorId,
       createdAt: row.createdAt,
       article: {
         id: row.article.id,

@@ -21,8 +21,10 @@ import { useCommentsForAuthorQuery } from "@/queries/comment.query";
 import { useDeleteCommentMutation } from "@/queries/comment.query";
 import { CommentsPageSkeleton } from "@/components/CommentsPage/CommentsPageSkeleton";
 import { CommentsPageError } from "@/components/CommentsPage/CommentsPageError";
+import { useAuthStore } from "@/stores/auth.store";
 
 const Comments = () => {
+  const { ability } = useAuthStore();
   const navigate = useNavigate();
 
   const {
@@ -135,6 +137,13 @@ const Comments = () => {
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => handleDeleteComment(comment.id)}
+                          disabled={
+                            !ability?.can("delete", {
+                              __type: "Comment",
+                              id: comment.id,
+                              authorId: comment.authorId,
+                            })
+                          }
                         >
                           <Trash2 className="mr-2 h-4 w-4" />
                           <span>Delete</span>
