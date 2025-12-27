@@ -17,7 +17,7 @@ const localStrategy = new LocalStrategy(
     } catch (err) {
       if (err instanceof InvalidCredentialsError) {
         return done(null, false, {
-          message: "Invalid username or password",
+          message: err.message,
         });
       }
       return done(err);

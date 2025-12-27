@@ -15,12 +15,11 @@ import { useAuthMutation } from "@/queries/auth.query";
 import { loginSchema, type LoginFormData } from "@/zodSchemas/auth.zod";
 
 const Login = () => {
-  const { mutate: loginMutation, isPending } = useAuthMutation();
-
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -28,6 +27,8 @@ const Login = () => {
       password: "",
     },
   });
+
+  const { mutate: loginMutation, isPending } = useAuthMutation(setError);
 
   const onSubmit = (data: LoginFormData) => {
     loginMutation(data);
