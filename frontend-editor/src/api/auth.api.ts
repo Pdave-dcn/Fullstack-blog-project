@@ -29,9 +29,8 @@ const loginGuest = async () => {
   }
 };
 
-const logOut = async () => {
-  const res = await api.post("/users/logout", {});
-  return res.data;
+const logout = async () => {
+  await api.post("/users/logout", {});
 };
 
-export { login, loginGuest, logOut };
+export { login, loginGuest, logout };

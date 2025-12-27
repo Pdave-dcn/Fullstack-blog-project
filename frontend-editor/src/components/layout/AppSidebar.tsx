@@ -31,6 +31,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/auth.store";
+import { useLogoutMutation } from "@/queries/auth.query";
 
 const items = [
   {
@@ -60,7 +61,10 @@ function AppSidebar() {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
 
+  const { mutate: logoutMutation } = useLogoutMutation();
+
   const handleSignOut = () => {
+    logoutMutation();
     logout();
     navigate("/");
   };
