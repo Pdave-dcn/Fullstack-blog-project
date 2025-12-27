@@ -9,10 +9,10 @@ export class LoginUserUseCase {
 
   async execute(command: LoginUserCommand): Promise<User> {
     const user = await this.userRepository.findByUsername(command.username);
-    if (!user) throw new InvalidCredentialsError();
+    if (!user) throw new InvalidCredentialsError("username");
 
     const isValid = await bcrypt.compare(command.password, user.passwordHash);
-    if (!isValid) throw new InvalidCredentialsError();
+    if (!isValid) throw new InvalidCredentialsError("password");
 
     return user;
   }

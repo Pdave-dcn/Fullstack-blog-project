@@ -4,8 +4,12 @@ import { toast } from "sonner";
 
 import { login, loginGuest, logout } from "@/api/auth.api";
 import { useAuthStore } from "@/stores/auth.store";
+import { handleAuthError, type AuthError } from "@/utils/authErrorHandler";
+import type { AxiosError } from "axios";
+import type { UseFormSetError } from "react-hook-form";
+import type { LoginFormData } from "@/zodSchemas/auth.zod";
 
-export const useAuthMutation = () => {
+export const useAuthMutation = (setError: UseFormSetError<LoginFormData>) => {
   const navigate = useNavigate();
 
   return useMutation({
@@ -25,6 +29,9 @@ export const useAuthMutation = () => {
       });
 
       navigate("/dashboard");
+    },
+    onError: (error: AxiosError<AuthError>) => {
+      handleAuthError(error, setError);
     },
   });
 };

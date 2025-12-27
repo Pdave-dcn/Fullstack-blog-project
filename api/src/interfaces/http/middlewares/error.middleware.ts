@@ -20,13 +20,17 @@ export const errorMiddleware: ErrorRequestHandler = (
   }
 
   if (err instanceof DomainError) {
-    const status = err.name === "UnauthorizedAuthorError" ? 403 : 400;
-    res.status(status).json({ message: err.message });
+    res.status(err.status).json({
+      code: err.code,
+      message: err.message,
+    });
     return;
   }
 
   logger.error({ err }, "Unhandled critical error");
+
   res.status(500).json({
     message: "Internal server error",
   });
+  return;
 };

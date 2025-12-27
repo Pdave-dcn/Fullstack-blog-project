@@ -1,6 +1,6 @@
 import type { FieldError, UseFormSetError } from "react-hook-form";
 import { toast } from "sonner";
-import type { FormData } from "@/zodSchemas/auth.zod";
+import type { LoginFormData } from "@/zodSchemas/auth.zod";
 import type { AxiosError } from "axios";
 
 interface DomainError {
@@ -16,14 +16,14 @@ export type AuthError = DomainError | ValidationErrors;
 
 /**
  * Handles authentication errors from API responses.
- * Sets form field errors for validation issues and shows toast for general errors.
+ * Sets form field errors for invalid credentials and shows toast for general errors.
  *
  * @param error - Axios error object containing auth error data
  * @param setError - React Hook Form setError function to set field-specific errors
  */
 export const handleAuthError = (
   error: AxiosError<AuthError>,
-  setError: UseFormSetError<FormData>
+  setError: UseFormSetError<LoginFormData>
 ): void => {
   const errorData = error.response?.data;
   const status = error.response?.status;
@@ -34,7 +34,9 @@ export const handleAuthError = (
   // Handle validation errors (multiple field errors)
   if ("errors" in errorData) {
     Object.entries(errorData.errors).forEach(([field, message]) => {
-      setError(field as keyof FormData, { message } as FieldError);
+      if (field === "username" || field === "password") {
+        setError(field, { message } as FieldError);
+      }
     });
     return;
   }
@@ -42,14 +44,7 @@ export const handleAuthError = (
   // Handle domain errors with error codes
   if ("code" in errorData) {
     switch (errorData.code) {
-      case "USERNAME_ALREADY_EXISTS":
-        setError("username", {
-          message: errorData.message,
-        } as FieldError);
-        break;
-
       case "INVALID_CREDENTIALS": {
-        // The message from backend will indicate which field is invalid
         const message = errorData.message.toLowerCase();
         if (message.includes("password")) {
           setError("password", {
@@ -60,7 +55,6 @@ export const handleAuthError = (
             message: errorData.message,
           } as FieldError);
         } else {
-          // Generic invalid credentials (don't reveal which field)
           setError("password", {
             message: errorData.message,
           } as FieldError);
@@ -75,7 +69,6 @@ export const handleAuthError = (
         break;
 
       default:
-        // Unknown error code, show as toast
         toast.error("Authentication Error", {
           description: errorData.message,
         });

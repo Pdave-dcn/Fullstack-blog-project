@@ -20,7 +20,7 @@ export class SignupUserUseCase {
       name: command.name,
       username: command.username,
       passwordHash,
-      role: command.role ?? UserRole.READER,
+      role: UserRole.READER,
     });
 
     await this.userRepository.create(user);
