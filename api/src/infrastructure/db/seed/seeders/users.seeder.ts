@@ -28,6 +28,21 @@ const seedUsers = async (userCount = 10) => {
 
     users.push(authorUser);
 
+    // Create guest user
+    const guestPassword = env.GUEST_PASSWORD;
+    const guestHashedPassword = await bcrypt.hash(guestPassword, 12);
+
+    const guestUser = await prisma.user.create({
+      data: {
+        name: env.GUEST_NAME,
+        username: env.GUEST_USERNAME,
+        passwordHash: guestHashedPassword,
+        role: "GUEST",
+      },
+    });
+
+    users.push(guestUser);
+
     // Create regular users
     for (let i = 0; i < userCount; i++) {
       const password = faker.internet.password();

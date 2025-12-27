@@ -15,6 +15,7 @@ enum ArticleStatus {
 enum Role {
   READER
   AUTHOR
+  GUEST
 }
 
 model User {

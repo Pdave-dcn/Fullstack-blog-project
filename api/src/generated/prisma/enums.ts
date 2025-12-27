@@ -19,7 +19,8 @@ export type ArticleStatus = (typeof ArticleStatus)[keyof typeof ArticleStatus]
 
 export const Role = {
   READER: 'READER',
-  AUTHOR: 'AUTHOR'
+  AUTHOR: 'AUTHOR',
+  GUEST: 'GUEST'
 } as const
 
 export type Role = (typeof Role)[keyof typeof Role]

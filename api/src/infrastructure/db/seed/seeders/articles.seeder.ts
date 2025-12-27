@@ -20,7 +20,7 @@ const seedArticles = async (authorId: string, articleCount = 15) => {
       const article = await prisma.article.create({
         data: {
           title: faker.lorem.sentence({ min: 3, max: 8 }),
-          content: faker.lorem.paragraphs({ min: 3, max: 10 }, "\n\n"),
+          content: faker.lorem.paragraphs({ min: 5, max: 15 }, "\n\n"),
           status: status,
           authorId: authorId,
         },

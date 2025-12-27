@@ -6,7 +6,7 @@ import {
 
 import type { Comment } from "@/zodSchemas/comment.zod";
 
-export type Role = "AUTHOR" | "READER";
+export type Role = "AUTHOR" | "READER" | "GUEST";
 export type Action = "create" | "read" | "update" | "delete";
 
 export type Subjects =
@@ -33,6 +33,12 @@ export const createAbility = (user: { id: string; role: Role }) => {
     can("update", "Comment", { authorId: user.id });
 
     can("delete", "Comment");
+  }
+
+  if (user.role === "GUEST") {
+    can("create", "Comment");
+    can("update", "Comment", { authorId: user.id });
+    can("delete", "Comment", { authorId: user.id });
   }
 
   return build({

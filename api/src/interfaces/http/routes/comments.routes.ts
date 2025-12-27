@@ -26,7 +26,7 @@ router.get("/comments/:id/replies", listCommentRepliesController);
 
 router.get(
   "/comments/author",
-  requireRole(UserRole.AUTHOR),
+  requireRole(UserRole.AUTHOR, UserRole.GUEST),
   getCommentsForAuthorController
 );
 

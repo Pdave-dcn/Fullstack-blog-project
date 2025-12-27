@@ -60,6 +60,36 @@ const baseSchema = z.object({
     )
     .optional()
     .default("Author123"),
+
+  GUEST_NAME: z
+    .string()
+    .trim()
+    .min(3, "Guest name must be at least 3 characters")
+    .max(100, "Guest name must not exceed 100 characters")
+    .regex(
+      /^[a-zA-Z]+(?:\s[a-zA-Z]+)+$/,
+      "Guest name must contain at least first and last name separated by space (letters only)"
+    ),
+
+  GUEST_USERNAME: z
+    .string()
+    .trim()
+    .min(3, "Guest username is required")
+    .max(50)
+    .regex(/^[a-zA-Z0-9_-]+$/),
+
+  GUEST_PASSWORD: z
+    .string()
+    .trim()
+    .min(8, "Password must be at least 8 characters")
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+      "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+    )
+    .regex(
+      /^[\u0020-\u007E]+$/,
+      "Password must not contain emojis or special Unicode characters"
+    ),
 });
 
 // Enforce production rules

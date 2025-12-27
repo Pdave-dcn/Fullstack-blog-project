@@ -15,7 +15,7 @@ const signupSchema = loginSchema.extend({
   name: z.string().min(2, "Name must be at least 5 characters"),
 });
 
-const RoleEnum = z.enum(["AUTHOR", "READER"]);
+const RoleEnum = z.enum(["AUTHOR", "READER", "GUEST"]);
 
 const UserSchema = z.object({
   id: z.uuid(),

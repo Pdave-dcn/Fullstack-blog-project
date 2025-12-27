@@ -26,9 +26,14 @@ router.get("/latest", getRecentArticlesController);
 router.get("/:id", getArticleController);
 
 router.use(authenticateJwt);
-router.use(requireRole(UserRole.AUTHOR));
 
-router.get("/", listArticlesForAuthorTableController);
+router.get(
+  "/",
+  requireRole(UserRole.AUTHOR, UserRole.GUEST),
+  listArticlesForAuthorTableController
+);
+
+router.use(requireRole(UserRole.AUTHOR));
 
 router.use(writeOperationsLimiter);
 

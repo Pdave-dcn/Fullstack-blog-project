@@ -101,3 +101,37 @@ export const loginUserController = async (
     next(err);
   }
 };
+
+export const loginGuestController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  req.log.info("Guest login request received");
+
+  try {
+    const { user, token } = await container.users.loginGuestUseCase.execute();
+
+    res.cookie("token", token, getCookieConfig());
+
+    req.log.info(
+      {
+        userId: user.id,
+        username: user.username,
+        role: user.role,
+      },
+      "Guest login successful"
+    );
+
+    res.status(200).json({
+      user: {
+        id: user.id,
+        name: user.name,
+        username: user.username,
+        role: user.role,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};

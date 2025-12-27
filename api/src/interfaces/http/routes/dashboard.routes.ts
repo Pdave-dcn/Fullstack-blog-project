@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.use(generalApiLimiter);
 router.use(authenticateJwt);
-router.use(requireRole(UserRole.AUTHOR));
+router.use(requireRole(UserRole.AUTHOR, UserRole.GUEST));
 
 router.get("/stats", getDashboardStatsController);
 

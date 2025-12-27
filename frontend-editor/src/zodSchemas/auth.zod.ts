@@ -11,7 +11,7 @@ const loginSchema = z.object({
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
-const RoleEnum = z.enum(["AUTHOR", "READER"]);
+const RoleEnum = z.enum(["AUTHOR", "READER", "GUEST"]);
 
 const UserSchema = z.object({
   id: z.uuid(),

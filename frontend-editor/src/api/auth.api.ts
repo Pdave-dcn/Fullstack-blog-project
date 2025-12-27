@@ -16,9 +16,22 @@ const login = async (data: LoginFormData) => {
   }
 };
 
+const loginGuest = async () => {
+  try {
+    const res = await api.post("/users/guest");
+
+    const validatedData = AuthResponseSchema.parse(res.data);
+
+    return validatedData;
+  } catch (error) {
+    handleZodValidationError(error, "loginGuest");
+    throw error;
+  }
+};
+
 const logOut = async () => {
   const res = await api.post("/users/logout", {});
   return res.data;
 };
 
-export { login, logOut };
+export { login, loginGuest, logOut };
