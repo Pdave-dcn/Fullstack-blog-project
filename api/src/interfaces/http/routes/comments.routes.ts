@@ -1,3 +1,4 @@
+// comments.routes.ts
 import express from "express";
 import {
   createCommentController,
@@ -21,17 +22,17 @@ router.use(generalApiLimiter);
 
 router.use(authenticateJwt);
 
-router.get("/articles/:id/comments", listArticleCommentsController);
-router.get("/comments/:id/replies", listCommentRepliesController);
+router.get("/article/:id", listArticleCommentsController);
+router.get("/:id/replies", listCommentRepliesController);
 
 router.get(
-  "/comments/author",
+  "/author",
   requireRole(UserRole.AUTHOR),
   getCommentsForAuthorController
 );
 
-router.delete("/comments/:id", writeOperationsLimiter, deleteCommentController);
-router.put("/comments/:id", writeOperationsLimiter, editCommentController);
-router.post("/comments", writeOperationsLimiter, createCommentController);
+router.delete("/:id", writeOperationsLimiter, deleteCommentController);
+router.put("/:id", writeOperationsLimiter, editCommentController);
+router.post("/", writeOperationsLimiter, createCommentController);
 
 export default router;
