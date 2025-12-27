@@ -5,8 +5,8 @@ import {
 } from "@casl/ability";
 
 import type { Comment } from "@/zodSchemas/comment.zod";
+import type { Role } from "@/zodSchemas/auth.zod";
 
-export type Role = "AUTHOR" | "READER";
 export type Action = "create" | "read" | "update" | "delete";
 
 export type Subjects =

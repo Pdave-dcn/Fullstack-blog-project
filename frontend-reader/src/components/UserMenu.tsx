@@ -10,10 +10,18 @@ import {
 import { LogOut } from "lucide-react";
 import { useAuthStore } from "@/store/auth.store";
 import { getInitials } from "@/utils/getInitials";
+import { useLogoutMutation } from "@/queries/auth.query";
 
 const UserMenu = () => {
   const user = useAuthStore((s) => s.user);
   const logout = useAuthStore((s) => s.logout);
+
+  const { mutate: logoutMutate } = useLogoutMutation();
+
+  const handleLogout = () => {
+    logoutMutate();
+    logout();
+  };
 
   if (!user) {
     return null;
@@ -44,7 +52,7 @@ const UserMenu = () => {
           </div>
         </div>
         <DropdownMenuSeparator />
-        <DropdownMenuItem variant="destructive" onClick={logout}>
+        <DropdownMenuItem variant="destructive" onClick={handleLogout}>
           <LogOut className="mr-2 h-4 w-4" />
           Sign out
         </DropdownMenuItem>

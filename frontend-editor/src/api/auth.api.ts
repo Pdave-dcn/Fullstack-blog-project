@@ -16,9 +16,8 @@ const login = async (data: LoginFormData) => {
   }
 };
 
-const logOut = async () => {
-  const res = await api.post("/users/logout", {});
-  return res.data;
+const logout = async () => {
+  await api.post("/users/logout", {});
 };
 
-export { login, logOut };
+export { login, logout };

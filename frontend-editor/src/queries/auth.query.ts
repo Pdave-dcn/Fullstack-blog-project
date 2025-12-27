@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
-import { login } from "@/api/auth.api";
+import { login, logout } from "@/api/auth.api";
 import { useAuthStore } from "@/stores/auth.store";
 
 export const useAuthMutation = () => {
@@ -26,11 +26,14 @@ export const useAuthMutation = () => {
 
       navigate("/dashboard");
     },
-    onError: (error) => {
-      toast.error("Login failed", {
-        description:
-          error instanceof Error ? error.message : "Something went wrong",
-      });
+  });
+};
+
+export const useLogoutMutation = () => {
+  return useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+      toast.success("Logout successful");
     },
   });
 };

@@ -29,9 +29,8 @@ const signup = async (data: FormData) => {
   }
 };
 
-const logOut = async () => {
-  const res = await api.post("/users/logout", {});
-  return res.data;
+const logout = async () => {
+  await api.post("/users/logout", {});
 };
 
-export { login, signup, logOut };
+export { login, signup, logout };
