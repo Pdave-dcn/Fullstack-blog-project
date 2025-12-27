@@ -8,12 +8,10 @@ A full-stack blog platform featuring a modern React/TypeScript frontend (with se
 
 ![Editor Dashboard](./docs/screenshots/frontend-editor-dashboard.jpeg)
 ![Editor Articles Page](./docs/screenshots/frontend-editor-articles-page.jpeg)
-![Reader Home Page](./docs/screenshots/frontend-reader-home.jpeg)
-![Reader Articles Page](./docs/screenshots/frontend-reader-articles-page.jpeg)
 
 ---
 
-## 🚀 Live Demo
+## Live Demo
 
 ### Frontend Reader
 
@@ -25,7 +23,7 @@ A full-stack blog platform featuring a modern React/TypeScript frontend (with se
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```bash
 blog-project/
@@ -39,7 +37,7 @@ blog-project/
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 ### Frontend (Reader & Editor)
 
