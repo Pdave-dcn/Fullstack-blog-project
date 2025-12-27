@@ -10,12 +10,10 @@
     "start:frontend:reader": "npm --workspace frontend-reader run dev",
     "start:frontend:editor": "npm --workspace frontend-editor run dev",
     "start:backend": "npm --workspace api run dev",
-    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend:reader\" \"npm run start:frontend:editor\""
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend:reader\" \"npm run start:frontend:editor\"",
+    "db:seed": "npm --workspace api run db:seed"
   },
   "devDependencies": {
     "concurrently": "^9.2.1"
-  },
-  "dependencies": {
-    "@casl/ability": "^6.7.5"
   }
 }

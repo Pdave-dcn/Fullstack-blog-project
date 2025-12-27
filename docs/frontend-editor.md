@@ -2,7 +2,9 @@
 
 ## Overview
 
-The Frontend Editor is a React-based application built with TypeScript and Vite. It provides a content management interface for blog authors to create, edit, manage posts and moderate comments.
+The **Frontend Editor** is a secure author-facing dashboard designed for managing content in a real-world publishing workflow. Built with **React**, **TypeScript**, and **Vite**, it provides tools for creating, editing, and publishing articles, as well as moderating user comments.
+
+The application integrates a rich text editing experience via **TinyMCE** and enforces `role-based access control` to ensure only authorized authors can access editorial features. It leverages **TanStack React Query** for server state, **Zod** for validation, and **Zustand** for localized client state, resulting in a predictable and scalable architecture. The editor is intentionally structured to mirror patterns found in professional CMS and admin dashboards.
 
 ## Tech Stack
 
@@ -10,32 +12,78 @@ The Frontend Editor is a React-based application built with TypeScript and Vite.
 - **Build Tool**: Vite
 - **Styling**: Tailwind CSS
 - **Editor**: TinyMCE
-- **State Management**: React Context
+- **State Management**: Zustand (stores), TanStack React Query (server state), React Context (themes/auth)
 - **Routing**: React Router
 - **UI Components**: Shadcn/UI
+- **Forms**: React Hook Form + Zod validation
 - **Notifications**: Sonner Toast
+- **Permissions**: CASL Ability
+- **HTTP Client**: Axios
 
 ## Project Structure
 
-```
+```bash
 frontend-editor/
 ├── src/
-│   ├── components/        # Reusable UI components
-│   │   ├── ui/           # Base UI components from shadcn/ui
-│   │   └── ...
-│   ├── contexts/         # React Context providers
-│   │   ├── AuthContext.tsx
+│   ├── api/             # API service functions
+│   │   ├── article.api.ts
+│   │   ├── auth.api.ts
+│   │   ├── axios.ts
+│   │   ├── comment.api.ts
+│   │   └── dashboard.api.ts
+│   ├── components/      # Reusable UI components
+│   │   ├── ui/          # Base UI components from shadcn/ui
+│   │   ├── ArticleEditPage/
+│   │   ├── ArticleReadPage/
+│   │   ├── ArticlesPage/
+│   │   ├── Comment/
+│   │   ├── CommentsPage/
+│   │   ├── Dashboard/
+│   │   ├── layout/
+│   │   ├── NewArticlePage/
+│   │   ├── LoadMoreButton.tsx
+│   │   ├── ModeToggle.tsx
+│   │   └── ProtectedRoute.tsx
+│   ├── contexts/        # React Context providers
 │   │   └── ThemeProviderContext.tsx
 │   ├── hooks/           # Custom React hooks
-│   │   ├── use-auth.ts
-│   │   ├── use-dataFetching.ts
-│   │   └── ...
-│   ├── lib/            # Utility functions
-│   ├── pages/          # Page components
-│   │   ├── Dashboard/
-│   │   ├── Articles/
-│   │   └── ...
-│   └── types/          # TypeScript type definitions
+│   │   ├── use-mobile.ts
+│   │   ├── use-sidebar.ts
+│   │   ├── useArticles.ts
+│   │   ├── useCommentCard.ts
+│   │   ├── useDashboard.ts
+│   │   └── useDebounce.ts
+│   ├── lib/             # Utility functions
+│   │   ├── utils.ts
+│   │   └── security/
+│   │       └── ability.ts
+│   ├── pages/           # Page components
+│   │   ├── ArticleEdit.tsx
+│   │   ├── ArticleReadPage.tsx
+│   │   ├── Articles.tsx
+│   │   ├── Comments.tsx
+│   │   ├── Dashboard.tsx
+│   │   ├── Login.tsx
+│   │   ├── NewArticle.tsx
+│   │   └── NotFound.tsx
+│   ├── queries/         # TanStack Query hooks
+│   │   ├── article.query.ts
+│   │   ├── auth.query.ts
+│   │   ├── comment.query.ts
+│   │   └── dashboard.query.ts
+│   ├── stores/          # Zustand stores
+│   │   ├── auth.store.ts
+│   │   └── comment.store.ts
+│   ├── utils/           # Utility functions
+│   │   ├── formatDate.ts
+│   │   ├── formatTimeAgo.ts
+│   │   ├── getInitials.ts
+│   │   └── zodErrorHandler.ts
+│   └── zodSchemas/      # Zod validation schemas
+│       ├── article.zod.ts
+│       ├── auth.zod.ts
+│       ├── comment.zod.ts
+│       └── dashboard.zod.ts
 ```
 
 ## Key Features
@@ -45,7 +93,7 @@ frontend-editor/
 - Author-only access
 - Protected routes
 - JWT-based authentication
-- Role-based access control
+- Role-based access control with CASL Ability
 
 ### Content Management
 
@@ -81,36 +129,38 @@ frontend-editor/
 ### Feature Components
 
 - `ArticleEdit.tsx`: Article editing interface
-- `CommentSection.tsx`: Comment management
+- `Comments.tsx`: Comment management
 - `Dashboard.tsx`: Analytics and overview
 - `Articles.tsx`: Article list and management
+- `NewArticle.tsx`: New article creation
+- `ArticleReadPage.tsx`: Article reading interface
 
-## Routing Structure
+### UI Components
 
-```typescript
-<Routes>
-  <Route path="/" element={<Login />} />
-  <Route path="/dashboard" element={<Dashboard />} />
-  <Route path="/articles" element={<Articles />} />
-  <Route path="/articles/:id" element={<ArticleDetails />} />
-  <Route path="/articles/:id/edit" element={<ArticleEdit />} />
-  <Route path="/new-article" element={<NewArticle />} />
-  <Route path="/comments" element={<Comments />} />
-  <Route path="*" element={<NotFound />} />
-</Routes>
-```
+- Various Shadcn/UI components in `ui/` folder
+- Custom components like `LoadMoreButton`, `ModeToggle`
 
 ## State Management
 
-### Authentication Context
+### Authentication Store (Zustand)
 
 ```typescript
 interface AuthState {
   user: User | null;
-  token: string | null;
   isAuthenticated: boolean;
+  ability: AppAbility | null;
+  login: (user: User) => void;
+  logout: () => void;
 }
 ```
+
+### Comment Store (Zustand)
+
+Manages comment-related state.
+
+### Server State (TanStack React Query)
+
+Handles API data fetching, caching, and mutations for articles, comments, dashboard, etc.
 
 ### Theme Context
 
@@ -125,8 +175,10 @@ interface ThemeProviderState {
 
 The application interacts with the backend API using:
 
-- Fetch API for HTTP requests
+- Axios for HTTP requests
+- TanStack React Query for data fetching and caching
 - JWT tokens for authentication
+- Zod schemas for request/response validation
 - Error handling utilities
 
 ## Environment Configuration
@@ -140,71 +192,56 @@ VITE_TINYMCE_API_KEY=your_tinymce_api_key
 
 ## Development Setup
 
-1. Install dependencies:
+### 1. Install dependencies
 
 ```bash
 npm install
 ```
 
-2. Start development server:
+### 2. Start development server
 
 ```bash
 npm run dev
 ```
 
-3. Build for production:
+### 3. Build for production
 
 ```bash
 npm run build
+```
+
+### 4. Lint
+
+```bash
+npm run lint
 ```
 
 ## Code Style & Best Practices
 
 - TypeScript for type safety
 - ESLint for code quality
-- Prettier for code formatting
+- Prettier for code formatting (via ESLint)
 - Component composition pattern
 - Custom hooks for logic reuse
 - Error boundaries for error handling
+- Zod for schema validation
+- React Hook Form for form management
 
 ## Performance Considerations
 
 - Lazy loading of routes
-- Memoization of expensive computations
 - Proper loading states
 - Error handling
-- Optimistic updates
-
-## Accessibility
-
-- ARIA labels
-- Keyboard navigation
-- Focus management
-- Color contrast compliance
-- Screen reader support
+- Optimistic updates with TanStack Query
+- Debounced inputs
 
 ## Security
 
 - Protected routes
 - JWT token management
 - XSS prevention
-- CORS configuration
 - Input sanitization
-
-## Testing
-
-- Unit tests for utilities
-- Component testing
-- Integration testing
-- E2E testing (recommended)
-
-## Contributing
-
-1. Follow the established code style
-2. Add appropriate documentation
-3. Include tests for new features
-4. Use meaningful commit messages
-5. Submit PRs against the development branch
+- CASL Ability for fine-grained permissions
 
 ## Common Issues & Solutions
 
@@ -221,6 +258,12 @@ npm run build
    - Ensure proper initialization
 
 3. Routing issues:
+
    - Check protected route wrapping
    - Verify path parameters
    - Confirm navigation guards
+
+4. State management issues:
+   - Ensure Zustand stores are properly persisted
+   - Check TanStack Query cache invalidation
+   - Verify Context providers are wrapped correctly
