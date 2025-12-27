@@ -68,32 +68,10 @@ export const useArticles = () => {
   };
 
   const handlePublishStatus = (articleId: string, newStatus: ArticleStatus) => {
-    updateStatusMutation.mutate(
-      {
-        articleId,
-        data: { status: newStatus },
-      },
-      {
-        onSuccess: () => {
-          toast.success(
-            `Article ${
-              newStatus === "PUBLISHED" ? "published" : "unpublished"
-            } successfully`
-          );
-        },
-        onError: (error) => {
-          toast.error(
-            `Failed to ${
-              newStatus === "PUBLISHED" ? "publish" : "unpublish"
-            } article`,
-            {
-              description:
-                error instanceof Error ? error.message : "Unknown error",
-            }
-          );
-        },
-      }
-    );
+    updateStatusMutation.mutate({
+      articleId,
+      data: { status: newStatus },
+    });
   };
 
   return {
