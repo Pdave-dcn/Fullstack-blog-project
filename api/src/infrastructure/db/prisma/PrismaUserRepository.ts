@@ -9,6 +9,8 @@ function mapPrismaRoleToDomain(role: string): DomainUserRole {
       return DomainUserRole.READER;
     case "AUTHOR":
       return DomainUserRole.AUTHOR;
+    case "GUEST":
+      return DomainUserRole.GUEST;
     default:
       throw new Error(`Unknown role ${role}`);
   }
