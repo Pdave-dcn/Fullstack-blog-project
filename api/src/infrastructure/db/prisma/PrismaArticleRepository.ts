@@ -1,5 +1,5 @@
 import prisma from "@/infrastructure/db/prismaClient.js";
-import { Article } from "@/domains/articles/Article";
+import { Article } from "@/domains/articles/Article.js";
 import {
   ArticleStatus,
   ArticleStatus as DomainArticleStatus,

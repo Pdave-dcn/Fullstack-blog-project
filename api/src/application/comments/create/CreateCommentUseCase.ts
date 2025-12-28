@@ -5,7 +5,7 @@ import { ArticleNotFoundError } from "@/domains/articles/ArticleErrors.js";
 import {
   ParentCommentArticleMismatchError,
   ParentCommentNotFoundError,
-} from "@/domains/comments/CommentErrors";
+} from "@/domains/comments/CommentErrors.js";
 import { Comment } from "@/domains/comments/Comment.js";
 
 export class CreateCommentUseCase {

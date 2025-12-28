@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getClearCookieConfig } from "@/infrastructure/http/cookies/authCookieConfig";
+import { getClearCookieConfig } from "@/infrastructure/http/cookies/authCookieConfig.js";
 
 export const logoutController = (_req: Request, res: Response) => {
   res.clearCookie("token", getClearCookieConfig());

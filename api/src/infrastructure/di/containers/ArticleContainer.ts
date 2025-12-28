@@ -6,9 +6,9 @@ import { UpdateArticleStatusUseCase } from "@/application/articles/update/Update
 import { GetArticleByIdUseCase } from "@/application/articles/queries/GetArticleByIdUseCase.js";
 import { GetRecentArticlesUseCase } from "@/application/articles/list/GetRecentArticlesUseCase.js";
 import { PrismaArticleRepository } from "@/infrastructure/db/prisma/PrismaArticleRepository.js";
-import { GetArticleDetailsUseCase } from "@/application/articles/queries/ArticleDetails/GetArticleDetailsUseCase";
-import { GetArticlesForAuthorTableUseCase } from "@/application/articles/queries/ArticlesForAuthorTable/ArticlesForAuthorTableUseCase";
-import { PrismaArticleQueryRepository } from "@/infrastructure/db/prisma/PrismaArticleQueryRepository";
+import { GetArticleDetailsUseCase } from "@/application/articles/queries/ArticleDetails/GetArticleDetailsUseCase.js";
+import { GetArticlesForAuthorTableUseCase } from "@/application/articles/queries/ArticlesForAuthorTable/ArticlesForAuthorTableUseCase.js";
+import { PrismaArticleQueryRepository } from "@/infrastructure/db/prisma/PrismaArticleQueryRepository.js";
 
 /**
  * Article domain dependency injection container.
