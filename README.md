@@ -6,8 +6,13 @@ A full-stack blog platform featuring a modern React/TypeScript frontend (with se
 
 ## Screenshots
 
-![Editor Dashboard](./docs/screenshots/frontend-editor-dashboard.jpeg)
-![Editor Articles Page](./docs/screenshots/frontend-editor-articles-page.jpeg)
+![Editor Dashboard](./docs/screenshots/textnode-dashboard.jpeg)
+
+![Editor New Article Page](./docs/screenshots/textnode-new-article-page.jpeg)
+
+![Reader Articles Page](./docs/screenshots/textnode-reader-articles-page.jpeg)
+
+![Reader Article Read Page](./docs/screenshots/textnode-article-read-page.jpeg)
 
 ---
 
@@ -135,6 +140,10 @@ Both frontend applications were refactored to follow **modern React best practic
 - Cleaner folder structure and reusable hooks
 
 The refactor focused on making the frontends easier to reason about, scale, and extend while keeping UI code declarative and focused.
+
+> **Note**:
+>
+> The previous version of this project is preserved in the `legacy-v1` branch for reference, historical comparison, and transparency.
 
 ---
 
