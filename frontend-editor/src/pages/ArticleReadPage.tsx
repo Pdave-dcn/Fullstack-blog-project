@@ -30,7 +30,10 @@ const ArticleReadPage = () => {
         {/* Article content */}
         <Card className="mb-8">
           <CardContent>
-            <div dangerouslySetInnerHTML={{ __html: article.content }} />
+            <div
+              className="prose prose-slate max-w-none [&_p]:mb-4"
+              dangerouslySetInnerHTML={{ __html: article.content }}
+            />
           </CardContent>
         </Card>
 

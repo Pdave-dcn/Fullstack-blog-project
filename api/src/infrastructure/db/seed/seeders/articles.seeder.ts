@@ -17,10 +17,23 @@ const seedArticles = async (authorId: string, articleCount = 15) => {
         ? "DRAFT"
         : "PUBLISHED";
 
+      // Generate multiple paragraphs with proper HTML formatting
+      const paragraphCount = faker.number.int({ min: 8, max: 20 });
+      const paragraphs = [];
+
+      for (let j = 0; j < paragraphCount; j++) {
+        // Each paragraph has 4-8 sentences for more realistic length
+        const paragraphText = faker.lorem.paragraph({ min: 4, max: 8 });
+        paragraphs.push(`<p>${paragraphText}</p>`);
+      }
+
+      // Join paragraphs with proper HTML structure
+      const content = paragraphs.join("\n");
+
       const article = await prisma.article.create({
         data: {
           title: faker.lorem.sentence({ min: 3, max: 8 }),
-          content: faker.lorem.paragraphs({ min: 5, max: 15 }, "\n\n"),
+          content: content,
           status: status,
           authorId: authorId,
         },

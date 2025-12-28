@@ -54,7 +54,7 @@ const Articles = () => {
       </section>
 
       {/* Articles Grid */}
-      <section className="py-12">
+      <section className="py-8">
         <div className={cn(spacing.padding_x)}>
           {/* Loading State */}
           {isLoading && (

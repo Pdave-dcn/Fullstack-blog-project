@@ -11,6 +11,7 @@ import {
 } from "@/api/article.api";
 import type { ArticleForTable, ArticleStatus } from "@/zodSchemas/article.zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export const useArticlesQuery = (params?: ArticlesQueryParams) => {
   return useQuery({
@@ -51,40 +52,51 @@ export const useUpdateArticleStatusMutation = () => {
     }) => updateArticleStatus(articleId, data),
 
     onMutate: async ({ articleId, data }) => {
+      // Cancel outgoing queries
       await queryClient.cancelQueries({ queryKey: ["articles"] });
 
-      const previousArticles = queryClient.getQueriesData({
+      // Get all article queries (they have different keys based on filter/search)
+      const previousQueries = queryClient.getQueriesData<ArticleForTable[]>({
         queryKey: ["articles"],
       });
 
-      queryClient.setQueriesData<{ data: ArticleForTable[] }>(
-        { queryKey: ["articles"] },
-        (old) => {
-          if (!old) return old;
+      // Update each query individually
+      previousQueries.forEach(([queryKey]) => {
+        queryClient.setQueryData<ArticleForTable[]>(queryKey, (old) => {
+          if (!old || !Array.isArray(old)) return old;
 
-          return {
-            ...old,
-            data: old.data.map((article) =>
-              article.id === articleId
-                ? { ...article, status: data.status }
-                : article
-            ),
-          };
-        }
-      );
+          return old.map((article) =>
+            article.id === articleId
+              ? { ...article, status: data.status }
+              : article
+          );
+        });
+      });
 
-      return { previousArticles };
+      // Return snapshot for rollback
+      return { previousQueries };
     },
 
-    onError: (_err, _variables, context) => {
-      if (context?.previousArticles) {
-        context.previousArticles.forEach(([queryKey, queryData]) => {
+    onError: (err, variables, context) => {
+      // Rollback all queries to their previous state
+      if (context?.previousQueries) {
+        context.previousQueries.forEach(([queryKey, queryData]) => {
           queryClient.setQueryData(queryKey, queryData);
         });
       }
+
+      toast.error(
+        `Failed to ${
+          variables.data.status === "PUBLISHED" ? "publish" : "unpublish"
+        } article`,
+        {
+          description: err instanceof Error ? err.message : "Unknown error",
+        }
+      );
     },
 
     onSettled: () => {
+      // Refetch to ensure sync with server
       queryClient.invalidateQueries({
         queryKey: ["articles"],
       });

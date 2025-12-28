@@ -33,7 +33,7 @@ const getArticleParentComments = async (
   limit = 10
 ) => {
   try {
-    const res = await api.get(`/articles/${articleId}/comments`, {
+    const res = await api.get(`/comments/article/${articleId}`, {
       params: { cursor, limit },
     });
 

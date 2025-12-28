@@ -40,7 +40,7 @@ export const ArticleContent = ({ article }: ArticleContentProps) => {
       </motion.h1>
 
       <motion.div
-        className="prose prose-lg max-w-none mb-12"
+        className="prose prose-slate max-w-none [&_p]:mb-4 mb-12"
         dangerouslySetInnerHTML={{ __html: article.content }}
         variants={blurIn}
       />

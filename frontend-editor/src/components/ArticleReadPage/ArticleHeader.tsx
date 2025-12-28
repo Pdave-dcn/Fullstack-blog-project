@@ -13,7 +13,7 @@ export const ArticleHeader = ({ article }: ArticleHeaderProps) => {
       <div className="space-y-4">
         {/* Status badge */}
         <Badge
-          variant={article.status === "PUBLISHED" ? "default" : "outline"}
+          variant={article.status === "PUBLISHED" ? "default" : "secondary"}
           className="text-xs font-medium"
         >
           {article.status === "PUBLISHED" ? "PUBLISHED" : "DRAFT"}

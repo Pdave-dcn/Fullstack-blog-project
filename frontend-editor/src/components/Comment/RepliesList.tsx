@@ -78,7 +78,7 @@ const RepliesList = ({ parentId, articleId }: RepliesListProps) => {
 
               <div className="flex-1">
                 <div className="flex items-center space-x-2">
-                  <span className="font-medium text-sm">
+                  <span className="font-semibold text-sm">
                     {reply.author.username}
                   </span>
                   <span className="text-xs text-muted-foreground">

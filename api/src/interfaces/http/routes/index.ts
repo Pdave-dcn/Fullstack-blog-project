@@ -1,3 +1,4 @@
+// index.routes.ts
 import express from "express";
 import authRoutes from "./auth.routes.js";
 import articlesRoutes from "./articles.routes.js";
@@ -11,8 +12,8 @@ router.get("/health", (_req, res) => {
 });
 
 router.use("/api/users", authRoutes);
-router.use("/api", commentsRoutes);
 router.use("/api/articles", articlesRoutes);
+router.use("/api/comments", commentsRoutes);
 router.use("/api/dashboard", dashboardRoutes);
 
 router.use(/.*/, (_req, res) => {
