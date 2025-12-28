@@ -1,5 +1,5 @@
-import { ArticleStatus } from "@/domains/articles/ArticleStatus";
-import { UserRole } from "@/domains/users/UserRole";
+import { ArticleStatus } from "@/domains/articles/ArticleStatus.js";
+import { UserRole } from "@/domains/users/UserRole.js";
 
 export interface CreateArticleCommand {
   authorId: string;

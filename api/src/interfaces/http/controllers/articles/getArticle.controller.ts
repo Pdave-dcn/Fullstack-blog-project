@@ -1,4 +1,4 @@
-import { container } from "@/infrastructure/di/containers";
+import { container } from "@/infrastructure/di/containers/index.js";
 import { NextFunction, Request, Response } from "express";
 
 export const getArticleController = async (
