@@ -9,11 +9,13 @@ This project is a **fullstack application** composed of:
 
 This document focuses **exclusively on the backend refactoring**. Both frontends were also refactored, but they are documented separately.
 
-The backend was refactored incrementally to adopt **Domain-Driven Design (DDD)** principles combined with **Clean Architecture**. The goal was not academic purity, but to improve **maintainability, testability, and long-term scalability** as the system grew in complexity.
+The backend was refactored incrementally to adopt **Domain-Driven Design (DDD)** principles combined with **Clean Architecture**. The goal was not academic purity, but to improve **maintainability, testability, and long-term scalability**, while also reflecting my current level of experience as a fullstack developer.
 
 ---
 
 ## Why the Refactor Was Needed
+
+This backend is one of my **earlier projects**, created when I was still learning server-side development and architectural fundamentals. At the time, the implementation favored speed and experimentation over clear boundaries and long-term maintainability.
 
 Before the refactor, the backend followed a more traditional layered / MVC-style structure:
 
@@ -22,14 +24,35 @@ Before the refactor, the backend followed a more traditional layered / MVC-style
 - Infrastructure concerns leaked into application logic
 - Read models and write models were mixed
 
-As features like **articles, comments, replies, dashboards, moderation, and rate limiting** were added, this structure became harder to evolve safely.
+While the application worked, the architecture increasingly reflected the limitations of my earlier experience rather than my current understanding of backend design.
+
+The refactor was driven by two main motivations:
+
+1. **Modernizing the codebase to reflect my current skill level**
+   Over time, I gained deeper experience with backend best practices such as:
+
+   - Explicit validation (e.g. **Zod**)
+   - Centralized authorization
+   - Centralized error handling
+   - Rate limiting
+   - Logging
+   - Clear separation of concerns
+
+   Refactoring allowed the project to showcase these practices in a cohesive and intentional way.
+
+2. **Learning and applying Domain-Driven Design in a familiar context**
+   Rather than starting a new project from scratch, I chose to refactor an existing and well-understood codebase. This made it easier to:
+
+   - Explore DDD concepts incrementally
+   - Compare the original architecture with a DDD-inspired approach
+   - Clearly see the tradeoffs and benefits of each style
 
 The refactor aimed to:
 
 - Isolate **business rules** from frameworks
 - Make **use cases explicit**
 - Centralize **authorization and cross-cutting concerns**
-- Prepare the system for **growth without rewrites**
+- Enable architectural evolution without rewriting the system
 
 ---
 
