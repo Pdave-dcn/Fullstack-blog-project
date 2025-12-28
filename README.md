@@ -126,7 +126,7 @@ The backend architecture was progressively refactored toward a **Domain‑Driven
 
 For a detailed explanation of the backend refactor, structure, and architectural decisions, see:
 
-👉 **[Backend Refactoring Documentation](./docs/backend-refactoring.md)**
+👉 **[Backend Refactoring Documentation](./docs/api-refactoring.md)**
 
 ### Frontend Refactor
 
