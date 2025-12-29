@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthenticatedRequest } from "../types/AuthRequest.js";
-import { UserRole } from "@/domains/users/UserRole.js";
+import { UserRole } from "../../../domains/users/UserRole.js";
 
 export const requireRole =
   (...roles: UserRole[]) =>

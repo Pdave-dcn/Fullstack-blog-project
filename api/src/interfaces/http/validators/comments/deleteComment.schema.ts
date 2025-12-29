@@ -1,4 +1,4 @@
-import { UserRole } from "@/domains/users/UserRole.js";
+import { UserRole } from "../../../../domains/users/UserRole.js";
 import { z } from "zod";
 
 export const DeleteCommentSchema = z.object({

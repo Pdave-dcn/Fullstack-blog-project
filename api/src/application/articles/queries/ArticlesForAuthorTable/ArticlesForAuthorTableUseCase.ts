@@ -1,4 +1,4 @@
-import { ArticleQueryRepository } from "@/domains/articles/ArticleQueryRepository.js";
+import { ArticleQueryRepository } from "../../../../domains/articles/ArticleQueryRepository.js";
 import { GetArticlesForAuthorTableParams } from "./ArticlesForAuthorTableView";
 
 export class GetArticlesForAuthorTableUseCase {

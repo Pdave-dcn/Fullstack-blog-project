@@ -3,11 +3,11 @@ import {
   getDashboardStatsController,
   getRecentArticlesController,
   getRecentCommentsController,
-} from "@/interfaces/http/controllers/dashboard/dashboard.controller.js";
-import { generalApiLimiter } from "@/infrastructure/http/rateLimit/coreRateLimits.js";
+} from "../controllers/dashboard/dashboard.controller.js";
+import { generalApiLimiter } from "../../../infrastructure/http/rateLimit/coreRateLimits.js";
 import { authenticateJwt } from "../middlewares/authenticateJwt.middleware.js";
 import { requireRole } from "../middlewares/requireRole.middleware.js";
-import { UserRole } from "@/domains/users/UserRole.js";
+import { UserRole } from "../../../domains/users/UserRole.js";
 
 const router = express.Router();
 

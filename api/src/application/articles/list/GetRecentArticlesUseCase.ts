@@ -1,5 +1,5 @@
-import { ArticleRepository } from "@/domains/articles/ArticleRepository.js";
-import { ArticleStatus } from "@/domains/articles/ArticleStatus.js";
+import { ArticleRepository } from "../../../domains/articles/ArticleRepository.js";
+import { ArticleStatus } from "../../../domains/articles/ArticleStatus.js";
 
 export class GetRecentArticlesUseCase {
   constructor(private readonly articleRepository: ArticleRepository) {}

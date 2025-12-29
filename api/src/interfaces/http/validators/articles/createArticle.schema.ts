@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ArticleStatus } from "@/domains/articles/ArticleStatus.js";
+import { ArticleStatus } from "../../../../domains/articles/ArticleStatus.js";
 
 export const createArticleSchema = z.object({
   title: z.string().min(1, "Title is required"),

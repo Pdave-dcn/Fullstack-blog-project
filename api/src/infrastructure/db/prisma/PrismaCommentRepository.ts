@@ -1,6 +1,6 @@
-import prisma from "@/infrastructure/db/prismaClient.js";
-import { CommentRepository } from "@/domains/comments/CommentRepository.js";
-import { Comment } from "@/domains/comments/Comment.js";
+import prisma from "../prismaClient.js";
+import { CommentRepository } from "../../../domains/comments/CommentRepository.js";
+import { Comment } from "../../../domains/comments/Comment.js";
 
 type PrismaCommentRow = {
   id: string;

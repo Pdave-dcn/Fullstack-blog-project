@@ -1,10 +1,10 @@
-import { ArticleRepository } from "@/domains/articles/ArticleRepository.js";
+import { ArticleRepository } from "../../../domains/articles/ArticleRepository.js";
 import { DeleteArticleCommand } from "./DeleteArticleCommand.js";
 import {
   ArticleNotFoundError,
   ForbiddenArticleDeleteError,
   UnauthorizedAuthorError,
-} from "@/domains/articles/ArticleErrors.js";
+} from "../../../domains/articles/ArticleErrors.js";
 
 export class DeleteArticleUseCase {
   constructor(private readonly articleRepository: ArticleRepository) {}

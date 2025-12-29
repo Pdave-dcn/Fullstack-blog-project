@@ -1,11 +1,11 @@
-import { ArticleRepository } from "@/domains/articles/ArticleRepository";
+import { ArticleRepository } from "../../../domains/articles/ArticleRepository.js";
 import { UpdateArticleStatusCommand } from "./UpdateArticleStatusCommand";
 import {
   ArticleNotFoundError,
   ForbiddenArticleEditError,
   UnauthorizedAuthorError,
-} from "@/domains/articles/ArticleErrors";
-import { ArticleStatus } from "@/domains/articles/ArticleStatus";
+} from "../../../domains/articles/ArticleErrors.js";
+import { ArticleStatus } from "../../../domains/articles/ArticleStatus.js";
 
 export class UpdateArticleStatusUseCase {
   constructor(public readonly articleRepository: ArticleRepository) {}

@@ -1,12 +1,12 @@
-import { ArticleRepository } from "@/domains/articles/ArticleRepository.js";
-import { CommentRepository } from "@/domains/comments/CommentRepository.js";
+import { ArticleRepository } from "../../../domains/articles/ArticleRepository.js";
+import { CommentRepository } from "../../../domains/comments/CommentRepository.js";
 import { CreateCommentCommand } from "./CreateCommentCommand.js";
-import { ArticleNotFoundError } from "@/domains/articles/ArticleErrors.js";
+import { ArticleNotFoundError } from "../../../domains/articles/ArticleErrors.js";
 import {
   ParentCommentArticleMismatchError,
   ParentCommentNotFoundError,
-} from "@/domains/comments/CommentErrors.js";
-import { Comment } from "@/domains/comments/Comment.js";
+} from "../../../domains/comments/CommentErrors.js";
+import { Comment } from "../../../domains/comments/Comment.js";
 
 export class CreateCommentUseCase {
   constructor(

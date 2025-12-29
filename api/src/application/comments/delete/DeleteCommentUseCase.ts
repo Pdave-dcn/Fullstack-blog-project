@@ -1,8 +1,8 @@
-import { CommentRepository } from "@/domains/comments/CommentRepository.js";
+import { CommentRepository } from "../../../domains/comments/CommentRepository.js";
 import {
   CommentNotFoundError,
   ForbiddenCommentDeleteError,
-} from "@/domains/comments/CommentErrors.js";
+} from "../../../domains/comments/CommentErrors.js";
 import { DeleteCommentCommand } from "./DeleteCommentCommand.js";
 
 export class DeleteCommentUseCase {

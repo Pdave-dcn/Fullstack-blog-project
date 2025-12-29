@@ -2,11 +2,11 @@ import express from "express";
 import {
   loginUserController,
   signupUserController,
-} from "@/interfaces/http/controllers/auth/auth.controller.js";
+} from "../controllers/auth/auth.controller.js";
 import {
   authLimiter,
   registerLimiter,
-} from "@/infrastructure/http/rateLimit/coreRateLimits.js";
+} from "../../../infrastructure/http/rateLimit/coreRateLimits.js";
 import { logoutController } from "../controllers/auth/logout.controller.js";
 
 const router = express.Router();

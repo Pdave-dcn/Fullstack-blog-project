@@ -11,10 +11,10 @@ import {
 import {
   generalApiLimiter,
   writeOperationsLimiter,
-} from "@/infrastructure/http/rateLimit/coreRateLimits.js";
+} from "../../../infrastructure/http/rateLimit/coreRateLimits.js";
 import { authenticateJwt } from "../middlewares/authenticateJwt.middleware.js";
 import { requireRole } from "../middlewares/requireRole.middleware.js";
-import { UserRole } from "@/domains/users/UserRole.js";
+import { UserRole } from "../../../domains/users/UserRole.js";
 
 const router = express.Router();
 

@@ -1,10 +1,10 @@
-import { UserRepository } from "@/domains/users/UserRepository.js";
+import { UserRepository } from "../../../domains/users/UserRepository.js";
 import { SignupUserCommand } from "./SignupUserCommand.js";
-import { User } from "@/domains/users/User.js";
+import { User } from "../../../domains/users/User.js";
 import { randomUUID } from "crypto";
 import bcrypt from "bcryptjs";
-import { UserRole } from "@/domains/users/UserRole.js";
-import { UsernameAlreadyExistsError } from "@/domains/users/UserErrors.js";
+import { UserRole } from "../../../domains/users/UserRole.js";
+import { UsernameAlreadyExistsError } from "../../../domains/users/UserErrors.js";
 
 export class SignupUserUseCase {
   constructor(private readonly userRepository: UserRepository) {}

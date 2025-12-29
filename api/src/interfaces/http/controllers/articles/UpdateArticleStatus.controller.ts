@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { AuthenticatedRequest } from "../../types/AuthRequest.js";
 import { UpdateArticleStatusSchema } from "../../validators/articles/editArticle.schema.js";
-import { container } from "@/infrastructure/di/containers/index.js";
+import { container } from "../../../../infrastructure/di/containers/index.js";
 
 export const updateArticleStatusController = async (
   req: Request,

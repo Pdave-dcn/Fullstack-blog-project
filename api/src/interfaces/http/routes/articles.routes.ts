@@ -8,14 +8,14 @@ import {
   updateArticleStatusController,
   deleteArticleController,
   listArticlesForAuthorTableController,
-} from "@/interfaces/http/controllers/articles/index.js";
+} from "../controllers/articles/index.js";
 import {
   generalApiLimiter,
   writeOperationsLimiter,
-} from "@/infrastructure/http/rateLimit/coreRateLimits.js";
+} from "../../../infrastructure/http/rateLimit/coreRateLimits.js";
 import { authenticateJwt } from "../middlewares/authenticateJwt.middleware.js";
 import { requireRole } from "../middlewares/requireRole.middleware.js";
-import { UserRole } from "@/domains/users/UserRole.js";
+import { UserRole } from "../../../domains/users/UserRole.js";
 
 const router = express.Router();
 

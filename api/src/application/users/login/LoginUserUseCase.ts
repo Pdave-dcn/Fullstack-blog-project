@@ -1,8 +1,8 @@
-import { UserRepository } from "@/domains/users/UserRepository.js";
+import { UserRepository } from "../../../domains/users/UserRepository.js";
 import { LoginUserCommand } from "./LoginUserCommand.js";
-import { InvalidCredentialsError } from "@/domains/users/UserErrors.js";
+import { InvalidCredentialsError } from "../../../domains/users/UserErrors.js";
 import bcrypt from "bcryptjs";
-import { User } from "@/domains/users/User.js";
+import { User } from "../../../domains/users/User.js";
 
 export class LoginUserUseCase {
   constructor(private readonly userRepository: UserRepository) {}

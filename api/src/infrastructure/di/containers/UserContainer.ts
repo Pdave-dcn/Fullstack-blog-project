@@ -1,7 +1,7 @@
-import { SignupUserUseCase } from "@/application/users/signup/SignupUserUseCase.js";
-import { LoginUserUseCase } from "@/application/users/login/LoginUserUseCase.js";
-import { GetAuthenticatedUserUseCase } from "@/application/auth/GetAuthenticatedUserUseCase.js";
-import { PrismaUserRepository } from "@/infrastructure/db/prisma/PrismaUserRepository.js";
+import { SignupUserUseCase } from "../../../application/users/signup/SignupUserUseCase.js";
+import { LoginUserUseCase } from "../../../application/users/login/LoginUserUseCase.js";
+import { GetAuthenticatedUserUseCase } from "../../../application/auth/GetAuthenticatedUserUseCase.js";
+import { PrismaUserRepository } from "../../db/prisma/PrismaUserRepository.js";
 
 /**
  * User domain dependency injection container.

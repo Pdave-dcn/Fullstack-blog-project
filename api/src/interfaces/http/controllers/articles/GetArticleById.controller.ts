@@ -1,4 +1,4 @@
-import { container } from "@/infrastructure/di/containers/index.js";
+import { container } from "../../../../infrastructure/di/containers/index.js";
 import { Request, Response, NextFunction } from "express";
 
 // ! Not in use

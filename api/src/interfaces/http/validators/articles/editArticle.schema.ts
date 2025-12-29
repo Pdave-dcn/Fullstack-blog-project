@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ArticleStatus } from "@/domains/articles/ArticleStatus.js";
+import { ArticleStatus } from "../../../../domains/articles/ArticleStatus.js";
 
 export const EditArticleSchema = z.object({
   articleId: z.uuid(),

@@ -1,4 +1,4 @@
-import { ArticleStatus } from "@/domains/articles/ArticleStatus";
+import { ArticleStatus } from "../../../domains/articles/ArticleStatus.js";
 
 export interface EditArticleCommand {
   articleId: string;

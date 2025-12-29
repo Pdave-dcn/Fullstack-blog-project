@@ -1,7 +1,7 @@
 import { Strategy as LocalStrategy } from "passport-local";
-import { LoginUserCommand } from "@/application/users/login/LoginUserCommand.js";
-import { InvalidCredentialsError } from "@/domains/users/UserErrors.js";
-import { container } from "@/infrastructure/di/containers/index.js";
+import { LoginUserCommand } from "../../../../application/users/login/LoginUserCommand.js";
+import { InvalidCredentialsError } from "../../../../domains/users/UserErrors.js";
+import { container } from "../../../di/containers/index.js";
 
 const localStrategy = new LocalStrategy(
   {

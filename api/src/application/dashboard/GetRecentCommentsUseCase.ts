@@ -1,4 +1,4 @@
-import { DashboardQueryRepository } from "@/domains/dashboard/DashboardQueryRepository.js";
+import { DashboardQueryRepository } from "../../domains/dashboard/DashboardQueryRepository.js";
 
 export class GetRecentCommentsUseCase {
   constructor(private readonly repo: DashboardQueryRepository) {}

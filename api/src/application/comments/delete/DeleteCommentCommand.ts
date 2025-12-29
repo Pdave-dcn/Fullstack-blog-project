@@ -1,4 +1,4 @@
-import { UserRole } from "@/domains/users/UserRole";
+import { UserRole } from "../../../domains/users/UserRole.js";
 
 export interface DeleteCommentCommand {
   commentId: string;

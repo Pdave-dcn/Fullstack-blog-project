@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction, ErrorRequestHandler } from "express";
-import { DomainError } from "@/domains/shared/DomainError.js";
+import { DomainError } from "../../../domains/shared/DomainError.js";
 import { z, ZodError } from "zod";
-import { logger } from "@/infrastructure/logger/logger.js";
+import { logger } from "../../../infrastructure/logger/logger.js";
 
 export const errorMiddleware: ErrorRequestHandler = (
   err: unknown,

@@ -1,8 +1,8 @@
-import { ArticleCommentView } from "@/application/comments/queries/ListArticleComments/ArticleCommentView.js";
-import { CommentForAuthorView } from "@/application/comments/queries/ListAuthorComments/CommentForAuthorView.js";
-import { CommentReplyView } from "@/application/comments/queries/ListCommentReplies/CommentReplyView.js";
-import prisma from "@/infrastructure/db/prismaClient.js";
-import { CommentQueryRepository } from "@/domains/comments/CommentQueryRepository.js";
+import { ArticleCommentView } from "../../../application/comments/queries/ListArticleComments/ArticleCommentView.js";
+import { CommentForAuthorView } from "../../../application/comments/queries/ListAuthorComments/CommentForAuthorView.js";
+import { CommentReplyView } from "../../../application/comments/queries/ListCommentReplies/CommentReplyView.js";
+import prisma from "../prismaClient.js";
+import { CommentQueryRepository } from "../../../domains/comments/CommentQueryRepository.js";
 
 export class PrismaCommentQueryRepository implements CommentQueryRepository {
   async listAuthorComments(page: number, pageSize: number) {

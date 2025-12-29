@@ -1,11 +1,11 @@
-import prisma from "@/infrastructure/db/prismaClient.js";
-import { Article } from "@/domains/articles/Article.js";
-import { ArticleStatus as DomainArticleStatus } from "@/domains/articles/ArticleStatus.js";
-import { ArticleDetailsView } from "@/application/articles/queries/ArticleDetails/ArticleDetailsView.js";
-import { ArticleQueryRepository } from "@/domains/articles/ArticleQueryRepository.js";
-import { ArticlesForAuthorTableView } from "@/application/articles/queries/ArticlesForAuthorTable/ArticlesForAuthorTableView.js";
-import { GetArticlesForAuthorTableParams } from "@/application/articles/queries/ArticlesForAuthorTable/ArticlesForAuthorTableView.js";
-import { Prisma } from "@/generated/prisma/client.js";
+import prisma from "../prismaClient.js";
+import { Article } from "../../../domains/articles/Article.js";
+import { ArticleStatus as DomainArticleStatus } from "../../../domains/articles/ArticleStatus.js";
+import { ArticleDetailsView } from "../../../application/articles/queries/ArticleDetails/ArticleDetailsView.js";
+import { ArticleQueryRepository } from "../../../domains/articles/ArticleQueryRepository.js";
+import { ArticlesForAuthorTableView } from "../../../application/articles/queries/ArticlesForAuthorTable/ArticlesForAuthorTableView.js";
+import { GetArticlesForAuthorTableParams } from "../../../application/articles/queries/ArticlesForAuthorTable/ArticlesForAuthorTableView.js";
+import { Prisma } from "../../../generated/prisma/client.js";
 
 type PrismaArticleRow = {
   id: string;

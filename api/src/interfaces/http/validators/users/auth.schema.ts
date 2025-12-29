@@ -1,4 +1,4 @@
-import { UserRole } from "@/domains/users/UserRole";
+import { UserRole } from "../../../../domains/users/UserRole.js";
 import { z } from "zod";
 
 export const SignupUserSchema = z.object({

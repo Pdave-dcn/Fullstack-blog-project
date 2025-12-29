@@ -1,4 +1,4 @@
-import { CommentQueryRepository } from "@/domains/comments/CommentQueryRepository.js";
+import { CommentQueryRepository } from "../../../../domains/comments/CommentQueryRepository.js";
 import { ListArticleCommentsQuery } from "./ListArticleCommentsQuery.js";
 
 export class ListArticleCommentsUseCase {
