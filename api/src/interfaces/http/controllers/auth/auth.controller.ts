@@ -4,9 +4,9 @@ import {
   LoginUserSchema,
   SignupUserSchema,
 } from "../../validators/users/auth.schema.js";
-import { getCookieConfig } from "@/infrastructure/http/cookies/authCookieConfig.js";
-import env from "@/configs/env.js";
-import { container } from "@/infrastructure/di/containers/index.js";
+import { getCookieConfig } from "../../../../infrastructure/http/cookies/authCookieConfig.js";
+import env from "../../../../configs/env.js";
+import { container } from "../../../../infrastructure/di/containers/index.js";
 
 export const signupUserController = async (
   req: Request,

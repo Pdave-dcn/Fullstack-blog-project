@@ -1,4 +1,4 @@
-import { ArticleStatus } from "@/domains/articles/ArticleStatus.js";
+import { ArticleStatus } from "../../../../domains/articles/ArticleStatus.js";
 
 export interface ArticleDetailsView {
   id: string;

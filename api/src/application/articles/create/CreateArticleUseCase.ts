@@ -1,6 +1,6 @@
-import { Article } from "@/domains/articles/Article.js";
-import { ArticleRepository } from "@/domains/articles/ArticleRepository.js";
-import { UnauthorizedAuthorError } from "@/domains/articles/ArticleErrors.js";
+import { Article } from "../../../domains/articles/Article.js";
+import { ArticleRepository } from "../../../domains/articles/ArticleRepository.js";
+import { UnauthorizedAuthorError } from "../../../domains/articles/ArticleErrors.js";
 import { CreateArticleCommand } from "./CreateArticleCommand.js";
 import { randomUUID } from "crypto";
 

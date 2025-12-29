@@ -5,7 +5,7 @@ import {
   AuthorCommentsQuerySchema,
   CommentRepliesQuerySchema,
 } from "../../validators/comments/commentQueries.schema.js";
-import { container } from "@/infrastructure/di/containers/index.js";
+import { container } from "../../../../infrastructure/di/containers/index.js";
 
 export const getCommentsForAuthorController = async (
   req: Request,

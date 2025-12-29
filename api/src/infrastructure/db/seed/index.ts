@@ -2,7 +2,7 @@ import prisma from "../prismaClient.js";
 import seedUsers from "./seeders/users.seeder.js";
 import seedArticles from "./seeders/articles.seeder.js";
 import seedComments from "./seeders/comments.seeder.js";
-import { logger } from "@/infrastructure/logger/logger.js";
+import { logger } from "../../logger/logger.js";
 
 const main = async () => {
   try {

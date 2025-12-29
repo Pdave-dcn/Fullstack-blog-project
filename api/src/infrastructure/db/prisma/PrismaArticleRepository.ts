@@ -1,10 +1,10 @@
-import prisma from "@/infrastructure/db/prismaClient.js";
-import { Article } from "@/domains/articles/Article.js";
+import prisma from "../prismaClient.js";
+import { Article } from "../../../domains/articles/Article.js";
 import {
   ArticleStatus,
   ArticleStatus as DomainArticleStatus,
-} from "@/domains/articles/ArticleStatus";
-import { ArticleRepository } from "@/domains/articles/ArticleRepository.js";
+} from "../../../domains/articles/ArticleStatus.js";
+import { ArticleRepository } from "../../../domains/articles/ArticleRepository.js";
 
 type PrismaArticleRow = {
   id: string;

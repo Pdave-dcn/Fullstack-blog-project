@@ -1,14 +1,14 @@
-import { CreateArticleUseCase } from "@/application/articles/create/CreateArticleUseCase.js";
-import { DeleteArticleUseCase } from "@/application/articles/delete/DeleteArticleUseCase.js";
-import { EditArticleUseCase } from "@/application/articles/edit/EditArticleUseCase.js";
-import { ListArticlesUseCase } from "@/application/articles/list/ListArticlesUseCase.js";
-import { UpdateArticleStatusUseCase } from "@/application/articles/update/UpdateArticleStatusUseCase.js";
-import { GetArticleByIdUseCase } from "@/application/articles/queries/GetArticleByIdUseCase.js";
-import { GetRecentArticlesUseCase } from "@/application/articles/list/GetRecentArticlesUseCase.js";
-import { PrismaArticleRepository } from "@/infrastructure/db/prisma/PrismaArticleRepository.js";
-import { GetArticleDetailsUseCase } from "@/application/articles/queries/ArticleDetails/GetArticleDetailsUseCase.js";
-import { GetArticlesForAuthorTableUseCase } from "@/application/articles/queries/ArticlesForAuthorTable/ArticlesForAuthorTableUseCase.js";
-import { PrismaArticleQueryRepository } from "@/infrastructure/db/prisma/PrismaArticleQueryRepository.js";
+import { CreateArticleUseCase } from "../../../application/articles/create/CreateArticleUseCase.js";
+import { DeleteArticleUseCase } from "../../../application/articles/delete/DeleteArticleUseCase.js";
+import { EditArticleUseCase } from "../../../application/articles/edit/EditArticleUseCase.js";
+import { ListArticlesUseCase } from "../../../application/articles/list/ListArticlesUseCase.js";
+import { UpdateArticleStatusUseCase } from "../../../application/articles/update/UpdateArticleStatusUseCase.js";
+import { GetArticleByIdUseCase } from "../../../application/articles/queries/GetArticleByIdUseCase.js";
+import { GetRecentArticlesUseCase } from "../../../application/articles/list/GetRecentArticlesUseCase.js";
+import { PrismaArticleRepository } from "../../db/prisma/PrismaArticleRepository.js";
+import { GetArticleDetailsUseCase } from "../../../application/articles/queries/ArticleDetails/GetArticleDetailsUseCase.js";
+import { GetArticlesForAuthorTableUseCase } from "../../../application/articles/queries/ArticlesForAuthorTable/ArticlesForAuthorTableUseCase.js";
+import { PrismaArticleQueryRepository } from "../../db/prisma/PrismaArticleQueryRepository.js";
 
 /**
  * Article domain dependency injection container.

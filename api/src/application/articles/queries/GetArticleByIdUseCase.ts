@@ -1,5 +1,5 @@
-import { ArticleRepository } from "@/domains/articles/ArticleRepository.js";
-import { ArticleNotFoundError } from "@/domains/articles/ArticleErrors.js";
+import { ArticleRepository } from "../../../domains/articles/ArticleRepository.js";
+import { ArticleNotFoundError } from "../../../domains/articles/ArticleErrors.js";
 
 export class GetArticleByIdUseCase {
   constructor(private readonly articleRepository: ArticleRepository) {}

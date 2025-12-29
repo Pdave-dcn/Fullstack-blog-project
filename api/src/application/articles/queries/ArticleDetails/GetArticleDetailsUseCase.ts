@@ -1,4 +1,4 @@
-import { ArticleQueryRepository } from "@/domains/articles/ArticleQueryRepository.js";
+import { ArticleQueryRepository } from "../../../../domains/articles/ArticleQueryRepository.js";
 
 export class GetArticleDetailsUseCase {
   constructor(private readonly repo: ArticleQueryRepository) {}

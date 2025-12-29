@@ -1,4 +1,4 @@
-import { DomainError } from "@/domains/shared/DomainError.js";
+import { DomainError } from "../shared/DomainError.js";
 
 export class UnauthorizedAuthorError extends DomainError {
   readonly code = "UNAUTHORIZED_AUTHOR";

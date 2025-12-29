@@ -1,7 +1,7 @@
-import { GetDashboardStatsUseCase } from "@/application/dashboard/GetDashboardStatsUseCase.js";
-import { GetRecentArticlesUseCase } from "@/application/dashboard/GetRecentArticlesUseCase.js";
-import { GetRecentCommentsUseCase } from "@/application/dashboard/GetRecentCommentsUseCase.js";
-import { PrismaDashboardQueryRepository } from "@/infrastructure/db/prisma/PrismaDashboardQueryRepository.js";
+import { GetDashboardStatsUseCase } from "../../../application/dashboard/GetDashboardStatsUseCase.js";
+import { GetRecentArticlesUseCase } from "../../../application/dashboard/GetRecentArticlesUseCase.js";
+import { GetRecentCommentsUseCase } from "../../../application/dashboard/GetRecentCommentsUseCase.js";
+import { PrismaDashboardQueryRepository } from "../../db/prisma/PrismaDashboardQueryRepository.js";
 
 /**
  * Dashboard domain dependency injection container.

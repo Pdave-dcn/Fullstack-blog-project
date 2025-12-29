@@ -1,4 +1,4 @@
-import { UserRole } from "@/domains/users/UserRole.js";
+import { UserRole } from "../../../domains/users/UserRole.js";
 import { Request } from "express";
 
 export interface AuthenticatedRequest extends Request {

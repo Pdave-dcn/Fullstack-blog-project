@@ -1,5 +1,5 @@
 import prisma from "../prismaClient.js";
-import { DashboardQueryRepository } from "@/domains/dashboard/DashboardQueryRepository.js";
+import { DashboardQueryRepository } from "../../../domains/dashboard/DashboardQueryRepository.js";
 
 export class PrismaDashboardQueryRepository
   implements DashboardQueryRepository

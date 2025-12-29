@@ -1,10 +1,11 @@
-import { SignupUserUseCase } from "@/application/users/signup/SignupUserUseCase.js";
-import { LoginUserUseCase } from "@/application/users/login/LoginUserUseCase.js";
-import { GetAuthenticatedUserUseCase } from "@/application/auth/GetAuthenticatedUserUseCase.js";
-import { PrismaUserRepository } from "@/infrastructure/db/prisma/PrismaUserRepository.js";
-import { LoginGuestUseCase } from "@/application/auth/LoginGuestUseCase.js";
-import { JsonWebTokenService } from "@/application/auth/services/JasonWebTokenService.js";
-import env from "@/configs/env.js";
+import { SignupUserUseCase } from "../../../application/users/signup/SignupUserUseCase.js";
+import { LoginUserUseCase } from "../../../application/users/login/LoginUserUseCase.js";
+import { GetAuthenticatedUserUseCase } from "../../../application/auth/GetAuthenticatedUserUseCase.js";
+import { PrismaUserRepository } from "../../db/prisma/PrismaUserRepository.js";
+
+import { LoginGuestUseCase } from "../../../application/auth/LoginGuestUseCase.js";
+import { JsonWebTokenService } from "../../../application/auth/services/JasonWebTokenService.js";
+import env from "../../../configs/env.js";
 
 /**
  * User domain dependency injection container.

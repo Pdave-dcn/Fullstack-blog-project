@@ -1,4 +1,4 @@
-import env from "@/configs/env.js";
+import env from "../../../configs/env.js";
 
 import type { CookieOptions } from "express";
 

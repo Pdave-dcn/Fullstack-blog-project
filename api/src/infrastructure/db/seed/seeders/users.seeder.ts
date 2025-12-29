@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import bcrypt from "bcryptjs";
 
 import prisma from "../../prismaClient.js";
-import env from "@/configs/env.js";
+import env from "../../../../configs/env.js";
 
 /**
  * Create test users in the database

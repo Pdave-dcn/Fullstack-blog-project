@@ -1,5 +1,5 @@
-import env from "@/configs/env.js";
-import { container } from "@/infrastructure/di/containers/index.js";
+import env from "../../../../configs/env.js";
+import { container } from "../../../di/containers/index.js";
 import { Request } from "express";
 import { Strategy as JwtStrategy } from "passport-jwt";
 

@@ -1,10 +1,10 @@
-import { ArticleRepository } from "@/domains/articles/ArticleRepository.js";
+import { ArticleRepository } from "../../../domains/articles/ArticleRepository.js";
 import { EditArticleCommand } from "./EditArticleCommand.js";
 import {
   ArticleNotFoundError,
   ForbiddenArticleEditError,
   UnauthorizedAuthorError,
-} from "@/domains/articles/ArticleErrors.js";
+} from "../../../domains/articles/ArticleErrors.js";
 
 export class EditArticleUseCase {
   constructor(private readonly articleRepository: ArticleRepository) {}

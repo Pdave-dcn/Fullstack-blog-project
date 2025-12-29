@@ -3,7 +3,7 @@ import "dotenv/config.js";
 import dotenv from "dotenv";
 import { z } from "zod";
 
-import envSchema from "@/interfaces/http/validators/env/env.schema.js";
+import envSchema from "../interfaces/http/validators/env/env.schema.js";
 
 dotenv.config({ override: true });
 

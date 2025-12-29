@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import prisma from "../../prismaClient.js";
-import { Article, Prisma, User } from "@/generated/prisma/client.js";
+import { Article, Prisma, User } from "../../../../generated/prisma/client.js";
 
 /**
  * Create test comments in the database

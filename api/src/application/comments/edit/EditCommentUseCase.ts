@@ -1,9 +1,9 @@
-import { CommentRepository } from "@/domains/comments/CommentRepository.js";
+import { CommentRepository } from "../../../domains/comments/CommentRepository.js";
 import {
   CommentNotFoundError,
   ForbiddenCommentEditError,
   ParentCommentArticleMismatchError,
-} from "@/domains/comments/CommentErrors.js";
+} from "../../../domains/comments/CommentErrors.js";
 import { EditCommentCommand } from "./EditCommentCommand.js";
 
 export class EditCommentUseCase {

@@ -1,6 +1,6 @@
-import { DashboardStatsView } from "@/application/dashboard/queries/DashboardStatsView.js";
-import { RecentArticleView } from "@/application/dashboard/queries/RecentArticleView.js";
-import { RecentCommentView } from "@/application/dashboard/queries/RecentCommentView.js";
+import { DashboardStatsView } from "../../application/dashboard/queries/DashboardStatsView.js";
+import { RecentArticleView } from "../../application/dashboard/queries/RecentArticleView.js";
+import { RecentCommentView } from "../../application/dashboard/queries/RecentCommentView.js";
 
 export interface DashboardQueryRepository {
   getStats(): Promise<DashboardStatsView>;
