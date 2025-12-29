@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import env from "@/configs/env";
+import env from "../../../configs/env.js";
 import { JwtService } from "./JwtService";
 
 export class JsonWebTokenService implements JwtService {

@@ -1,6 +1,6 @@
-import { UserRepository } from "@/domains/users/UserRepository.js";
-import { UserRole } from "@/domains/users/UserRole.js";
-import { JwtService } from "@/application/auth/services/JwtService.js";
+import { UserRepository } from "../../domains/users/UserRepository.js";
+import { UserRole } from "../../domains/users/UserRole.js";
+import { JwtService } from "./services/JwtService.js";
 
 export class LoginGuestUseCase {
   constructor(
